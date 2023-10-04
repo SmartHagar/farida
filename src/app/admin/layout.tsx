@@ -5,6 +5,7 @@ import ContainerAdmin from "@/components/sidebar/ContainerAdmin";
 import useLogin from "@/stores/auth/login";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import Cookies from "js-cookie";
 
 type Props = {
   children: React.ReactNode;
@@ -21,6 +22,11 @@ const Layout = (props: Props) => {
     if (res?.error) {
       // redirect to login
       route.push("/login");
+    } else {
+      const role = Cookies.get("role");
+      if (role !== "admin") {
+        route.push(`/${role}`);
+      }
     }
   };
 

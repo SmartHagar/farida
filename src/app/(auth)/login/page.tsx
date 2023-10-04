@@ -22,13 +22,6 @@ const Login = (props: Props) => {
 
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  // cek apakah sudah login atau belum
-  const cekLogin = async () => {};
-  useEffect(() => {
-    console.log("cek apakah sudah login atau belum");
-    cekLogin();
-    return () => {};
-  }, []);
 
   // jika sudah login
   const fetchAuth = async () => {
@@ -37,9 +30,9 @@ const Login = (props: Props) => {
       const cekAuth = await cekToken();
       console.log({ cekAuth });
       if (!cekAuth?.error) {
-        console.log("sudah login");
+        const role = cekAuth?.data?.data?.user?.role;
         // redirect to login
-        router.push("/admin");
+        router.push(`/${role}`);
       }
     }
     setIsLoading(false);
