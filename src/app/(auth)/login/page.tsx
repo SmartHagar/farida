@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormLogin from "./FormLogin";
 import ButtonPrimary from "@/components/button/ButtonPrimary";
+import LoadingSpiner from "@/components/loading/LoadingSpiner";
 
 type Props = {};
 
@@ -77,7 +78,9 @@ const Login = (props: Props) => {
             <p className="text-center mt-2">
               Silakan login untuk mendapatkan akses ke halaman admin
             </p>
-            <span>{error && <p className="text-red-600">{error}</p>}</span>
+            <span>
+              {error && <p className="text-red-600 text-center">{error}</p>}
+            </span>
           </div>
           <img
             className="rounded-full h-32 w-32"
@@ -93,7 +96,11 @@ const Login = (props: Props) => {
               setValue={setValue}
             />
             <div className="mt-4">
-              <ButtonPrimary text="Login" onClick={handleSubmit(onSubmit)} />
+              {isLoading ? (
+                <LoadingSpiner />
+              ) : (
+                <ButtonPrimary text="Login" onClick={handleSubmit(onSubmit)} />
+              )}
             </div>
           </form>
         </div>

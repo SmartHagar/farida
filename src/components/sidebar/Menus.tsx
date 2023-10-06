@@ -35,21 +35,47 @@ const menus: MenuTypes[] = [
     icon: <BsReverseLayoutTextWindowReverse />,
   },
 ];
-// list menu Doosen
-const DoosenMenus = [
+// list menu Dosen
+const DosenMenus: MenuTypes[] = [
   {
     name: "Dashboard",
-    href: "",
-    slug: "dashboard",
+    href: "/dosen",
     icon: <BsHouseDoorFill />,
-    subMenus: false,
   },
   {
-    name: "Penilaian",
-    href: "/penilaian",
+    name: "RPS",
+    href: "/dosen/rps",
+    icon: <BsPeopleFill />,
+  },
+  {
+    name: "Berita Acara",
+    href: "/dosen/beritaAcara",
+    icon: <BsPeopleFill />,
+  },
+  {
+    name: "Upload",
+    href: "#",
+    slug: "upload",
+    subMenus: [
+      {
+        name: "Absen",
+        href: "/dosen/upload/abesn",
+        icon: <BsPeopleFill />,
+      },
+      {
+        name: "Berita Acara",
+        href: "/dosen/upload/beritaAcara",
+        icon: <BsPeopleFill />,
+      },
+      {
+        name: "Nilai",
+        href: "/dosen/upload/nilai",
+        icon: <BsPeopleFill />,
+      },
+    ],
     icon: <BsPeopleFill />,
   },
 ];
 
 export default menus;
-export { DoosenMenus };
+export { DosenMenus };

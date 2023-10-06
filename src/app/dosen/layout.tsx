@@ -1,19 +1,20 @@
 /** @format */
+
 "use client";
-import HeaderAdmin from "@/components/header/HeaderAdmin";
-import ContainerAdmin from "@/components/sidebar/ContainerAdmin";
-import useLogin from "@/stores/auth/login";
-import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { usePathname, useRouter } from "next/navigation";
+import useLogin from "@/stores/auth/login";
+import ContainerDosen from "@/components/sidebar/ContainerDosen";
+import HeaderDosen from "@/components/header/HeaderDosen";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 const Layout = (props: Props) => {
-  // state
+  const [user, setUser] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   // pathname
   const pathname = usePathname();
@@ -27,7 +28,8 @@ const Layout = (props: Props) => {
       route.push("/login");
     } else {
       const role = Cookies.get("role");
-      if (role !== "admin") {
+      setUser(res?.data?.data?.user);
+      if (role !== "dosen") {
         route.push(`/${role}`);
       }
     }
@@ -42,7 +44,6 @@ const Layout = (props: Props) => {
 
   const loadData = async () => {
     const cek = await getCek();
-    console.log({ cek });
     if (!cek?.error) {
       setIsLoading(false);
     }
@@ -61,13 +62,14 @@ const Layout = (props: Props) => {
       </div>
     );
   }
+
   return (
     <div>
       <div className="flex min-h-screen h-screen text-black bg-bg">
-        <ContainerAdmin />
+        <ContainerDosen />
         <div className="flex h-full w-full overflow-hidden p-1 rounded-lg flex-col">
           <div className="lg:-mx-4 lg:-mt-2 mb-1">
-            <HeaderAdmin />
+            <HeaderDosen user={user} />
           </div>
           <div className="bg-white h-full overflow-hidden p-2 drop-shadow-2xl shadow-black rounded-lg">
             {props.children}

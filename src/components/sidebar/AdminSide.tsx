@@ -129,6 +129,7 @@ const AdminSide = ({ menus }: Props) => {
     // remove cookie token and role
     Cookies.remove("token");
     Cookies.remove("role");
+    Cookies.remove("dosen_id");
     // redirect to roote page
     router.push("/");
     setIsLoading(false);
