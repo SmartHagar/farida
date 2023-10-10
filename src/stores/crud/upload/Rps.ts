@@ -5,7 +5,7 @@ import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
 import useLogin from "@/stores/auth/login";
 
-// crud dosen
+// crud rps
 
 type Props = {
   page?: number;
@@ -15,14 +15,14 @@ type Props = {
 };
 
 type Store = {
-  dtDosen: any;
-  showDosen: any;
-  setDosen: ({ page = 1, limit = 10, search, tipe }: Props) => Promise<{
+  dtRps: any;
+  showRps: any;
+  setRps: ({ page = 1, limit = 10, search, tipe }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
   }>;
-  setShowDosen: (id: string | number) => Promise<{
+  setShowRps: (id: string | number) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -38,7 +38,7 @@ type Store = {
   setFormData: any;
 };
 
-const useDosen = create(
+const useRps = create(
   devtools<Store>((set, get) => ({
     setFormData: (row: any) => {
       const formData = new FormData();
@@ -56,14 +56,14 @@ const useDosen = create(
       formData.append("foto", row.foto);
       return formData;
     },
-    dtDosen: [],
-    showDosen: [],
-    setDosen: async ({ page = 1, limit = 10, search, tipe }) => {
+    dtRps: [],
+    showRps: [],
+    setRps: async ({ page = 1, limit = 10, search, tipe }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
           method: "get",
-          url: `/dosen`,
+          url: `/upload/rps`,
           headers: { Authorization: `Bearer ${token}` },
           params: {
             limit,
@@ -72,7 +72,7 @@ const useDosen = create(
             tipe,
           },
         });
-        set((state) => ({ ...state, dtDosen: response.data.data }));
+        set((state) => ({ ...state, dtRps: response.data.data }));
         return {
           status: "berhasil",
           data: response.data,
@@ -84,16 +84,16 @@ const useDosen = create(
         };
       }
     },
-    setShowDosen: async (id) => {
+    setShowRps: async (id) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
           method: "get",
-          url: `/dosen/${id}`,
+          url: `/upload/rps/${id}`,
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log({ response });
-        set((state) => ({ ...state, showDosen: response.data.data }));
+        set((state) => ({ ...state, showRps: response.data.data }));
         return {
           status: "berhasil",
           data: response.data,
@@ -111,7 +111,7 @@ const useDosen = create(
         const token = await useLogin.getState().setToken();
         const res = await crud({
           method: "post",
-          url: `/dosen`,
+          url: `/upload/rps`,
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
@@ -119,10 +119,10 @@ const useDosen = create(
           data: formData,
         });
         set((prevState: any) => ({
-          dtDosen: {
-            last_page: prevState.dtDosen.last_page,
-            current_page: prevState.dtDosen.current_page,
-            data: [res.data.data, ...prevState.dtDosen.data],
+          dtRps: {
+            last_page: prevState.dtRps.last_page,
+            current_page: prevState.dtRps.current_page,
+            data: [res.data.data, ...prevState.dtRps.data],
           },
         }));
         return {
@@ -141,14 +141,14 @@ const useDosen = create(
         const token = await useLogin.getState().setToken();
         const res = await crud({
           method: "delete",
-          url: `/dosen/${id}`,
+          url: `/upload/rps/${id}`,
           headers: { Authorization: `Bearer ${token}` },
         });
         set((prevState: any) => ({
-          dtDosen: {
-            last_page: prevState.dtDosen.last_page,
-            current_page: prevState.dtDosen.current_page,
-            data: prevState.dtDosen.data.filter((item: any) => item.id !== id),
+          dtRps: {
+            last_page: prevState.dtRps.last_page,
+            current_page: prevState.dtRps.current_page,
+            data: prevState.dtRps.data.filter((item: any) => item.id !== id),
           },
         }));
         return {
@@ -172,7 +172,7 @@ const useDosen = create(
       };
       try {
         const response = await crud({
-          url: `/dosen/${id}`,
+          url: `/upload/rps/${id}`,
           method: "post",
           headers: row?.foto
             ? headersImg
@@ -184,22 +184,8 @@ const useDosen = create(
             _method: "PUT",
           },
         });
-        set((prevState: any) => ({
-          dtDosen: {
-            last_page: prevState.dtDosen.last_page,
-            current_page: prevState.dtDosen.current_page,
-            data: prevState.dtDosen.data.map((item: any) => {
-              if (item.id === id) {
-                return {
-                  ...item,
-                  ...response.data.data,
-                };
-              } else {
-                return item;
-              }
-            }),
-          },
-        }));
+        const dosen_id = response?.data?.data?.jadwal?.dosen_id;
+        await get().setShowRps(dosen_id);
         return {
           status: "berhasil update",
           data: response.data,
@@ -214,4 +200,4 @@ const useDosen = create(
   }))
 );
 
-export default useDosen;
+export default useRps;

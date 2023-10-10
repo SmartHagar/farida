@@ -8,8 +8,9 @@ type Props = {
   page?: number;
   limit?: number;
   search?: string;
-  tahun?: string;
+  tahun?: string | number;
   semester?: string;
+  dosen_id?: string;
 };
 
 type Store = {
@@ -25,6 +26,11 @@ type Store = {
     error?: {};
   }>;
   setJadwalByThnSmt: ({ tahun, semester }: Props) => Promise<{
+    status: string;
+    data?: {};
+    error?: {};
+  }>;
+  setJadwalByDosen: ({ tahun, semester, dosen_id }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -89,6 +95,29 @@ const useJadwalApi = create(
           },
         });
         set((state) => ({ ...state, dtJadwal: response.data }));
+        return {
+          status: "berhasil",
+          data: response.data,
+        };
+      } catch (error: any) {
+        return {
+          status: "error",
+          error: error.response.data,
+        };
+      }
+    },
+    setJadwalByDosen: async ({ tahun, semester, dosen_id }) => {
+      try {
+        const response = await api({
+          method: "get",
+          url: `/jadwal/by-dosen`,
+          params: {
+            tahun,
+            semester,
+            dosen_id,
+          },
+        });
+        set((state) => ({ ...state, dtJadwal: response?.data }));
         return {
           status: "berhasil",
           data: response.data,

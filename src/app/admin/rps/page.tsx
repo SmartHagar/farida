@@ -11,6 +11,7 @@ import { Toaster } from "react-hot-toast";
 import toastShow from "@/utils/toast-show";
 import InputTextSearch from "@/components/input/InputTextSerch";
 import { useForm } from "react-hook-form";
+import { useSearchParams } from "next/navigation";
 
 // type setDelete
 type Delete = {
@@ -86,14 +87,8 @@ const Dosen = () => {
           setShowDel={setShowDelete}
           setDelete={setDelete}
         />
-        <div className="mb-4 flex justify-between">
-          <p>Silahkan Mengolah data Dosen</p>
-          <div>
-            <ButtonPrimary text="Tambah Dosen" onClick={handleTambah} />
-          </div>
-        </div>
         <InputTextSearch
-          placeholder="Cari Dosen"
+          placeholder="Cari RPS"
           onChange={(e) => setSearch(e)}
         />
       </div>

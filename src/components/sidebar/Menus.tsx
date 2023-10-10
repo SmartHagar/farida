@@ -34,6 +34,11 @@ const menus: MenuTypes[] = [
     href: "/admin/jadwal",
     icon: <BsReverseLayoutTextWindowReverse />,
   },
+  {
+    name: "RPS",
+    href: "/admin/rps",
+    icon: <BsPeopleFill />,
+  },
 ];
 // list menu Dosen
 const DosenMenus: MenuTypes[] = [
@@ -56,6 +61,7 @@ const DosenMenus: MenuTypes[] = [
     name: "Upload",
     href: "#",
     slug: "upload",
+    icon: <BsPeopleFill />,
     subMenus: [
       {
         name: "Absen",
@@ -73,7 +79,6 @@ const DosenMenus: MenuTypes[] = [
         icon: <BsPeopleFill />,
       },
     ],
-    icon: <BsPeopleFill />,
   },
 ];
 
