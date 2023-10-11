@@ -4,7 +4,7 @@ import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import PaginationDefault from "@/components/pagination/PaginationDefault";
 import TablesDefault from "@/components/tables/TablesDefault";
 import React, { FC, useEffect, useState } from "react";
-import useRps from "@/stores/crud/upload/Rps";
+import useDetBeritaAcara from "@/stores/crud/DetBeritaAcara";
 import { useSearchParams } from "next/navigation";
 
 type DeleteProps = {
@@ -19,61 +19,49 @@ type Props = {
 };
 
 const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
-  // params
+  // get search params
   const params = useSearchParams();
-  const { setRps, dtRps, setShowRps, showRps } = useRps();
+  // get berita_acara_id
+  const berita_acara_id = params.get("berita_acara_id") || "";
+  // store
+  const { setDetBeritaAcara, dtDetBeritaAcara } = useDetBeritaAcara();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [showModal, setShowModal] = useState<boolean>(false);
-  // get params semester dan tahun
-  const semester = params.get("semester") || "";
-  const tahun = params.get("tahun") || "";
-  const fetchDataRps = async () => {
-    const res = await setRps({
+
+  const fetchDataDetBeritaAcara = async () => {
+    const res = await setDetBeritaAcara({
       page,
       limit,
       search,
-      semester,
-      tahun,
+      berita_acara_id,
     });
     setIsLoading(false);
   };
   useEffect(() => {
-    fetchDataRps();
+    fetchDataDetBeritaAcara();
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit, semester, tahun]);
+  }, [page, limit]);
   // ketika search berubah
   useEffect(() => {
     setPage(1);
-    fetchDataRps();
+    fetchDataDetBeritaAcara();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
   // table
   const headTable = [
     "No",
-    "Hari",
-    "Mata Kuliah",
-    "Kode MK",
-    "Dosen",
-    "JML. SKS",
-    "RPS",
-    "Status",
+    "Tgl. Pertemuan",
+    "Materi",
+    "Jumlah MHS",
+    "Foto",
     "Aksi",
   ];
-  const tableBodies = [
-    "jadwal.hari",
-    "jadwal.matkul.nama",
-    "jadwal.matkul.kode",
-    "jadwal.dosen.nama",
-    "jadwal.matkul.sks",
-    "file",
-    "status",
-  ];
+  const tableBodies = ["tgl", "materi", "jmlh_mhs", "foto"];
 
   return (
     <div className="flex-1 flex-col max-w-full h-full overflow-auto">
@@ -85,20 +73,20 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
             <TablesDefault
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={dtRps.data}
+              dataTable={dtDetBeritaAcara.data}
               page={page}
               limit={limit}
               setEdit={setEdit}
               setDelete={setDelete}
               ubah={true}
-              hapus={false}
+              hapus={true}
             />
           </div>
-          {dtRps?.last_page > 1 && (
+          {dtDetBeritaAcara?.last_page > 1 && (
             <div className="mt-4">
               <PaginationDefault
-                currentPage={dtRps?.current_page}
-                totalPages={dtRps?.last_page}
+                currentPage={dtDetBeritaAcara?.current_page}
+                totalPages={dtDetBeritaAcara?.last_page}
                 setPage={setPage}
               />
             </div>

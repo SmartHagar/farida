@@ -11,7 +11,9 @@ import { Toaster } from "react-hot-toast";
 import toastShow from "@/utils/toast-show";
 import InputTextSearch from "@/components/input/InputTextSerch";
 import { useForm } from "react-hook-form";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { SelectDefault } from "@/components/select/SelectDefault";
+import SelectTahun from "@/components/select/SelectTahun";
 
 // type setDelete
 type Delete = {
@@ -20,6 +22,9 @@ type Delete = {
 };
 
 const Dosen = () => {
+  // router
+  const router = useRouter();
+  const params = useSearchParams();
   // store
   const { removeData } = useDosen();
   // state
@@ -58,18 +63,38 @@ const Dosen = () => {
     watch,
     setValue,
   } = useForm();
-
   const tahunWatch = watch("tahun");
   const semesterWatch = watch("semester");
-
+  // set tahun dan semester
+  const tahunParams = params.get("tahun");
+  const semesterParams = params.get("semester");
   useEffect(() => {
-    const tahun = new Date().getFullYear();
-    const semester = "Ganjil";
-    setValue("tahun", tahun);
-    setValue("semester", semester);
+    if (!tahunParams && !semesterParams) {
+      const tahun = new Date().getFullYear();
+      const semester = "Ganjil";
+      setValue("tahun", tahun);
+      setValue("semester", semester);
+      // add parameter to url
+      router.push("/admin/rps?tahun=" + tahun + "&semester=" + semester);
+    } else {
+      setValue("tahun", parseInt(tahunParams || ""));
+      setValue("semester", semesterParams);
+    }
+
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (tahunWatch && semesterWatch) {
+      router.push(
+        "/admin/rps?tahun=" + tahunWatch + "&semester=" + semesterWatch
+      );
+    }
+
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tahunWatch, semesterWatch]);
 
   return (
     <div className="flex flex-col h-full">
@@ -87,6 +112,33 @@ const Dosen = () => {
           setShowDel={setShowDelete}
           setDelete={setDelete}
         />
+        {/* pilih tahun dan semester */}
+        <div className="mb-4 flex justify-between gap-4">
+          <SelectDefault
+            label="Semester"
+            defaultOption="Pilih Semester"
+            register={register}
+            errors={errors}
+            name="semester"
+            options={[
+              { value: "Ganjil", label: "Ganjil" },
+              { value: "Genap", label: "Genap" },
+            ]}
+            addClass="w-full"
+          />
+          <SelectTahun
+            label="Tahun"
+            name="tahun"
+            placeholder="Pilih Tahun"
+            start={new Date().getFullYear() - 2}
+            end={new Date().getFullYear()}
+            fromMax
+            control={control}
+            required
+            errors={errors}
+            addClass="w-full"
+          />
+        </div>
         <InputTextSearch
           placeholder="Cari RPS"
           onChange={(e) => setSearch(e)}

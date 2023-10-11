@@ -63,7 +63,10 @@ const TableRps = (props: Props) => {
                 {/* loop td */}
                 {props.tableBodies.map((column, index) => {
                   return (
-                    <td key={index} className={`px-6 py-4 whitespace-nowrap`}>
+                    <td
+                      key={index}
+                      className={`px-6 py-4 whitespace-nowrap capitalize`}
+                    >
                       {getProperty(row, column)}
                     </td>
                   );

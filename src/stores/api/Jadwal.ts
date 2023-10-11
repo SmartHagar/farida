@@ -35,6 +35,11 @@ type Store = {
     data?: {};
     error?: {};
   }>;
+  setJadwalByRps: ({ tahun, semester, dosen_id }: Props) => Promise<{
+    status: string;
+    data?: {};
+    error?: {};
+  }>;
 };
 
 const useJadwalApi = create(
@@ -111,6 +116,29 @@ const useJadwalApi = create(
         const response = await api({
           method: "get",
           url: `/jadwal/by-dosen`,
+          params: {
+            tahun,
+            semester,
+            dosen_id,
+          },
+        });
+        set((state) => ({ ...state, dtJadwal: response?.data }));
+        return {
+          status: "berhasil",
+          data: response.data,
+        };
+      } catch (error: any) {
+        return {
+          status: "error",
+          error: error.response.data,
+        };
+      }
+    },
+    setJadwalByRps: async ({ tahun, semester, dosen_id }) => {
+      try {
+        const response = await api({
+          method: "get",
+          url: `/jadwal/by-rps`,
           params: {
             tahun,
             semester,

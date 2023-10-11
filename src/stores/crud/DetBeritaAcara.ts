@@ -5,31 +5,29 @@ import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
 import useLogin from "@/stores/auth/login";
 
-// crud rps
+// crud detBeritaAcara
 
 type Props = {
   page?: number;
   limit?: number;
   search?: string;
-  tahun?: string;
-  semester?: string;
+  berita_acara_id?: string;
 };
 
 type Store = {
-  dtRps: any;
-  showRps: any;
-  setRps: ({
+  dtDetBeritaAcara: any;
+  showDetBeritaAcara: any;
+  setDetBeritaAcara: ({
     page = 1,
     limit = 10,
     search,
-    tahun,
-    semester,
+    berita_acara_id,
   }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
   }>;
-  setShowRps: (id: string | number) => Promise<{
+  setShowDetBeritaAcara: (id: string | number) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -45,32 +43,39 @@ type Store = {
   setFormData: any;
 };
 
-const useRps = create(
+const useDetBeritaAcara = create(
   devtools<Store>((set, get) => ({
     setFormData: (row: any) => {
       const formData = new FormData();
-      formData.append("jadwal_id", row.jadwal_id);
-      formData.append("file", row.file);
+      formData.append("berita_acara_id", row.berita_acara_id);
+      formData.append("tgl", row.tgl);
+      formData.append("materi", row.materi);
+      formData.append("jmlh_mhs", row.jmlh_mhs);
+      formData.append("foto", row.foto);
       return formData;
     },
-    dtRps: [],
-    showRps: [],
-    setRps: async ({ page = 1, limit = 10, search, tahun, semester }) => {
+    dtDetBeritaAcara: [],
+    showDetBeritaAcara: [],
+    setDetBeritaAcara: async ({
+      page = 1,
+      limit = 10,
+      search,
+      berita_acara_id,
+    }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
           method: "get",
-          url: `/upload/rps`,
+          url: `/det-berita-acara`,
           headers: { Authorization: `Bearer ${token}` },
           params: {
             limit,
             page,
             search,
-            tahun,
-            semester,
+            berita_acara_id,
           },
         });
-        set((state) => ({ ...state, dtRps: response.data.data }));
+        set((state) => ({ ...state, dtDetBeritaAcara: response.data.data }));
         return {
           status: "berhasil",
           data: response.data,
@@ -82,16 +87,16 @@ const useRps = create(
         };
       }
     },
-    setShowRps: async (id) => {
+    setShowDetBeritaAcara: async (id) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
           method: "get",
-          url: `/upload/rps/${id}`,
+          url: `/det-berita-acara/${id}`,
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log({ response });
-        set((state) => ({ ...state, showRps: response.data.data }));
+        set((state) => ({ ...state, showDetBeritaAcara: response.data.data }));
         return {
           status: "berhasil",
           data: response.data,
@@ -109,15 +114,20 @@ const useRps = create(
         const token = await useLogin.getState().setToken();
         const res = await crud({
           method: "post",
-          url: `/upload/rps`,
+          url: `/det-berita-acara`,
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
           data: formData,
         });
-        const dosen_id = res?.data?.data?.jadwal?.dosen_id;
-        await get().setShowRps(dosen_id);
+        set((prevState: any) => ({
+          dtDetBeritaAcara: {
+            last_page: prevState.dtDetBeritaAcara.last_page,
+            current_page: prevState.dtDetBeritaAcara.current_page,
+            data: [res.data.data, ...prevState.dtDetBeritaAcara.data],
+          },
+        }));
         return {
           status: "berhasil tambah",
           data: res.data,
@@ -125,7 +135,7 @@ const useRps = create(
       } catch (error: any) {
         return {
           status: "error",
-          data: error.response?.data,
+          data: error.response.data,
         };
       }
     },
@@ -134,14 +144,16 @@ const useRps = create(
         const token = await useLogin.getState().setToken();
         const res = await crud({
           method: "delete",
-          url: `/upload/rps/${id}`,
+          url: `/det-berita-acara/${id}`,
           headers: { Authorization: `Bearer ${token}` },
         });
         set((prevState: any) => ({
-          dtRps: {
-            last_page: prevState.dtRps.last_page,
-            current_page: prevState.dtRps.current_page,
-            data: prevState.dtRps.data.filter((item: any) => item.id !== id),
+          dtDetBeritaAcara: {
+            last_page: prevState.dtDetBeritaAcara.last_page,
+            current_page: prevState.dtDetBeritaAcara.current_page,
+            data: prevState.dtDetBeritaAcara.data.filter(
+              (item: any) => item.id !== id
+            ),
           },
         }));
         return {
@@ -165,7 +177,7 @@ const useRps = create(
       };
       try {
         const response = await crud({
-          url: `/upload/rps/${id}`,
+          url: `/det-berita-acara/${id}`,
           method: "post",
           headers: row?.foto
             ? headersImg
@@ -177,13 +189,22 @@ const useRps = create(
             _method: "PUT",
           },
         });
-        const dosen_id = response?.data?.data?.jadwal?.dosen_id;
-        const jadwal = response?.data?.data?.jadwal;
-        await get().setShowRps(dosen_id);
-        await get().setRps({
-          tahun: jadwal?.tahun,
-          semester: jadwal?.semester,
-        });
+        set((prevState: any) => ({
+          dtDetBeritaAcara: {
+            last_page: prevState.dtDetBeritaAcara.last_page,
+            current_page: prevState.dtDetBeritaAcara.current_page,
+            data: prevState.dtDetBeritaAcara.data.map((item: any) => {
+              if (item.id === id) {
+                return {
+                  ...item,
+                  ...response.data.data,
+                };
+              } else {
+                return item;
+              }
+            }),
+          },
+        }));
         return {
           status: "berhasil update",
           data: response.data,
@@ -198,4 +219,4 @@ const useRps = create(
   }))
 );
 
-export default useRps;
+export default useDetBeritaAcara;

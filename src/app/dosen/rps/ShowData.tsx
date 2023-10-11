@@ -12,7 +12,7 @@ type DeleteProps = {
 };
 
 type Props = {
-  setDelete: ({ id, isDelete }: DeleteProps) => void;
+  setDelete?: ({ id, isDelete }: DeleteProps) => void;
   setEdit: (row: any) => void;
   search: string;
 };
@@ -20,12 +20,11 @@ type Props = {
 const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
   // dosen_id
   const dosen_id = Cookies.get("dosen_id") || "";
-  const { setRps, dtRps, setShowRps, showRps } = useRps();
+  const { setShowRps, showRps } = useRps();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [ubah, setUbah] = useState<boolean>(false);
 
   const fetchDataRps = async () => {
     const res = await setShowRps(dosen_id);

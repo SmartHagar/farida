@@ -4,11 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import ShowData from "./ShowData";
 import ButtonPrimary from "@/components/button/ButtonPrimary";
-import Form from "./form/Form";
-import ModalDelete from "@/components/modal/ModalDelete";
-import useDosen from "@/stores/crud/Dosen";
 import { Toaster } from "react-hot-toast";
-import toastShow from "@/utils/toast-show";
 import InputTextSearch from "@/components/input/InputTextSerch";
 import { useForm } from "react-hook-form";
 
@@ -21,8 +17,6 @@ type Delete = {
 const Dosen = () => {
   // state
   const [showModal, setShowModal] = useState(false);
-  const [showDelete, setShowDelete] = useState<boolean>(false);
-  const [idDel, setIdDel] = useState<number | string>();
   const [dtEdit, setDtEdit] = useState<any>();
   const [search, setSearch] = useState("");
 
@@ -38,8 +32,6 @@ const Dosen = () => {
 
   // hook form
   const {
-    register,
-    control,
     formState: { errors },
     watch,
     setValue,
@@ -61,26 +53,21 @@ const Dosen = () => {
     <div className="flex flex-col h-full">
       <div>
         <Toaster />
-        <Form
-          dtEdit={dtEdit}
-          showModal={showModal}
-          setShowModal={setShowModal}
-          tahunWatch={tahunWatch}
-          semesterWatch={semesterWatch}
-        />
         <div className="mb-4 flex justify-between">
-          <p>Silahkan Mengolah data RPS</p>
-          <div>
-            <ButtonPrimary text="Tambah RPS" onClick={handleTambah} />
-          </div>
+          <p>Silahkan Mengolah data berita acara</p>
         </div>
         <InputTextSearch
-          placeholder="Cari RPS"
+          placeholder="Cari Jadwal"
           onChange={(e) => setSearch(e)}
         />
       </div>
 
-      <ShowData setEdit={setEdit} search={search} />
+      <ShowData
+        tahunWatch={tahunWatch}
+        semesterWatch={semesterWatch}
+        setEdit={setEdit}
+        search={search}
+      />
     </div>
   );
 };
