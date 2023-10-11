@@ -5,29 +5,31 @@ import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
 import useLogin from "@/stores/auth/login";
 
-// crud detBeritaAcara
+// crud absen
 
 type Props = {
   page?: number;
   limit?: number;
   search?: string;
-  berita_acara_id?: string;
+  tahun?: string;
+  semester?: string;
 };
 
 type Store = {
-  dtDetBeritaAcara: any;
-  showDetBeritaAcara: any;
-  setDetBeritaAcara: ({
+  dtAbsen: any;
+  showAbsen: any;
+  setAbsen: ({
     page = 1,
     limit = 10,
     search,
-    berita_acara_id,
+    tahun,
+    semester,
   }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
   }>;
-  setShowDetBeritaAcara: (id: string | number) => Promise<{
+  setShowAbsen: (id: string | number) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -43,39 +45,32 @@ type Store = {
   setFormData: any;
 };
 
-const useDetBeritaAcara = create(
+const useAbsen = create(
   devtools<Store>((set, get) => ({
     setFormData: (row: any) => {
       const formData = new FormData();
-      formData.append("berita_acara_id", row.berita_acara_id);
-      formData.append("tgl", row.tgl);
-      formData.append("materi", row.materi);
-      formData.append("jmlh_mhs", row.jmlh_mhs);
-      formData.append("foto", row.foto);
+      formData.append("jadwal_id", row.jadwal_id);
+      formData.append("file", row.file);
       return formData;
     },
-    dtDetBeritaAcara: [],
-    showDetBeritaAcara: [],
-    setDetBeritaAcara: async ({
-      page = 1,
-      limit = 10,
-      search,
-      berita_acara_id,
-    }) => {
+    dtAbsen: [],
+    showAbsen: [],
+    setAbsen: async ({ page = 1, limit = 10, search, tahun, semester }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
           method: "get",
-          url: `/det-berita-acara`,
+          url: `/upload/absen`,
           headers: { Authorization: `Bearer ${token}` },
           params: {
             limit,
             page,
             search,
-            berita_acara_id,
+            tahun,
+            semester,
           },
         });
-        set((state) => ({ ...state, dtDetBeritaAcara: response.data.data }));
+        set((state) => ({ ...state, dtAbsen: response.data.data }));
         return {
           status: "berhasil",
           data: response.data,
@@ -87,15 +82,16 @@ const useDetBeritaAcara = create(
         };
       }
     },
-    setShowDetBeritaAcara: async (id) => {
+    setShowAbsen: async (id) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
           method: "get",
-          url: `/det-berita-acara/${id}`,
+          url: `/upload/absen/${id}`,
           headers: { Authorization: `Bearer ${token}` },
         });
-        set((state) => ({ ...state, showDetBeritaAcara: response.data.data }));
+        console.log({ response });
+        set((state) => ({ ...state, showAbsen: response.data.data }));
         return {
           status: "berhasil",
           data: response.data,
@@ -113,20 +109,15 @@ const useDetBeritaAcara = create(
         const token = await useLogin.getState().setToken();
         const res = await crud({
           method: "post",
-          url: `/det-berita-acara`,
+          url: `/upload/absen`,
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
           data: formData,
         });
-        set((prevState: any) => ({
-          dtDetBeritaAcara: {
-            last_page: prevState.dtDetBeritaAcara.last_page,
-            current_page: prevState.dtDetBeritaAcara.current_page,
-            data: [res.data.data, ...prevState.dtDetBeritaAcara.data],
-          },
-        }));
+        const dosen_id = res?.data?.data?.jadwal?.dosen_id;
+        await get().setShowAbsen(dosen_id);
         return {
           status: "berhasil tambah",
           data: res.data,
@@ -134,7 +125,7 @@ const useDetBeritaAcara = create(
       } catch (error: any) {
         return {
           status: "error",
-          data: error.response.data,
+          data: error.response?.data,
         };
       }
     },
@@ -143,16 +134,14 @@ const useDetBeritaAcara = create(
         const token = await useLogin.getState().setToken();
         const res = await crud({
           method: "delete",
-          url: `/det-berita-acara/${id}`,
+          url: `/upload/absen/${id}`,
           headers: { Authorization: `Bearer ${token}` },
         });
         set((prevState: any) => ({
-          dtDetBeritaAcara: {
-            last_page: prevState.dtDetBeritaAcara.last_page,
-            current_page: prevState.dtDetBeritaAcara.current_page,
-            data: prevState.dtDetBeritaAcara.data.filter(
-              (item: any) => item.id !== id
-            ),
+          dtAbsen: {
+            last_page: prevState.dtAbsen.last_page,
+            current_page: prevState.dtAbsen.current_page,
+            data: prevState.dtAbsen.data.filter((item: any) => item.id !== id),
           },
         }));
         return {
@@ -176,7 +165,7 @@ const useDetBeritaAcara = create(
       };
       try {
         const response = await crud({
-          url: `/det-berita-acara/${id}`,
+          url: `/upload/absen/${id}`,
           method: "post",
           headers: row?.foto
             ? headersImg
@@ -188,22 +177,13 @@ const useDetBeritaAcara = create(
             _method: "PUT",
           },
         });
-        set((prevState: any) => ({
-          dtDetBeritaAcara: {
-            last_page: prevState.dtDetBeritaAcara.last_page,
-            current_page: prevState.dtDetBeritaAcara.current_page,
-            data: prevState.dtDetBeritaAcara.data.map((item: any) => {
-              if (item.id === id) {
-                return {
-                  ...item,
-                  ...response.data.data,
-                };
-              } else {
-                return item;
-              }
-            }),
-          },
-        }));
+        const dosen_id = response?.data?.data?.jadwal?.dosen_id;
+        const jadwal = response?.data?.data?.jadwal;
+        await get().setShowAbsen(dosen_id);
+        await get().setAbsen({
+          tahun: jadwal?.tahun,
+          semester: jadwal?.semester,
+        });
         return {
           status: "berhasil update",
           data: response.data,
@@ -218,4 +198,4 @@ const useDetBeritaAcara = create(
   }))
 );
 
-export default useDetBeritaAcara;
+export default useAbsen;

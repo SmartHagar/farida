@@ -39,6 +39,11 @@ const menus: MenuTypes[] = [
     href: "/admin/rps",
     icon: <BsPeopleFill />,
   },
+  {
+    name: "Berita Acara",
+    href: "/admin/beritaAcara",
+    icon: <BsPeopleFill />,
+  },
 ];
 // list menu Dosen
 const DosenMenus: MenuTypes[] = [
@@ -65,7 +70,7 @@ const DosenMenus: MenuTypes[] = [
     subMenus: [
       {
         name: "Absen",
-        href: "/dosen/upload/abesn",
+        href: "/dosen/upload/absen",
         icon: <BsPeopleFill />,
       },
       {
