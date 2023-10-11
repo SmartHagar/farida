@@ -6,7 +6,6 @@ import ShowData from "./ShowData";
 import ButtonPrimary from "@/components/button/ButtonPrimary";
 import Form from "./form/Form";
 import ModalDelete from "@/components/modal/ModalDelete";
-import useDosen from "@/stores/crud/Dosen";
 import { Toaster } from "react-hot-toast";
 import toastShow from "@/utils/toast-show";
 import InputTextSearch from "@/components/input/InputTextSerch";
@@ -18,7 +17,7 @@ type Delete = {
   isDelete: boolean;
 };
 
-const Dosen = () => {
+const Rps = () => {
   // state
   const [showModal, setShowModal] = useState(false);
   const [showDelete, setShowDelete] = useState<boolean>(false);
@@ -85,4 +84,4 @@ const Dosen = () => {
   );
 };
 
-export default Dosen;
+export default Rps;

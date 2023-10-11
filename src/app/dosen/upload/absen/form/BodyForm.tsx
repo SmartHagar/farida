@@ -21,8 +21,6 @@ type Props = {
   watch: any;
   setValue: any;
   showModal: boolean;
-  tgl_lahir: Date | string;
-  setTgl_lahir: any;
   myFile: any;
   setMyFile: any;
   tahunWatch: string | number;
@@ -37,8 +35,6 @@ const BodyForm: FC<Props> = ({
   watch,
   setValue,
   showModal,
-  tgl_lahir,
-  setTgl_lahir,
   myFile,
   setMyFile,
   tahunWatch,

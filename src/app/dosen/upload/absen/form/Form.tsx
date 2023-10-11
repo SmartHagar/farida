@@ -7,7 +7,7 @@ import toastShow from "@/utils/toast-show";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import BodyForm from "./BodyForm";
-import useRps from "@/stores/crud/upload/Rps";
+import useAbsen from "@/stores/crud/upload/Absen";
 
 type Props = {
   showModal: boolean;
@@ -32,12 +32,9 @@ const Form = ({
   semesterWatch,
 }: Props) => {
   // state
-  const [tgl_lahir, setTgl_lahir] = useState<string | Date>(
-    new Date("01-01-1980")
-  );
   const [myFile, setMyFile] = useState<any>();
   // store
-  const { addData, updateData } = useRps();
+  const { addData, updateData } = useAbsen();
   // hook form
   const {
     register,
@@ -69,7 +66,6 @@ const Form = ({
   }, [showModal, dtEdit]);
   // simpan data
   const onSubmit: SubmitHandler<Inputs> = async (row) => {
-    row.status = "diproses";
     console.log({ row });
     // jika dtEdit tidak kosong maka update
     if (dtEdit) {
@@ -108,8 +104,6 @@ const Form = ({
             showModal={showModal}
             myFile={myFile}
             setMyFile={setMyFile}
-            tgl_lahir={tgl_lahir}
-            setTgl_lahir={setTgl_lahir}
             tahunWatch={tahunWatch}
             semesterWatch={semesterWatch}
           />

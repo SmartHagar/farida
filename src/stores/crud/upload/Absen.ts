@@ -11,20 +11,13 @@ type Props = {
   page?: number;
   limit?: number;
   search?: string;
-  tahun?: string;
-  semester?: string;
+  dosen_id?: string;
 };
 
 type Store = {
   dtAbsen: any;
   showAbsen: any;
-  setAbsen: ({
-    page = 1,
-    limit = 10,
-    search,
-    tahun,
-    semester,
-  }: Props) => Promise<{
+  setAbsen: ({ page = 1, limit = 10, search, dosen_id }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -55,7 +48,7 @@ const useAbsen = create(
     },
     dtAbsen: [],
     showAbsen: [],
-    setAbsen: async ({ page = 1, limit = 10, search, tahun, semester }) => {
+    setAbsen: async ({ page = 1, limit = 10, search, dosen_id }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
@@ -66,8 +59,7 @@ const useAbsen = create(
             limit,
             page,
             search,
-            tahun,
-            semester,
+            dosen_id,
           },
         });
         set((state) => ({ ...state, dtAbsen: response.data.data }));
@@ -104,7 +96,7 @@ const useAbsen = create(
       }
     },
     addData: async (row) => {
-      const formData = row?.foto ? get().setFormData(row) : row;
+      const formData = row?.file ? get().setFormData(row) : row;
       try {
         const token = await useLogin.getState().setToken();
         const res = await crud({
@@ -116,8 +108,13 @@ const useAbsen = create(
           },
           data: formData,
         });
-        const dosen_id = res?.data?.data?.jadwal?.dosen_id;
-        await get().setShowAbsen(dosen_id);
+        set((prevState: any) => ({
+          dtAbsen: {
+            last_page: prevState.dtAbsen.last_page,
+            current_page: prevState.dtAbsen.current_page,
+            data: [res.data.data, ...prevState.dtAbsen.data],
+          },
+        }));
         return {
           status: "berhasil tambah",
           data: res.data,
@@ -125,7 +122,7 @@ const useAbsen = create(
       } catch (error: any) {
         return {
           status: "error",
-          data: error.response?.data,
+          data: error.response.data,
         };
       }
     },
@@ -157,7 +154,7 @@ const useAbsen = create(
     },
     updateData: async (id, row) => {
       delete row.id;
-      const formData = row?.foto ? get().setFormData(row) : row;
+      const formData = row?.file ? get().setFormData(row) : row;
       const token = await useLogin.getState().setToken();
       const headersImg = {
         "Content-Type": "multipart/form-data",
@@ -167,7 +164,7 @@ const useAbsen = create(
         const response = await crud({
           url: `/upload/absen/${id}`,
           method: "post",
-          headers: row?.foto
+          headers: row?.file
             ? headersImg
             : {
                 Authorization: `Bearer ${token}`,
@@ -177,13 +174,22 @@ const useAbsen = create(
             _method: "PUT",
           },
         });
-        const dosen_id = response?.data?.data?.jadwal?.dosen_id;
-        const jadwal = response?.data?.data?.jadwal;
-        await get().setShowAbsen(dosen_id);
-        await get().setAbsen({
-          tahun: jadwal?.tahun,
-          semester: jadwal?.semester,
-        });
+        set((prevState: any) => ({
+          dtAbsen: {
+            last_page: prevState.dtAbsen.last_page,
+            current_page: prevState.dtAbsen.current_page,
+            data: prevState.dtAbsen.data.map((item: any) => {
+              if (item.id === id) {
+                return {
+                  ...item,
+                  ...response.data.data,
+                };
+              } else {
+                return item;
+              }
+            }),
+          },
+        }));
         return {
           status: "berhasil update",
           data: response.data,

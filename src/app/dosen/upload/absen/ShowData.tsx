@@ -3,9 +3,8 @@
 import React, { FC, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
-import useRps from "@/stores/crud/upload/Rps";
-import TableRps from "@/components/tables/TableRps";
 import TablesDefault from "@/components/tables/TablesDefault";
+import useAbsen from "@/stores/crud/upload/Absen";
 
 type DeleteProps = {
   id?: number | string;
@@ -21,18 +20,23 @@ type Props = {
 const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
   // dosen_id
   const dosen_id = Cookies.get("dosen_id") || "";
-  const { setShowRps, showRps } = useRps();
+  const { setAbsen, dtAbsen } = useAbsen();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const fetchDataRps = async () => {
-    const res = await setShowRps(dosen_id);
+  const fetchDataAbsen = async () => {
+    const res = await setAbsen({
+      dosen_id,
+      page,
+      limit,
+      search,
+    });
     setIsLoading(false);
   };
   useEffect(() => {
-    fetchDataRps();
+    fetchDataAbsen();
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -40,7 +44,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
   // ketika search berubah
   useEffect(() => {
     setPage(1);
-    fetchDataRps();
+    fetchDataAbsen();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
@@ -51,8 +55,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
     "Mata Kuliah",
     "Kode MK",
     "JML. SKS",
-    "RPS",
-    "Status",
+    "ABSEN",
     "Aksi",
   ];
   const tableBodies = [
@@ -61,7 +64,6 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
     "jadwal.matkul.kode",
     "jadwal.matkul.sks",
     "file",
-    "status",
   ];
 
   return (
@@ -74,7 +76,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
             <TablesDefault
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={showRps}
+              dataTable={dtAbsen?.data}
               page={page}
               limit={limit}
               setEdit={setEdit}

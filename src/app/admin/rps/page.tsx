@@ -21,7 +21,7 @@ type Delete = {
   isDelete: boolean;
 };
 
-const Dosen = () => {
+const Rps = () => {
   // router
   const router = useRouter();
   const params = useSearchParams();
@@ -150,4 +150,4 @@ const Dosen = () => {
   );
 };
 
-export default Dosen;
+export default Rps;

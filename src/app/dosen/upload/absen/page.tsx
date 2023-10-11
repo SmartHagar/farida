@@ -6,11 +6,11 @@ import ShowData from "./ShowData";
 import ButtonPrimary from "@/components/button/ButtonPrimary";
 import Form from "./form/Form";
 import ModalDelete from "@/components/modal/ModalDelete";
-import useDosen from "@/stores/crud/Dosen";
 import { Toaster } from "react-hot-toast";
 import toastShow from "@/utils/toast-show";
 import InputTextSearch from "@/components/input/InputTextSerch";
 import { useForm } from "react-hook-form";
+import useAbsen from "@/stores/crud/upload/Absen";
 
 // type setDelete
 type Delete = {
@@ -18,7 +18,9 @@ type Delete = {
   isDelete: boolean;
 };
 
-const Dosen = () => {
+const Absen = () => {
+  // store
+  const { removeData } = useAbsen();
   // state
   const [showModal, setShowModal] = useState(false);
   const [showDelete, setShowDelete] = useState<boolean>(false);
@@ -34,6 +36,17 @@ const Dosen = () => {
   const setEdit = (row: any) => {
     setShowModal(true);
     setDtEdit(row);
+  };
+
+  const setDelete = async ({ id, isDelete }: Delete) => {
+    setIdDel(id);
+    if (isDelete) {
+      const { data } = await removeData(idDel);
+      toastShow({
+        event: data,
+      });
+      setShowDelete(false);
+    } else setShowDelete(true);
   };
 
   // hook form
@@ -68,21 +81,26 @@ const Dosen = () => {
           tahunWatch={tahunWatch}
           semesterWatch={semesterWatch}
         />
+        <ModalDelete
+          showDel={showDelete}
+          setShowDel={setShowDelete}
+          setDelete={setDelete}
+        />
         <div className="mb-4 flex justify-between">
-          <p>Silahkan Mengolah data RPS</p>
+          <p>Silahkan mengolah data absen</p>
           <div>
-            <ButtonPrimary text="Tambah RPS" onClick={handleTambah} />
+            <ButtonPrimary text="Tambah absen" onClick={handleTambah} />
           </div>
         </div>
         <InputTextSearch
-          placeholder="Cari RPS"
+          placeholder="Cari Absen"
           onChange={(e) => setSearch(e)}
         />
       </div>
 
-      <ShowData setEdit={setEdit} search={search} />
+      <ShowData setDelete={setDelete} setEdit={setEdit} search={search} />
     </div>
   );
 };
 
-export default Dosen;
+export default Absen;
