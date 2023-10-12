@@ -4,7 +4,7 @@
 import Cookies from "js-cookie";
 import InputFile from "@/components/input/InputFile";
 import SelectFromDb from "@/components/select/SelectFromDB";
-import useJadwalApi from "@/stores/api/Jadwal";
+import useBeritaAcaraApi from "@/stores/api/BeritaAcara";
 import React, { FC, useEffect } from "react";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -37,38 +37,44 @@ const BodyForm: FC<Props> = ({
   semesterWatch,
 }) => {
   const dosen_id = Cookies.get("dosen_id");
-  const { setJadwalByDosen, dtJadwal } = useJadwalApi();
+  const { setBeritaAcaraByDosen, dtBeritaAcara } = useBeritaAcaraApi();
   // memanggil data prodi
-  const fetchDataJadwal = async () => {
-    await setJadwalByDosen({
+  const fetchDataBeritaAcara = async () => {
+    await setBeritaAcaraByDosen({
       tahun: tahunWatch,
       semester: semesterWatch,
       dosen_id,
     });
   };
-  console.log(dtJadwal?.data);
+  console.log(dtBeritaAcara?.data);
   useEffect(() => {
-    fetchDataJadwal();
+    fetchDataBeritaAcara();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showModal]);
   return (
     <>
-      {dtJadwal?.data && (
+      {dtBeritaAcara?.data && (
         <SelectFromDb
           label="Jadwal"
           placeholder="Pilih Jadwal"
-          name="jadwal_id"
-          dataDb={dtJadwal?.data}
-          body={["id", "hari", "matkul.nama", "mulai", "seles"]}
+          name="berita_acara_id"
+          dataDb={dtBeritaAcara?.data}
+          body={[
+            "id",
+            "jadwal.hari",
+            "jadwal.matkul.nama",
+            "jadwal.mulai",
+            "jadwal.seles",
+          ]}
           control={control}
           required
-          errors={errors.jadwal_id}
+          errors={errors.berita_acara_id}
           addClass="col-span-4"
         />
       )}
 
       <InputFile
-        label="RPS"
+        label="Berita Acara"
         name="file"
         register={register}
         accept="application/pdf"

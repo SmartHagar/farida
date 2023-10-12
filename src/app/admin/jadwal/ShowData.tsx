@@ -28,11 +28,10 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   // ambil data jadwal
+  // get params semester dan tahun
+  const semester = params.get("semester") || "";
+  const tahun = params.get("tahun") || "";
   const fetchDataJadwal = async () => {
-    // get params semester dan tahun
-    const semester = params.get("semester") || "";
-    const tahun = params.get("tahun") || "";
-
     const res = await setJadwal({
       page,
       limit,
@@ -43,7 +42,9 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
     setIsLoading(false);
   };
   useEffect(() => {
-    fetchDataJadwal();
+    if (semester && tahun) {
+      fetchDataJadwal();
+    }
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
