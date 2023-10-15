@@ -4,7 +4,7 @@ import React, { FC, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import TablesDefault from "@/components/tables/TablesDefault";
-import useNilai from "@/stores/crud/upload/Nilai";
+import useBeritaAcara from "@/stores/crud/upload/BeritaAcara";
 
 type DeleteProps = {
   id?: number | string;
@@ -15,48 +15,33 @@ type Props = {
   setDelete?: ({ id, isDelete }: DeleteProps) => void;
   setEdit: (row: any) => void;
   search: string;
-  tahunWatch: string | number;
-  semesterWatch: string;
 };
 
-const ShowData: FC<Props> = ({
-  setDelete,
-  setEdit,
-  search,
-  tahunWatch,
-  semesterWatch,
-}) => {
-  // dosen_id
-  const dosen_id = Cookies.get("dosen_id") || "";
-  const { setNilai, dtNilai } = useNilai();
+const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
+  const { setBeritaAcara, dtBeritaAcara } = useBeritaAcara();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const fetchDataNilai = async () => {
-    const res = await setNilai({
-      dosen_id,
+  const fetchDataBeritaAcara = async () => {
+    const res = await setBeritaAcara({
       page,
       limit,
       search,
-      tahun: tahunWatch,
-      semester: semesterWatch,
     });
     setIsLoading(false);
   };
   useEffect(() => {
-    if (tahunWatch && semesterWatch) {
-      fetchDataNilai();
-    }
+    fetchDataBeritaAcara();
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit, tahunWatch, semesterWatch]);
+  }, [page, limit]);
   // ketika search berubah
   useEffect(() => {
     setPage(1);
-    fetchDataNilai();
+    fetchDataBeritaAcara();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
@@ -67,14 +52,14 @@ const ShowData: FC<Props> = ({
     "Mata Kuliah",
     "Kode MK",
     "JML. SKS",
-    "NILAI",
+    "BERITAACARA",
     "Aksi",
   ];
   const tableBodies = [
-    "jadwal.hari",
-    "jadwal.matkul.nama",
-    "jadwal.matkul.kode",
-    "jadwal.matkul.sks",
+    "berita_acara.jadwal.hari",
+    "berita_acara.jadwal.matkul.nama",
+    "berita_acara.jadwal.matkul.kode",
+    "berita_acara.jadwal.matkul.sks",
     "file",
   ];
 
@@ -88,7 +73,7 @@ const ShowData: FC<Props> = ({
             <TablesDefault
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={dtNilai?.data}
+              dataTable={dtBeritaAcara?.data}
               page={page}
               limit={limit}
               setEdit={setEdit}

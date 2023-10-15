@@ -4,13 +4,13 @@ import React, { useEffect, useState } from "react";
 
 import ShowData from "./ShowData";
 import ButtonPrimary from "@/components/button/ButtonPrimary";
-import Form from "./form/Form";
 import ModalDelete from "@/components/modal/ModalDelete";
 import { Toaster } from "react-hot-toast";
 import toastShow from "@/utils/toast-show";
 import InputTextSearch from "@/components/input/InputTextSerch";
 import { useForm } from "react-hook-form";
-import useAbsen from "@/stores/crud/upload/Absen";
+import useBeritaAcara from "@/stores/crud/upload/BeritaAcara";
+import { useRouter, useSearchParams } from "next/navigation";
 
 // type setDelete
 type Delete = {
@@ -18,9 +18,12 @@ type Delete = {
   isDelete: boolean;
 };
 
-const Absen = () => {
+const BeritaAcara = () => {
+  // router
+  const router = useRouter();
+  const params = useSearchParams();
   // store
-  const { removeData } = useAbsen();
+  const { removeData } = useBeritaAcara();
   // state
   const [showModal, setShowModal] = useState(false);
   const [showDelete, setShowDelete] = useState<boolean>(false);
@@ -73,40 +76,18 @@ const Absen = () => {
   return (
     <div className="flex flex-col h-full">
       <div>
-        <Toaster />
-        <Form
-          dtEdit={dtEdit}
-          showModal={showModal}
-          setShowModal={setShowModal}
-          tahunWatch={tahunWatch}
-          semesterWatch={semesterWatch}
-        />
-        <ModalDelete
-          showDel={showDelete}
-          setShowDel={setShowDelete}
-          setDelete={setDelete}
-        />
         <div className="mb-4 flex justify-between">
-          <p>Silahkan mengolah data absen</p>
-          <div>
-            <ButtonPrimary text="Tambah absen" onClick={handleTambah} />
-          </div>
+          <p>Laporan berita acara</p>
         </div>
         <InputTextSearch
-          placeholder="Cari Absen"
+          placeholder="Cari BeritaAcara"
           onChange={(e) => setSearch(e)}
         />
       </div>
 
-      <ShowData
-        setDelete={setDelete}
-        setEdit={setEdit}
-        search={search}
-        tahunWatch={tahunWatch}
-        semesterWatch={semesterWatch}
-      />
+      <ShowData setDelete={setDelete} setEdit={setEdit} search={search} />
     </div>
   );
 };
 
-export default Absen;
+export default BeritaAcara;

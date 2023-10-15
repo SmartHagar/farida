@@ -15,9 +15,17 @@ type Props = {
   setDelete?: ({ id, isDelete }: DeleteProps) => void;
   setEdit: (row: any) => void;
   search: string;
+  tahunWatch: string | number;
+  semesterWatch: string;
 };
 
-const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
+const ShowData: FC<Props> = ({
+  setDelete,
+  setEdit,
+  search,
+  tahunWatch,
+  semesterWatch,
+}) => {
   // dosen_id
   const dosen_id = Cookies.get("dosen_id") || "";
   const { setAbsen, dtAbsen } = useAbsen();
@@ -31,16 +39,20 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
       dosen_id,
       page,
       limit,
+      tahun: tahunWatch,
+      semester: semesterWatch,
       search,
     });
     setIsLoading(false);
   };
   useEffect(() => {
-    fetchDataAbsen();
+    if (tahunWatch && semesterWatch) {
+      fetchDataAbsen();
+    }
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit]);
+  }, [page, limit, tahunWatch, semesterWatch]);
   // ketika search berubah
   useEffect(() => {
     setPage(1);

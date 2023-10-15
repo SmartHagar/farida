@@ -98,7 +98,13 @@ const Nilai = () => {
         />
       </div>
 
-      <ShowData setDelete={setDelete} setEdit={setEdit} search={search} />
+      <ShowData
+        setDelete={setDelete}
+        setEdit={setEdit}
+        search={search}
+        tahunWatch={tahunWatch}
+        semesterWatch={semesterWatch}
+      />
     </div>
   );
 };

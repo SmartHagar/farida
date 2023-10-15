@@ -12,12 +12,21 @@ type Props = {
   limit?: number;
   search?: string;
   dosen_id?: string;
+  tahun?: string | number;
+  semester?: string;
 };
 
 type Store = {
   dtNilai: any;
   showNilai: any;
-  setNilai: ({ page = 1, limit = 10, search, dosen_id }: Props) => Promise<{
+  setNilai: ({
+    page = 1,
+    limit = 10,
+    search,
+    dosen_id,
+    tahun,
+    semester,
+  }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -48,7 +57,14 @@ const useNilai = create(
     },
     dtNilai: [],
     showNilai: [],
-    setNilai: async ({ page = 1, limit = 10, search, dosen_id }) => {
+    setNilai: async ({
+      page = 1,
+      limit = 10,
+      search,
+      dosen_id,
+      tahun,
+      semester,
+    }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
@@ -60,6 +76,8 @@ const useNilai = create(
             page,
             search,
             dosen_id,
+            tahun,
+            semester,
           },
         });
         set((state) => ({ ...state, dtNilai: response.data.data }));

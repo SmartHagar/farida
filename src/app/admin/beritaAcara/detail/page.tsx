@@ -13,7 +13,7 @@ type Delete = {
   isDelete: boolean;
 };
 
-const Dosen = () => {
+const DetBeritaAcara = () => {
   // store
   const { removeData, setShowDetBeritaAcara, showDetBeritaAcara } =
     useDetBeritaAcara();
@@ -71,4 +71,4 @@ const Dosen = () => {
   );
 };
 
-export default Dosen;
+export default DetBeritaAcara;

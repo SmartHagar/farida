@@ -26,8 +26,6 @@ const ShowData: FC<Props> = ({
   tahunWatch,
   semesterWatch,
 }) => {
-  // dosen_id
-  const dosen_id = Cookies.get("dosen_id") || "";
   const { setNilai, dtNilai } = useNilai();
   // state
   const [page, setPage] = useState<number>(1);
@@ -36,7 +34,6 @@ const ShowData: FC<Props> = ({
 
   const fetchDataNilai = async () => {
     const res = await setNilai({
-      dosen_id,
       page,
       limit,
       search,
@@ -52,7 +49,7 @@ const ShowData: FC<Props> = ({
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit, tahunWatch, semesterWatch]);
+  }, [page, limit]);
   // ketika search berubah
   useEffect(() => {
     setPage(1);

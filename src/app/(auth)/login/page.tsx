@@ -56,6 +56,7 @@ const Login = (props: Props) => {
 
   const onSubmit: SubmitHandler<Inputs> = async (row) => {
     setIsLoading(true);
+    setError("");
     const res = await setLogin(row);
     if (res?.error) {
       setError(res?.error?.pesan);

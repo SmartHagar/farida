@@ -44,6 +44,29 @@ const menus: MenuTypes[] = [
     href: "/admin/beritaAcara",
     icon: <BsPeopleFill />,
   },
+  {
+    name: "Laporan",
+    href: "#",
+    slug: "laporan",
+    icon: <BsPeopleFill />,
+    subMenus: [
+      {
+        name: "Absen",
+        href: "/admin/laporan/absen",
+        icon: <BsPeopleFill />,
+      },
+      {
+        name: "Berita Acara",
+        href: "/admin/laporan/beritaAcara",
+        icon: <BsPeopleFill />,
+      },
+      {
+        name: "Nilai",
+        href: "/admin/laporan/nilai",
+        icon: <BsPeopleFill />,
+      },
+    ],
+  },
 ];
 // list menu Dosen
 const DosenMenus: MenuTypes[] = [

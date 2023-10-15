@@ -4,7 +4,7 @@ import React, { FC, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import TablesDefault from "@/components/tables/TablesDefault";
-import useNilai from "@/stores/crud/upload/Nilai";
+import useAbsen from "@/stores/crud/upload/Absen";
 
 type DeleteProps = {
   id?: number | string;
@@ -26,17 +26,14 @@ const ShowData: FC<Props> = ({
   tahunWatch,
   semesterWatch,
 }) => {
-  // dosen_id
-  const dosen_id = Cookies.get("dosen_id") || "";
-  const { setNilai, dtNilai } = useNilai();
+  const { setAbsen, dtAbsen } = useAbsen();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const fetchDataNilai = async () => {
-    const res = await setNilai({
-      dosen_id,
+  const fetchDataAbsen = async () => {
+    const res = await setAbsen({
       page,
       limit,
       search,
@@ -47,7 +44,7 @@ const ShowData: FC<Props> = ({
   };
   useEffect(() => {
     if (tahunWatch && semesterWatch) {
-      fetchDataNilai();
+      fetchDataAbsen();
     }
 
     return () => {};
@@ -56,7 +53,7 @@ const ShowData: FC<Props> = ({
   // ketika search berubah
   useEffect(() => {
     setPage(1);
-    fetchDataNilai();
+    fetchDataAbsen();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
@@ -67,8 +64,7 @@ const ShowData: FC<Props> = ({
     "Mata Kuliah",
     "Kode MK",
     "JML. SKS",
-    "NILAI",
-    "Aksi",
+    "ABSEN",
   ];
   const tableBodies = [
     "jadwal.hari",
@@ -88,13 +84,13 @@ const ShowData: FC<Props> = ({
             <TablesDefault
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={dtNilai?.data}
+              dataTable={dtAbsen?.data}
               page={page}
               limit={limit}
               setEdit={setEdit}
               setDelete={setDelete}
-              hapus={true}
-              ubah={true}
+              hapus={false}
+              ubah={false}
             />
           </div>
         </>

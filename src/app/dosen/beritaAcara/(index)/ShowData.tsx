@@ -77,7 +77,6 @@ const ShowData: FC<Props> = ({
     return (
       <Link
         href={`/dosen/beritaAcara/detail?berita_acara_id=${row.berita_acara.id}`}
-        target="_blank"
         title="Lihat Detail"
       >
         <BsFillInfoCircleFill />

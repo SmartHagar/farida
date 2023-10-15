@@ -4,13 +4,10 @@ import React, { useEffect, useState } from "react";
 
 import ShowData from "./ShowData";
 import ButtonPrimary from "@/components/button/ButtonPrimary";
-import Form from "./form/Form";
-import ModalDelete from "@/components/modal/ModalDelete";
-import useDosen from "@/stores/crud/Dosen";
-import { Toaster } from "react-hot-toast";
 import toastShow from "@/utils/toast-show";
 import InputTextSearch from "@/components/input/InputTextSerch";
 import { useForm } from "react-hook-form";
+import useNilai from "@/stores/crud/upload/Nilai";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SelectDefault } from "@/components/select/SelectDefault";
 import SelectTahun from "@/components/select/SelectTahun";
@@ -21,18 +18,23 @@ type Delete = {
   isDelete: boolean;
 };
 
-const Rps = () => {
+const Nilai = () => {
   // router
   const router = useRouter();
   const params = useSearchParams();
   // store
-  const { removeData } = useDosen();
+  const { removeData } = useNilai();
   // state
   const [showModal, setShowModal] = useState(false);
   const [showDelete, setShowDelete] = useState<boolean>(false);
   const [idDel, setIdDel] = useState<number | string>();
   const [dtEdit, setDtEdit] = useState<any>();
   const [search, setSearch] = useState("");
+
+  const handleTambah = () => {
+    setShowModal(true);
+    setDtEdit(null);
+  };
 
   const setEdit = (row: any) => {
     setShowModal(true);
@@ -70,7 +72,9 @@ const Rps = () => {
       setValue("tahun", tahun);
       setValue("semester", semester);
       // add parameter to url
-      router.push("/admin/rps?tahun=" + tahun + "&semester=" + semester);
+      router.push(
+        "/admin/laporan/nilai?tahun=" + tahun + "&semester=" + semester
+      );
     } else {
       setValue("tahun", parseInt(tahunParams || ""));
       setValue("semester", semesterParams);
@@ -83,7 +87,10 @@ const Rps = () => {
   useEffect(() => {
     if (tahunWatch && semesterWatch) {
       router.push(
-        "/admin/rps?tahun=" + tahunWatch + "&semester=" + semesterWatch
+        "/admin/laporan/nilai?tahun=" +
+          tahunWatch +
+          "&semester=" +
+          semesterWatch
       );
     }
 
@@ -94,19 +101,9 @@ const Rps = () => {
   return (
     <div className="flex flex-col h-full">
       <div>
-        <Toaster />
-        <Form
-          dtEdit={dtEdit}
-          showModal={showModal}
-          setShowModal={setShowModal}
-          tahunWatch={tahunWatch}
-          semesterWatch={semesterWatch}
-        />
-        <ModalDelete
-          showDel={showDelete}
-          setShowDel={setShowDelete}
-          setDelete={setDelete}
-        />
+        <div className="mb-4 flex justify-between">
+          <p>Laporan Nilai</p>
+        </div>
         {/* pilih tahun dan semester */}
         <div className="mb-4 flex justify-between gap-4">
           <SelectDefault
@@ -135,14 +132,20 @@ const Rps = () => {
           />
         </div>
         <InputTextSearch
-          placeholder="Cari RPS"
+          placeholder="Cari Nilai"
           onChange={(e) => setSearch(e)}
         />
       </div>
 
-      <ShowData setDelete={setDelete} setEdit={setEdit} search={search} />
+      <ShowData
+        setDelete={setDelete}
+        setEdit={setEdit}
+        search={search}
+        tahunWatch={tahunWatch}
+        semesterWatch={semesterWatch}
+      />
     </div>
   );
 };
 
-export default Rps;
+export default Nilai;

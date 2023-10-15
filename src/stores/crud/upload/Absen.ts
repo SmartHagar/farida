@@ -12,12 +12,21 @@ type Props = {
   limit?: number;
   search?: string;
   dosen_id?: string;
+  tahun?: string | number;
+  semester?: string;
 };
 
 type Store = {
   dtAbsen: any;
   showAbsen: any;
-  setAbsen: ({ page = 1, limit = 10, search, dosen_id }: Props) => Promise<{
+  setAbsen: ({
+    page = 1,
+    limit = 10,
+    search,
+    dosen_id,
+    tahun,
+    semester,
+  }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -48,7 +57,14 @@ const useAbsen = create(
     },
     dtAbsen: [],
     showAbsen: [],
-    setAbsen: async ({ page = 1, limit = 10, search, dosen_id }) => {
+    setAbsen: async ({
+      page = 1,
+      limit = 10,
+      search,
+      dosen_id,
+      tahun,
+      semester,
+    }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
@@ -60,6 +76,8 @@ const useAbsen = create(
             page,
             search,
             dosen_id,
+            tahun,
+            semester,
           },
         });
         set((state) => ({ ...state, dtAbsen: response.data.data }));

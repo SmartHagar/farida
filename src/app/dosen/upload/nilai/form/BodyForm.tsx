@@ -48,9 +48,11 @@ const BodyForm: FC<Props> = ({
   };
   console.log(dtJadwal?.data);
   useEffect(() => {
-    fetchDataJadwal();
+    if (tahunWatch && semesterWatch) {
+      fetchDataJadwal();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showModal]);
+  }, [showModal, tahunWatch, semesterWatch]);
   return (
     <>
       {dtJadwal?.data && (
