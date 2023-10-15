@@ -153,10 +153,10 @@ const AdminSide = ({ menus }: Props) => {
           />
         </div>
       </div>
-      <div className="mt-4 mb-2 mx-auto">
-        <span className="px-3 text-sm font-semibold text-black uppercasetext-gray-400">
+      <div className="mt-4 mb-2 w-full border-b border-light">
+        <p className="px-3 text-sm font-semibold text-black text-center uppercase ">
           Menu
-        </span>
+        </p>
       </div>
 
       <div className="flex flex-col justify-between flex-1 pt-2 border-t">
@@ -169,7 +169,7 @@ const AdminSide = ({ menus }: Props) => {
                   <div key={index}>
                     <Link
                       href={href}
-                      className={`flex items-center px-3 py-2 transition-colors duration-300 transform rounded-lg hover:bg-primary/50 hover:text-gray-200 ${
+                      className={`flex items-center px-3 py-2 transition-all duration-300 transform rounded-lg hover:bg-primary/50 hover:text-gray-200 ${
                         isActive &&
                         "border-b-2 border-primary text-primary bg-white/50"
                       }`}
@@ -199,7 +199,7 @@ const AdminSide = ({ menus }: Props) => {
           ) : (
             <button
               onClick={handleSingout}
-              className="flex items-center px-3 py-2 transition-colors duration-300 transform rounded-lg text-white hover:underline hover:text-gray-200"
+              className="flex items-center px-3 py-2 transition-colors duration-300 transform rounded-lg text-secondary hover:underline hover:text-primary"
             >
               <span>Sign Out</span>
             </button>

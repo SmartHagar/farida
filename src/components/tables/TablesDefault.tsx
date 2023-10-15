@@ -51,20 +51,8 @@ const TablesDefault = (props: Props) => {
         {props.dataTable &&
           props.dataTable.map((row: any, index) => {
             const { id } = row;
-            const prodi_id = row?.prodi_id;
             return (
-              <tr
-                key={index}
-                className={` ${
-                  prodi_id && prodi_id === 1
-                    ? "bg-blue-100"
-                    : prodi_id === 2
-                    ? "bg-green-100"
-                    : prodi_id === 3
-                    ? "bg-orange-100"
-                    : "hover:bg-gray-50 hover:text-secondary"
-                }`}
-              >
+              <tr key={index}>
                 <td className="px-6 py-4 rounded-l-xl">{showNo(index)}</td>
                 {/* loop td */}
                 {props.tableBodies.map((column, index) => {

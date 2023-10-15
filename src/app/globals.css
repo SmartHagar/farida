@@ -4,23 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --primary: #ff7000;
-  --secondary: #6c757d;
-  --success: #198754;
-  --info: #0dcaf0;
-  --warning: #ffc107;
-  --danger: #dc3545;
-  --light: #f8f9fa;
-  --dark: #212529;
-}
-
 @layer base {
-  :root {
-    --color-primary: 255 112 0;
-    --color-secondary: 108 117 125;
-    /* ... */
-  }
   h1 {
     @apply text-5xl;
     @apply font-bold;

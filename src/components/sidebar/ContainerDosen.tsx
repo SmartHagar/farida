@@ -49,7 +49,7 @@ const ContainerDosen = (props: Props) => {
             variants={variants}
             className={
               isOpen
-                ? "absolute lg:static lg:block w-[15.5rem] lg:w-[18rem] z-10 bg-slate-950 rounded-lg shadow-lg shadow-black"
+                ? "absolute lg:static lg:block w-[15.5rem] lg:w-[18rem] z-10 bg-side-bar rounded-lg shadow-lg shadow-black"
                 : ""
             }
           >

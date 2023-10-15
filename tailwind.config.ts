@@ -1,6 +1,8 @@
 /** @format */
 
 import type { Config } from "tailwindcss";
+// import colors
+import colors from "./src/utils/colors";
 
 const config: Config = {
   content: [
@@ -16,10 +18,7 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
         login: "url('/images/bg/bg-login.jpg')",
       },
-      colors: {
-        primary: "rgba(var(--color-primary))",
-        secondary: "rgba(var(--color-secondary))",
-      },
+      colors,
     },
   },
   plugins: [],

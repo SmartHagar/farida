@@ -35,7 +35,7 @@ const ContainerAdmin = (props: Props) => {
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? (
-          <FaXmark className=" text-3xl absolute left-[15rem] bg-slate-950 text-white rounded-tr-lg rounded-br-lg" />
+          <FaXmark className=" text-3xl absolute left-[15rem] bg-side-bar text-dark rounded-tr-lg rounded-br-lg" />
         ) : (
           <FaAlignJustify className="text-2xl" />
         )}
@@ -49,7 +49,7 @@ const ContainerAdmin = (props: Props) => {
             variants={variants}
             className={
               isOpen
-                ? "absolute lg:static lg:block w-[15.5rem] lg:w-[18rem] z-10 bg-slate-950 rounded-lg shadow-lg shadow-black"
+                ? "absolute lg:static lg:block w-[15.5rem] lg:w-[18rem] z-10 bg-side-bar rounded-lg shadow-lg shadow-black"
                 : ""
             }
           >

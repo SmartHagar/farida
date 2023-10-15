@@ -64,6 +64,8 @@ const Dosen = () => {
 
   const jadwal = showDetBeritaAcara?.jadwal;
 
+  const cetak = () => {};
+
   return (
     <div className="flex flex-col h-full">
       <div>
@@ -78,7 +80,7 @@ const Dosen = () => {
           setShowDel={setShowDelete}
           setDelete={setDelete}
         />
-        <div className="mb-4 flex justify-between">
+        <div className="mb-4 flex flex-col-reverse justify-between md:flex-row">
           <div className="flex flex-col w-full">
             <div>
               <span className="w-32 inline-block uppercase">Dosen</span>
@@ -101,8 +103,17 @@ const Dosen = () => {
               <span>: {jadwal?.ruangan?.kode}</span>
             </div>
           </div>
-          <div>
-            <ButtonPrimary text="Tambah Data" onClick={handleTambah} />
+          <div className="flex justify-between self-start md:w-64">
+            <ButtonPrimary
+              text="Cetak"
+              addClass="self-end bg-secondary"
+              onClick={cetak}
+            />
+            <ButtonPrimary
+              text="Tambah Data"
+              addClass="self-end"
+              onClick={handleTambah}
+            />
           </div>
         </div>
         <InputTextSearch

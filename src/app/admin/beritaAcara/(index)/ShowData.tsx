@@ -73,9 +73,16 @@ const ShowData: FC<Props> = ({
     "Mata Kuliah",
     "Kode MK",
     "JML. SKS",
+    "Prodi",
     "Aksi",
   ];
-  const tableBodies = ["hari", "matkul.nama", "matkul.kode", "matkul.sks"];
+  const tableBodies = [
+    "hari",
+    "matkul.nama",
+    "matkul.kode",
+    "matkul.sks",
+    "prodi.nama",
+  ];
 
   const costume = (row: any) => {
     return (

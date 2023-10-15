@@ -50,7 +50,9 @@ const ShowData: FC<Props> = ({
     setIsLoading(false);
   };
   useEffect(() => {
-    fetchDataRps();
+    if (tahunWatch && semesterWatch) {
+      fetchDataRps();
+    }
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps

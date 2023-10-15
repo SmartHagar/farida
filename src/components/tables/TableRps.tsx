@@ -53,9 +53,9 @@ const TableRps = (props: Props) => {
                 key={index}
                 className={` ${
                   status && status === "ditolak"
-                    ? "bg-red-500"
+                    ? "bg-error"
                     : status === "diproses"
-                    ? "bg-yellow-300"
+                    ? "bg-warning"
                     : "hover:bg-gray-50 hover:text-secondary"
                 }`}
               >
