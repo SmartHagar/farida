@@ -55,7 +55,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
     "Mata Kuliah",
     "Kode MK",
     "JML. SKS",
-    "BERITAACARA",
+    "BERITA ACARA",
     "Aksi",
   ];
   const tableBodies = [

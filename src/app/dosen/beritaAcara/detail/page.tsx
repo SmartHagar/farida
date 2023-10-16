@@ -12,6 +12,8 @@ import toastShow from "@/utils/toast-show";
 import InputTextSearch from "@/components/input/InputTextSerch";
 import useDetBeritaAcara from "@/stores/crud/DetBeritaAcara";
 import { useSearchParams } from "next/navigation";
+import { BASE_URL } from "@/services/baseURL";
+import LoadingSpiner from "@/components/loading/LoadingSpiner";
 
 // type setDelete
 type Delete = {
@@ -33,6 +35,7 @@ const Dosen = () => {
   const [idDel, setIdDel] = useState<number | string>();
   const [dtEdit, setDtEdit] = useState<any>();
   const [search, setSearch] = useState("");
+  const [loadPdf, setLoadPdf] = useState(false);
 
   const handleTambah = () => {
     setShowModal(true);
@@ -64,7 +67,12 @@ const Dosen = () => {
 
   const jadwal = showDetBeritaAcara?.jadwal;
 
-  const cetak = () => {};
+  const cetak = () => {
+    setLoadPdf(true);
+    // download pdf from {baseUrl}/api/berita_acara/cetak
+    window.open(`${BASE_URL}/pdf/berita-acara/${berita_acara_id}`);
+    setLoadPdf(false);
+  };
 
   return (
     <div className="flex flex-col h-full">
@@ -104,11 +112,15 @@ const Dosen = () => {
             </div>
           </div>
           <div className="flex justify-between self-start md:w-64">
-            <ButtonPrimary
-              text="Cetak"
-              addClass="self-end bg-secondary"
-              onClick={cetak}
-            />
+            {loadPdf ? (
+              <LoadingSpiner />
+            ) : (
+              <ButtonPrimary
+                text="Cetak"
+                addClass="self-end bg-secondary"
+                onClick={cetak}
+              />
+            )}
             <ButtonPrimary
               text="Tambah Data"
               addClass="self-end"
