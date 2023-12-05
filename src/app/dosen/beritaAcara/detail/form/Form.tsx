@@ -24,6 +24,7 @@ type Inputs = {
   materi: string;
   jmlh_mhs: number | string;
   foto: string;
+  sistem: string;
 };
 
 const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
@@ -66,6 +67,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
       setValue("tgl", dtEdit.tgl);
       setTgl(new Date(dtEdit.tgl));
       setValue("foto", dtEdit.foto);
+      setValue("sistem", dtEdit.sistem);
     } else {
       resetForm();
     }

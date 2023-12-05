@@ -3,6 +3,7 @@
 import InputDateIncludeIntervals from "@/components/input/InputDateIncludeIntervals";
 import InputFile from "@/components/input/InputFile";
 import InputTextDefault from "@/components/input/InputTextDefault";
+import { SelectDefault } from "@/components/select/SelectDefault";
 import useProdiApi from "@/stores/api/Prodi";
 import React, { FC, useEffect } from "react";
 
@@ -87,6 +88,19 @@ const BodyForm: FC<Props> = ({
         register={register}
         required
         errors={errors.materi}
+        addClass="col-span-4"
+      />
+
+      <SelectDefault
+        label="Sistem Belajar"
+        defaultOption="Pilih Sistem Belajar"
+        register={register}
+        errors={errors}
+        name="sistem"
+        options={[
+          { value: "Daring", label: "Daring" },
+          { value: "Luring", label: "Luring" },
+        ]}
         addClass="col-span-4"
       />
 

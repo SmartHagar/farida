@@ -51,6 +51,7 @@ const useDetBeritaAcara = create(
       formData.append("tgl", row.tgl);
       formData.append("materi", row.materi);
       formData.append("jmlh_mhs", row.jmlh_mhs);
+      formData.append("sistem", row.sistem);
       formData.append("foto", row.foto);
       return formData;
     },

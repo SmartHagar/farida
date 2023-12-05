@@ -58,10 +58,11 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
     "Tgl. Pertemuan",
     "Materi",
     "Jumlah MHS",
+    "Sistem Belajar",
     "Foto",
     "Aksi",
   ];
-  const tableBodies = ["tgl", "materi", "jmlh_mhs", "foto"];
+  const tableBodies = ["tgl", "materi", "jmlh_mhs", "sistem", "foto"];
 
   return (
     <div className="flex-1 flex-col max-w-full h-full overflow-auto">
