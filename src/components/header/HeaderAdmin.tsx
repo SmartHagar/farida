@@ -1,9 +1,17 @@
 /** @format */
+"use client";
+
+import { usePathname } from "next/navigation";
 
 const HeaderAdmin = () => {
+  const pathname = usePathname();
   return (
     <div className="lg:backdrop-blur-sm lg:py-2">
-      <p className="text-2xl font-semibold text-center">Selamat Datang admin</p>
+      {pathname === "/admin" ? (
+        <p className="text-lg text-center">Selamat Datang admin</p>
+      ) : (
+        <p className="text-lg text-center tracking-[0.2rem]">SILAKU</p>
+      )}
     </div>
   );
 };

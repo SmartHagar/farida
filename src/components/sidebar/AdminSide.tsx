@@ -153,8 +153,11 @@ const AdminSide = ({ menus }: Props) => {
           />
         </div>
       </div>
-      <div className="mt-4 mb-2 w-full border-b border-light">
-        <p className="px-3 text-sm font-semibold text-black text-center uppercase ">
+      <div className="my-2">
+        <p className="text-lg text-center tracking-[0.2rem]">SILAKU</p>
+      </div>
+      <div className="mt-2 mb-2 w-full border-b border-light">
+        <p className="px-3 text-sm font-medium text-black text-center uppercase ">
           Menu
         </p>
       </div>
