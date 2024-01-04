@@ -63,7 +63,7 @@ const Nilai = () => {
 
   useEffect(() => {
     const tahun = new Date().getFullYear();
-    const semester = "Ganjil";
+    const semester = "Genap";
     setValue("tahun", tahun);
     setValue("semester", semester);
     return () => {};

@@ -18,8 +18,8 @@ type Store = {
   dtDetBeritaAcara: any;
   showDetBeritaAcara: any;
   setDetBeritaAcara: ({
-    page = 1,
-    limit = 10,
+    page,
+    limit,
     search,
     berita_acara_id,
   }: Props) => Promise<{

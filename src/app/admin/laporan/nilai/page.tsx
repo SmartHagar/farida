@@ -68,7 +68,7 @@ const Nilai = () => {
   useEffect(() => {
     if (!tahunParams && !semesterParams) {
       const tahun = new Date().getFullYear();
-      const semester = "Ganjil";
+      const semester = "Genap";
       setValue("tahun", tahun);
       setValue("semester", semester);
       // add parameter to url

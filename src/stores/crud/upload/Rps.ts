@@ -8,28 +8,23 @@ import useLogin from "@/stores/auth/login";
 // crud rps
 
 type Props = {
+  id?: number | string;
   page?: number;
   limit?: number;
   search?: string;
-  tahun?: string;
   semester?: string;
+  tahun?: string | number;
 };
 
 type Store = {
   dtRps: any;
   showRps: any;
-  setRps: ({
-    page = 1,
-    limit = 10,
-    search,
-    tahun,
-    semester,
-  }: Props) => Promise<{
+  setRps: ({ page, limit, search, tahun, semester }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
   }>;
-  setShowRps: (id: string | number) => Promise<{
+  setShowRps: ({ id, tahun, semester }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -82,13 +77,17 @@ const useRps = create(
         };
       }
     },
-    setShowRps: async (id) => {
+    setShowRps: async ({ id, tahun, semester }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
           method: "get",
           url: `/upload/rps/${id}`,
           headers: { Authorization: `Bearer ${token}` },
+          params: {
+            tahun,
+            semester,
+          },
         });
         console.log({ response });
         set((state) => ({ ...state, showRps: response.data.data }));

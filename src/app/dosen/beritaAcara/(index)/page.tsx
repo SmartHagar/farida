@@ -19,6 +19,8 @@ const Dosen = () => {
   const [showModal, setShowModal] = useState(false);
   const [dtEdit, setDtEdit] = useState<any>();
   const [search, setSearch] = useState("");
+  const [tahunWatch, setTahunWatch] = useState<number | string>("");
+  const [semesterWatch, setSemesterWatch] = useState<string>("");
 
   const handleTambah = () => {
     setShowModal(true);
@@ -37,14 +39,11 @@ const Dosen = () => {
     setValue,
   } = useForm();
 
-  const tahunWatch = watch("tahun");
-  const semesterWatch = watch("semester");
-
   useEffect(() => {
     const tahun = new Date().getFullYear();
-    const semester = "Ganjil";
-    setValue("tahun", tahun);
-    setValue("semester", semester);
+    const semester = "Genap";
+    setTahunWatch(tahun);
+    setSemesterWatch(semester);
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

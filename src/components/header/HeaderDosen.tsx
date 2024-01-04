@@ -14,7 +14,7 @@ const HeaderDosen: FC<Props> = ({ user }) => {
   return (
     <div className="lg:backdrop-blur-sm lg:py-2 pl-7">
       <p className="text-xl font-medium text-center">
-        {pathname === "/dosen" && "Selamat Datang"} {user?.name}
+        {pathname === "/dosen" && "Selamat Datang "} {user?.name}
       </p>
     </div>
   );

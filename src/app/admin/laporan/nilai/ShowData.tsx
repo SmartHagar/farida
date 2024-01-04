@@ -49,7 +49,7 @@ const ShowData: FC<Props> = ({
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit]);
+  }, [page, limit, tahunWatch, semesterWatch]);
   // ketika search berubah
   useEffect(() => {
     setPage(1);

@@ -12,17 +12,14 @@ type Props = {
   limit?: number;
   search?: string;
   dosen_id?: string;
+  tahun?: string | number;
+  semester?: string;
 };
 
 type Store = {
   dtBeritaAcara: any;
   showBeritaAcara: any;
-  setBeritaAcara: ({
-    page = 1,
-    limit = 10,
-    search,
-    dosen_id,
-  }: Props) => Promise<{
+  setBeritaAcara: ({ page, limit, search, dosen_id }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -53,7 +50,14 @@ const useBeritaAcara = create(
     },
     dtBeritaAcara: [],
     showBeritaAcara: [],
-    setBeritaAcara: async ({ page = 1, limit = 10, search, dosen_id }) => {
+    setBeritaAcara: async ({
+      page = 1,
+      limit = 10,
+      search,
+      dosen_id,
+      tahun,
+      semester,
+    }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
@@ -65,6 +69,8 @@ const useBeritaAcara = create(
             page,
             search,
             dosen_id,
+            tahun,
+            semester,
           },
         });
         set((state) => ({ ...state, dtBeritaAcara: response.data.data }));

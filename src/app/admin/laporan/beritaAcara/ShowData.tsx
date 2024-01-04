@@ -15,9 +15,17 @@ type Props = {
   setDelete?: ({ id, isDelete }: DeleteProps) => void;
   setEdit: (row: any) => void;
   search: string;
+  tahunWatch: string | number;
+  semesterWatch: string;
 };
 
-const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
+const ShowData: FC<Props> = ({
+  setDelete,
+  setEdit,
+  search,
+  tahunWatch,
+  semesterWatch,
+}) => {
   const { setBeritaAcara, dtBeritaAcara } = useBeritaAcara();
   // state
   const [page, setPage] = useState<number>(1);
@@ -25,11 +33,15 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const fetchDataBeritaAcara = async () => {
-    const res = await setBeritaAcara({
-      page,
-      limit,
-      search,
-    });
+    if (tahunWatch && semesterWatch) {
+      const res = await setBeritaAcara({
+        page,
+        limit,
+        search,
+        tahun: tahunWatch,
+        semester: semesterWatch,
+      });
+    }
     setIsLoading(false);
   };
   useEffect(() => {
@@ -37,7 +49,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit]);
+  }, [page, limit, tahunWatch, semesterWatch]);
   // ketika search berubah
   useEffect(() => {
     setPage(1);

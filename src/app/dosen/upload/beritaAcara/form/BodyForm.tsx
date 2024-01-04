@@ -46,7 +46,6 @@ const BodyForm: FC<Props> = ({
       dosen_id,
     });
   };
-  console.log(dtBeritaAcara?.data);
   useEffect(() => {
     fetchDataBeritaAcara();
     // eslint-disable-next-line react-hooks/exhaustive-deps

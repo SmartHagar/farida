@@ -27,6 +27,8 @@ const BeritaAcara = () => {
   const [idDel, setIdDel] = useState<number | string>();
   const [dtEdit, setDtEdit] = useState<any>();
   const [search, setSearch] = useState("");
+  const [tahunWatch, setTahunWatch] = useState<number | string>("");
+  const [semesterWatch, setSemesterWatch] = useState<string>("");
 
   const handleTambah = () => {
     setShowModal(true);
@@ -58,14 +60,11 @@ const BeritaAcara = () => {
     setValue,
   } = useForm();
 
-  const tahunWatch = watch("tahun");
-  const semesterWatch = watch("semester");
-
   useEffect(() => {
     const tahun = new Date().getFullYear();
-    const semester = "Ganjil";
-    setValue("tahun", tahun);
-    setValue("semester", semester);
+    const semester = "Genap";
+    setTahunWatch(tahun);
+    setSemesterWatch(semester);
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -98,7 +97,13 @@ const BeritaAcara = () => {
         />
       </div>
 
-      <ShowData setDelete={setDelete} setEdit={setEdit} search={search} />
+      <ShowData
+        setDelete={setDelete}
+        setEdit={setEdit}
+        search={search}
+        tahunWatch={tahunWatch}
+        semesterWatch={semesterWatch}
+      />
     </div>
   );
 };

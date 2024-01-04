@@ -70,7 +70,7 @@ const BodyForm: FC<Props> = ({
       )}
 
       <InputFile
-        label="RPS"
+        label="Absen"
         name="file"
         register={register}
         accept="application/pdf"
