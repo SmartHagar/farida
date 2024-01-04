@@ -71,23 +71,31 @@ const Login = (props: Props) => {
     }, 1000);
   };
   return (
-    <div className="min-h-screen bg-login bg-cover bg-center">
+    <div className="min-h-screen bg-login bg-cover bg-center font-prompt">
       <div className="flex flex-col items-center min-h-screen justify-center backdrop-blur-sm z-10">
-        <div className="bg-white/20 rounded py-8 px-4 md:py-8 md:px-12 flex flex-col items-center justify-center z-50">
+        <div className="bg-white/10 text-font-1 rounded py-8 px-4 mx-6 md:py-8 md:px-12 flex flex-col items-center justify-center z-50">
           <div className="w-full mb-2">
-            <h3 className="text-3xl font-bold text-center">Selamat datang</h3>
-            <p className="text-center mt-2">
-              Silakan login untuk mendapatkan akses ke halaman admin
+            <h5 className="text-sm font-bold text-center sm:text-lg">
+              Selamat datang di
+            </h5>
+            <h3 className="text-2xl font-bold text-center tracking-[0.1em] sm:text-3xl">
+              SILAKU
+            </h3>
+            <p className="text-center mt-2 text-xs sm:text-base">
+              (Sistem Informasi Perkuliahan Fakultas Sains & Teknologi)
             </p>
             <span>
               {error && <p className="text-red-600 text-center">{error}</p>}
             </span>
           </div>
           <img
-            className="rounded-full h-32 w-32"
+            className="rounded-full h-32 w-32 my-6"
             src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png"
             alt="user avatar"
           />
+          <p className="text-center mt-2 text-[10px] text-gray-400 sm:text-sm">
+            Silakan login untuk mendapatkan akses ke halaman admin
+          </p>
           <form onSubmit={handleSubmit(onSubmit)} className="mt-8 w-full">
             <FormLogin
               register={register}

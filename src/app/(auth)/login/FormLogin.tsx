@@ -30,6 +30,7 @@ const FormLogin: FC<Props> = ({
         errors={errors.email}
         addClass="col-span-4"
         type="email"
+        labelCss="text-font-1"
       />
       <InputTextPassword
         label="Password"
@@ -40,6 +41,7 @@ const FormLogin: FC<Props> = ({
         errors={errors.password}
         addClass="w-[100%] mt-2"
         type="password"
+        labelCss="text-font-1"
       />
     </>
   );

@@ -19,6 +19,7 @@ type Props = {
   autoComplete?: string;
   addClass?: string;
   value?: string | number;
+  labelCss?: "text-font-1" | "text-gray-700";
 };
 
 const InputTextPassword: FC<Props> = ({
@@ -36,6 +37,7 @@ const InputTextPassword: FC<Props> = ({
   autoComplete = "on",
   addClass,
   value,
+  labelCss = "text-gray-700",
 }) => {
   const [isTypePassword, setIsTypePassword] = useState(false);
   const tooglePassword = () => {
@@ -43,10 +45,7 @@ const InputTextPassword: FC<Props> = ({
   };
   return (
     <div className={addClass}>
-      <label
-        htmlFor={name}
-        className="text-sm font-medium text-gray-700 tracking-wide"
-      >
+      <label htmlFor={name} className={`text-sm tracking-wide ${labelCss}`}>
         {label}
       </label>
       {required && <span className="ml-1 text-red-600">*</span>}

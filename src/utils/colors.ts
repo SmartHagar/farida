@@ -13,6 +13,7 @@ const colors = {
   info: "#0000ff",
   dark: "#000",
   light: "#fff",
+  "font-1": "#A5A6F6",
 };
 
 export default colors;

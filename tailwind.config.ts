@@ -16,9 +16,12 @@ const config: Config = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-        login: "url('/images/bg/bg-login.jpg')",
+        login: "url('/images/bg/bg-login.png')",
       },
       colors,
+      fontFamily: {
+        prompt: ["Prompt", "sans-serif"],
+      },
     },
   },
   plugins: [],
