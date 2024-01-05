@@ -33,7 +33,6 @@ const ShowData: FC<Props> = ({
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  console.log({ tahunWatch, semesterWatch });
 
   const fetchDataRps = async () => {
     if (tahunWatch && semesterWatch) {

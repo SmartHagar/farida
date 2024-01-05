@@ -11,6 +11,7 @@ import {
   BsLampFill,
 } from "react-icons/bs";
 import AnimatedNumber from "@/components/animated/AnimatedNumber";
+import Kelengkapan from "./kelengkapan/Kelengkapan";
 
 type Props = {};
 
@@ -31,13 +32,16 @@ const Dashboard = (props: Props) => {
     });
   }, []);
   return (
-    <>
+    <div className="h-full w-full overflow-auto">
       <div className="mb-4">
         <p className="text-lg text-center tracking-[0.2rem]">SILAKU</p>
         <p className="text-center text-sm text-font-1">
           (Sistem Informasi Perkuliahan Fakultas Sains & Teknologi)
         </p>
       </div>
+      <>
+        <Kelengkapan />
+      </>
       <div className="flex gap-4 flex-wrap">
         <div className="flex flex-col bg-primary/10 p-4 px-8 rounded-md gap-1">
           {/* icon */}
@@ -76,7 +80,7 @@ const Dashboard = (props: Props) => {
           <h6>Jumlah Dosen</h6>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
