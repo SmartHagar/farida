@@ -45,6 +45,11 @@ const menus: MenuTypes[] = [
     icon: <BsPeopleFill />,
   },
   {
+    name: "Kelengkapan",
+    href: "/admin/kelengkapan",
+    icon: <BsPeopleFill />,
+  },
+  {
     name: "Laporan",
     href: "#",
     slug: "laporan",

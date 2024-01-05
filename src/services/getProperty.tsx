@@ -7,7 +7,6 @@ import moment from "moment";
 
 const getProperty = (obj: any, prop: any) => {
   const angkatan = obj?.thn_angkatan?.substring(2);
-  const mhs_angkatan = obj?.mhs?.thn_angkatan?.substring(2);
   let parts = prop.split(".");
   if (Array.isArray(parts)) {
     let last = parts.length > 1 ? parts.pop() : parts;
