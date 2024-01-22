@@ -102,8 +102,10 @@ const Dosen = () => {
               <span>: {jadwal?.matkul?.nama}</span>
             </div>
             <div>
-              <span className="w-32 inline-block uppercase">SKS</span>
-              <span>: {jadwal?.matkul?.sks}</span>
+              <span className="w-32 inline-block uppercase">SKS/SMT/KLS</span>
+              <span>
+                : {jadwal?.matkul?.sks} / {jadwal?.semester} T.A 2023/2024
+              </span>
             </div>
             <div>
               <span className="w-32 inline-block uppercase">Ruangan</span>
