@@ -2,8 +2,13 @@
 
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+<<<<<<< HEAD
 import { api_edom } from "@/services/baseURL";
 // api_edom dosen
+=======
+import { api } from "@/services/baseURL";
+// api dosen
+>>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
 type Props = {
   page?: number;
   limit?: number;
@@ -12,7 +17,10 @@ type Props = {
 
 type Store = {
   dtDosen: any;
+<<<<<<< HEAD
   dtDosenAll: any;
+=======
+>>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
   setDosen: ({ page, limit, search }: Props) => Promise<{
     status: string;
     data?: {};
@@ -25,6 +33,7 @@ type Store = {
   }>;
 };
 
+<<<<<<< HEAD
 const useDosenApiEdom = create(
   devtools<Store>((set, get) => ({
     dtDosen: [],
@@ -32,6 +41,14 @@ const useDosenApiEdom = create(
     setDosen: async ({ page = 1, limit = 10, search }) => {
       try {
         const response = await api_edom({
+=======
+const useDosenApi = create(
+  devtools<Store>((set, get) => ({
+    dtDosen: [],
+    setDosen: async ({ page = 1, limit = 10, search }) => {
+      try {
+        const response = await api({
+>>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
           method: "get",
           url: `/dosen`,
           params: {
@@ -40,7 +57,11 @@ const useDosenApiEdom = create(
             search,
           },
         });
+<<<<<<< HEAD
         set((state) => ({ ...state, dtDosen: response.data.data }));
+=======
+        set((state) => ({ ...state, dtDosen: response.data }));
+>>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
         return {
           status: "berhasil",
           data: response.data,
@@ -54,14 +75,22 @@ const useDosenApiEdom = create(
     },
     setDosenAll: async ({ search }) => {
       try {
+<<<<<<< HEAD
         const response = await api_edom({
+=======
+        const response = await api({
+>>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
           method: "get",
           url: `/dosen/all`,
           params: {
             search,
           },
         });
+<<<<<<< HEAD
         set((state) => ({ ...state, dtDosenAll: response.data }));
+=======
+        set((state) => ({ ...state, dtDosen: response.data }));
+>>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
         return {
           status: "berhasil",
           data: response.data,
@@ -76,4 +105,8 @@ const useDosenApiEdom = create(
   }))
 );
 
+<<<<<<< HEAD
 export default useDosenApiEdom;
+=======
+export default useDosenApi;
+>>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103

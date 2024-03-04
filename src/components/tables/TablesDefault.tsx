@@ -12,7 +12,11 @@ type Props = {
   headTable: string[];
   dataTable: [];
   tableBodies: string[];
+<<<<<<< HEAD
   setEdit?: (data: any) => void;
+=======
+  setEdit: (data: any) => void;
+>>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
   setDelete?: ({
     id,
     isDelete,
@@ -69,7 +73,11 @@ const TablesDefault = (props: Props) => {
                     {props.costume && props.costume(row)}
                     {props.ubah && (
                       <BsFillPencilFill
+<<<<<<< HEAD
                         onClick={() => props.setEdit && props.setEdit(row)}
+=======
+                        onClick={() => props.setEdit(row)}
+>>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
                         size={20}
                         className="cursor-pointer hover:text-yellow-500"
                         title="Ubah"

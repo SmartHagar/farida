@@ -2,16 +2,24 @@
 
 import axios from "axios";
 
+<<<<<<< HEAD
 // const BASE_URL = "https://back.faridapatai.my.id";
 const BASE_URL = "http://127.0.0.1:8000";
 // const URL_EDOM = "https://back.edom.fstuogp.com";
 const URL_EDOM = "http://127.0.0.1:8001";
+=======
+const BASE_URL = "https://back.faridapatai.my.id";
+// const BASE_URL = "http://127.0.0.1:8000";
+>>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
 const url_auth = `${BASE_URL}/auth`;
 const url_api = `${BASE_URL}/api`;
 const url_crud = `${BASE_URL}/crud`;
 const url_storage = `${BASE_URL}/storage`;
+<<<<<<< HEAD
 // EDOM
 const url_api_edom = `${URL_EDOM}/api`;
+=======
+>>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
 
 const auth = axios.create({
   baseURL: url_auth,
@@ -26,10 +34,13 @@ const storage = axios.create({
   baseURL: url_storage,
 });
 
+<<<<<<< HEAD
 const api_edom = axios.create({
   baseURL: url_api_edom,
 });
 
+=======
+>>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
 export {
   auth,
   crud,
@@ -40,6 +51,9 @@ export {
   url_api,
   url_crud,
   url_storage,
+<<<<<<< HEAD
   url_api_edom,
   api_edom,
+=======
+>>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
 };

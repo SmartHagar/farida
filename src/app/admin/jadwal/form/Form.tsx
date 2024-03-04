@@ -7,45 +7,47 @@ import toastShow from "@/utils/toast-show";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import BodyForm from "./BodyForm";
-<<<<<<< HEAD
-import useDosenLogin from "@/stores/crud/DosenLogin";
-=======
-import useDosen from "@/stores/crud/Dosen";
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
+import useJadwal from "@/stores/crud/Jadwal";
+import moment from "moment";
 
 type Props = {
   showModal: boolean;
   setShowModal: (data: boolean) => void;
   dtEdit: any;
+  tahunWatch: string | number;
+  semesterWatch: string;
 };
 
 type Inputs = {
   id: number | string;
-  NIDN: string;
-  nama: string;
-  jabatan: string;
-  tempat_lahir: string;
-  tgl_lahir: string;
-  jenkel: string;
-  agama: string;
-  alamat: string;
-  no_hp: string;
-  foto: string;
+  prodi_id: number | string;
+  matkul_id: number | string;
+  dosen_id: number | string;
+  ruangan_id: number | string;
+  hari: string;
+  mulai: string | Date;
+  seles: string | Date;
+  semester: string;
+  tahun: string | number;
 };
 
-const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
-<<<<<<< HEAD
-  // store
-  const { addData, updateData } = useDosenLogin();
-=======
+const Form = ({
+  showModal,
+  setShowModal,
+  dtEdit,
+  tahunWatch,
+  semesterWatch,
+}: Props) => {
+  const momentTime = (time: string) => {
+    const date = moment(time, "HH:mm").toDate();
+    return date;
+  };
   // state
-  const [tgl_lahir, setTgl_lahir] = useState<string | Date>(
-    new Date("01-01-1980")
-  );
-  const [myFile, setMyFile] = useState<any>();
+
+  const [timeStart, setTimeStart] = useState(momentTime("08:00"));
+  const [timeFinish, setTimeFinish] = useState<string | Date>("");
   // store
-  const { addData, updateData } = useDosen();
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
+  const { addData, updateData } = useJadwal();
   // hook form
   const {
     register,
@@ -59,41 +61,32 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
   // reset form
   const resetForm = () => {
     setValue("id", "");
-    setValue("NIDN", "");
-    setValue("nama", "");
-    setValue("jabatan", "");
-    setValue("tempat_lahir", "");
-    setValue("tgl_lahir", "1980-01-01");
-<<<<<<< HEAD
-=======
-    setTgl_lahir(new Date("01-01-1980"));
-    setValue("jenkel", "");
-    setValue("agama", "");
-    setValue("alamat", "");
-    setValue("no_hp", "");
-    setValue("foto", "");
-    setMyFile(null);
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
+    setValue("matkul_id", "");
+    setValue("dosen_id", "");
+    setValue("ruangan_id", "");
+    setValue("mulai", "08:00");
+    setTimeStart(momentTime("08:00"));
+    setValue("seles", "");
+    setTimeFinish("");
+    setValue("semester", semesterWatch);
+    setValue("tahun", tahunWatch);
   };
 
   // data edit
   useEffect(() => {
     if (dtEdit) {
       setValue("id", dtEdit.id);
-      setValue("NIDN", dtEdit.NIDN);
-      setValue("nama", dtEdit.nama);
-      setValue("jabatan", dtEdit.jabatan);
-      setValue("tempat_lahir", dtEdit.tempat_lahir);
-      setValue("tgl_lahir", dtEdit.tgl_lahir);
-<<<<<<< HEAD
-=======
-      setTgl_lahir(new Date(dtEdit.tgl_lahir));
-      setValue("jenkel", dtEdit.jenkel);
-      setValue("agama", dtEdit.agama);
-      setValue("alamat", dtEdit.alamat);
-      setValue("no_hp", dtEdit.no_hp);
-      setValue("foto", dtEdit.foto);
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
+      setValue("prodi_id", dtEdit.prodi_id);
+      setValue("matkul_id", dtEdit.matkul_id);
+      setValue("dosen_id", dtEdit.dosen_id);
+      setValue("ruangan_id", dtEdit.ruangan_id);
+      setValue("hari", dtEdit.hari);
+      setValue("mulai", momentTime(dtEdit.mulai));
+      setTimeStart(momentTime(dtEdit.mulai));
+      setValue("seles", momentTime(dtEdit.seles));
+      setTimeFinish(momentTime(dtEdit.seles));
+      setValue("semester", dtEdit.semester);
+      setValue("tahun", parseInt(dtEdit.tahun));
     } else {
       resetForm();
     }
@@ -121,7 +114,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
 
   return (
     <ModalDefault
-      title="Form Dosen"
+      title={`Form Jadwal Semester ${semesterWatch} Tahun ${tahunWatch}`}
       showModal={showModal}
       setShowModal={setShowModal}
     >
@@ -137,13 +130,10 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
             watch={watch}
             setValue={setValue}
             showModal={showModal}
-<<<<<<< HEAD
-=======
-            myFile={myFile}
-            setMyFile={setMyFile}
-            tgl_lahir={tgl_lahir}
-            setTgl_lahir={setTgl_lahir}
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
+            timeStart={timeStart}
+            setTimeStart={setTimeStart}
+            timeFinish={timeFinish}
+            setTimeFinish={setTimeFinish}
           />
         </div>
         <div>
