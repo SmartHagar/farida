@@ -3,11 +3,7 @@
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import PaginationDefault from "@/components/pagination/PaginationDefault";
 import TablesDefault from "@/components/tables/TablesDefault";
-<<<<<<< HEAD
 import useJadwalApiEdom from "@/stores/api/Jadwal";
-=======
-import useJadwal from "@/stores/crud/Jadwal";
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
 import { useSearchParams } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
 
@@ -17,27 +13,15 @@ type DeleteProps = {
 };
 
 type Props = {
-<<<<<<< HEAD
-=======
-  setDelete: ({ id, isDelete }: DeleteProps) => void;
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
   setEdit: (row: any) => void;
   search: string;
 };
 
-<<<<<<< HEAD
 const ShowData: FC<Props> = ({ setEdit, search }) => {
   // params
   const params = useSearchParams();
   // store
   const { setJadwal, dtJadwal } = useJadwalApiEdom();
-=======
-const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
-  // params
-  const params = useSearchParams();
-  // store
-  const { setJadwal, dtJadwal } = useJadwal();
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
@@ -107,10 +91,6 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
               page={page}
               limit={limit}
               setEdit={setEdit}
-<<<<<<< HEAD
-=======
-              setDelete={setDelete}
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
               ubah={true}
               hapus={true}
             />

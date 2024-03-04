@@ -2,13 +2,8 @@
 
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-<<<<<<< HEAD
 import { api_edom } from "@/services/baseURL";
 // api_edom jadwal
-=======
-import { api } from "@/services/baseURL";
-// api jadwal
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
 type Props = {
   page?: number;
   limit?: number;
@@ -20,11 +15,7 @@ type Props = {
 
 type Store = {
   dtJadwal: any;
-<<<<<<< HEAD
   setJadwal: ({ page, limit, search, tahun, semester }: Props) => Promise<{
-=======
-  setJadwal: ({ page, limit, search }: Props) => Promise<{
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
     status: string;
     data?: {};
     error?: {};
@@ -34,14 +25,6 @@ type Store = {
     data?: {};
     error?: {};
   }>;
-<<<<<<< HEAD
-=======
-  setJadwalByThnSmt: ({ tahun, semester }: Props) => Promise<{
-    status: string;
-    data?: {};
-    error?: {};
-  }>;
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
   setJadwalByDosen: ({ tahun, semester, dosen_id }: Props) => Promise<{
     status: string;
     data?: {};
@@ -54,38 +37,23 @@ type Store = {
   }>;
 };
 
-<<<<<<< HEAD
 const useJadwalApiEdom = create(
   devtools<Store>((set, get) => ({
     dtJadwal: [],
     setJadwal: async ({ page = 1, limit = 10, search, tahun, semester }) => {
       try {
         const response = await api_edom({
-=======
-const useJadwalApi = create(
-  devtools<Store>((set, get) => ({
-    dtJadwal: [],
-    setJadwal: async ({ page = 1, limit = 10, search }) => {
-      try {
-        const response = await api({
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
           method: "get",
           url: `/jadwal`,
           params: {
             limit,
             page,
             search,
-<<<<<<< HEAD
             tahun,
             semester,
           },
         });
         set((state) => ({ ...state, dtJadwal: response.data.data }));
-=======
-          },
-        });
-        set((state) => ({ ...state, dtJadwal: response.data }));
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
         return {
           status: "berhasil",
           data: response.data,
@@ -99,11 +67,7 @@ const useJadwalApi = create(
     },
     setJadwalAll: async ({ search }) => {
       try {
-<<<<<<< HEAD
         const response = await api_edom({
-=======
-        const response = await api({
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
           method: "get",
           url: `/jadwal/all`,
           params: {
@@ -122,37 +86,9 @@ const useJadwalApi = create(
         };
       }
     },
-<<<<<<< HEAD
     setJadwalByDosen: async ({ tahun, semester, dosen_id }) => {
       try {
         const response = await api_edom({
-=======
-    setJadwalByThnSmt: async ({ tahun, semester }) => {
-      try {
-        const response = await api({
-          method: "get",
-          url: `/jadwal/thn-smt`,
-          params: {
-            tahun,
-            semester,
-          },
-        });
-        set((state) => ({ ...state, dtJadwal: response.data }));
-        return {
-          status: "berhasil",
-          data: response.data,
-        };
-      } catch (error: any) {
-        return {
-          status: "error",
-          error: error.response.data,
-        };
-      }
-    },
-    setJadwalByDosen: async ({ tahun, semester, dosen_id }) => {
-      try {
-        const response = await api({
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
           method: "get",
           url: `/jadwal/by-dosen`,
           params: {
@@ -175,11 +111,7 @@ const useJadwalApi = create(
     },
     setJadwalByRps: async ({ tahun, semester, dosen_id }) => {
       try {
-<<<<<<< HEAD
         const response = await api_edom({
-=======
-        const response = await api({
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
           method: "get",
           url: `/jadwal/by-rps`,
           params: {
@@ -203,8 +135,4 @@ const useJadwalApi = create(
   }))
 );
 
-<<<<<<< HEAD
 export default useJadwalApiEdom;
-=======
-export default useJadwalApi;
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103

@@ -42,10 +42,6 @@ const Layout = (props: Props) => {
 
   const loadData = async () => {
     const cek = await getCek();
-<<<<<<< HEAD
-=======
-    console.log({ cek });
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
     if (!cek?.error) {
       setIsLoading(false);
     }

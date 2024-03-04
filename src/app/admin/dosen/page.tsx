@@ -6,17 +6,10 @@ import ShowData from "./ShowData";
 import ButtonPrimary from "@/components/button/ButtonPrimary";
 import Form from "./form/Form";
 import ModalDelete from "@/components/modal/ModalDelete";
-<<<<<<< HEAD
 import { Toaster } from "react-hot-toast";
 import toastShow from "@/utils/toast-show";
 import InputTextSearch from "@/components/input/InputTextSerch";
 import useDosenLogin from "@/stores/crud/DosenLogin";
-=======
-import useDosen from "@/stores/crud/Dosen";
-import { Toaster } from "react-hot-toast";
-import toastShow from "@/utils/toast-show";
-import InputTextSearch from "@/components/input/InputTextSerch";
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
 
 // type setDelete
 type Delete = {
@@ -26,11 +19,7 @@ type Delete = {
 
 const Dosen = () => {
   // store
-<<<<<<< HEAD
   const { removeData } = useDosenLogin();
-=======
-  const { removeData } = useDosen();
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
   // state
   const [showModal, setShowModal] = useState(false);
   const [showDelete, setShowDelete] = useState<boolean>(false);

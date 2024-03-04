@@ -7,11 +7,7 @@ import toastShow from "@/utils/toast-show";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import BodyForm from "./BodyForm";
-<<<<<<< HEAD
 import useDosenLogin from "@/stores/crud/DosenLogin";
-=======
-import useDosen from "@/stores/crud/Dosen";
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
 
 type Props = {
   showModal: boolean;
@@ -34,18 +30,8 @@ type Inputs = {
 };
 
 const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
-<<<<<<< HEAD
   // store
   const { addData, updateData } = useDosenLogin();
-=======
-  // state
-  const [tgl_lahir, setTgl_lahir] = useState<string | Date>(
-    new Date("01-01-1980")
-  );
-  const [myFile, setMyFile] = useState<any>();
-  // store
-  const { addData, updateData } = useDosen();
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
   // hook form
   const {
     register,
@@ -64,16 +50,6 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
     setValue("jabatan", "");
     setValue("tempat_lahir", "");
     setValue("tgl_lahir", "1980-01-01");
-<<<<<<< HEAD
-=======
-    setTgl_lahir(new Date("01-01-1980"));
-    setValue("jenkel", "");
-    setValue("agama", "");
-    setValue("alamat", "");
-    setValue("no_hp", "");
-    setValue("foto", "");
-    setMyFile(null);
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
   };
 
   // data edit
@@ -85,15 +61,6 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
       setValue("jabatan", dtEdit.jabatan);
       setValue("tempat_lahir", dtEdit.tempat_lahir);
       setValue("tgl_lahir", dtEdit.tgl_lahir);
-<<<<<<< HEAD
-=======
-      setTgl_lahir(new Date(dtEdit.tgl_lahir));
-      setValue("jenkel", dtEdit.jenkel);
-      setValue("agama", dtEdit.agama);
-      setValue("alamat", dtEdit.alamat);
-      setValue("no_hp", dtEdit.no_hp);
-      setValue("foto", dtEdit.foto);
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
     } else {
       resetForm();
     }
@@ -137,13 +104,6 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
             watch={watch}
             setValue={setValue}
             showModal={showModal}
-<<<<<<< HEAD
-=======
-            myFile={myFile}
-            setMyFile={setMyFile}
-            tgl_lahir={tgl_lahir}
-            setTgl_lahir={setTgl_lahir}
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
           />
         </div>
         <div>

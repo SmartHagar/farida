@@ -15,19 +15,6 @@ const menus: MenuTypes[] = [
     icon: <BsHouseDoorFill />,
   },
   {
-<<<<<<< HEAD
-=======
-    name: "Ruangan",
-    href: "/admin/ruangan",
-    icon: <BsLampFill />,
-  },
-  {
-    name: "Matkul",
-    href: "/admin/matkul",
-    icon: <BsFillBookFill />,
-  },
-  {
->>>>>>> fff29db3e6e793647ce921850ee7c8ded1711103
     name: "Dosen",
     href: "/admin/dosen",
     icon: <BsFillPersonLinesFill />,
