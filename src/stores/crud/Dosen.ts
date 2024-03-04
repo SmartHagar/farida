@@ -17,7 +17,7 @@ type Props = {
 type Store = {
   dtDosen: any;
   showDosen: any;
-  setDosen: ({ page = 1, limit = 10, search, tipe }: Props) => Promise<{
+  setDosen: ({ page, limit, search, tipe }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -35,27 +35,10 @@ type Store = {
     id: number | string,
     data: any
   ) => Promise<{ status: string; data?: any; error?: any }>;
-  setFormData: any;
 };
 
 const useDosen = create(
   devtools<Store>((set, get) => ({
-    setFormData: (row: any) => {
-      const formData = new FormData();
-      formData.append("prodi_id", row.prodi_id);
-      formData.append("NIDN", row.NIDN);
-      formData.append("nama", row.nama);
-      formData.append("jabatan", row.jabatan);
-      formData.append("tempat_lahir", row.tempat_lahir);
-      formData.append("tgl_lahir", row.tgl_lahir);
-      formData.append("jenkel", row.jenkel);
-      formData.append("no_hp", row.no_hp);
-      formData.append("agama", row.agama);
-      formData.append("alamat", row.alamat);
-      formData.append("no_hp", row.no_hp);
-      formData.append("foto", row.foto);
-      return formData;
-    },
     dtDosen: [],
     showDosen: [],
     setDosen: async ({ page = 1, limit = 10, search, tipe }) => {
@@ -106,7 +89,6 @@ const useDosen = create(
       }
     },
     addData: async (row) => {
-      const formData = row?.foto ? get().setFormData(row) : row;
       try {
         const token = await useLogin.getState().setToken();
         const res = await crud({
@@ -114,9 +96,8 @@ const useDosen = create(
           url: `/dosen`,
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
           },
-          data: formData,
+          data: row,
         });
         set((prevState: any) => ({
           dtDosen: {
@@ -164,25 +145,13 @@ const useDosen = create(
     },
     updateData: async (id, row) => {
       delete row.id;
-      const formData = row?.foto ? get().setFormData(row) : row;
       const token = await useLogin.getState().setToken();
-      const headersImg = {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      };
       try {
         const response = await crud({
           url: `/dosen/${id}`,
           method: "post",
-          headers: row?.foto
-            ? headersImg
-            : {
-                Authorization: `Bearer ${token}`,
-              },
-          data: formData,
-          params: {
-            _method: "PUT",
-          },
+          headers: { Authorization: `Bearer ${token}` },
+          data: row,
         });
         set((prevState: any) => ({
           dtDosen: {

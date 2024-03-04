@@ -17,16 +17,8 @@ type Props = {
 
 type Inputs = {
   id: number | string;
-  NIDN: string;
+  dosen_id: number | string;
   nama: string;
-  jabatan: string;
-  tempat_lahir: string;
-  tgl_lahir: string;
-  jenkel: string;
-  agama: string;
-  alamat: string;
-  no_hp: string;
-  foto: string;
 };
 
 const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
@@ -45,22 +37,16 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
   // reset form
   const resetForm = () => {
     setValue("id", "");
-    setValue("NIDN", "");
+    setValue("dosen_id", "");
     setValue("nama", "");
-    setValue("jabatan", "");
-    setValue("tempat_lahir", "");
-    setValue("tgl_lahir", "1980-01-01");
   };
 
   // data edit
   useEffect(() => {
     if (dtEdit) {
       setValue("id", dtEdit.id);
-      setValue("NIDN", dtEdit.NIDN);
+      setValue("dosen_id", dtEdit.dosen_id);
       setValue("nama", dtEdit.nama);
-      setValue("jabatan", dtEdit.jabatan);
-      setValue("tempat_lahir", dtEdit.tempat_lahir);
-      setValue("tgl_lahir", dtEdit.tgl_lahir);
     } else {
       resetForm();
     }

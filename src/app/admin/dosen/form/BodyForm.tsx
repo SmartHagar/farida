@@ -42,6 +42,20 @@ const BodyForm: FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showModal]);
 
+  const dosenWatch = watch("dosen_id");
+  useEffect(() => {
+    if (dosenWatch) {
+      const dtDosen = dtDosenAll?.data?.find(
+        (item: any) => item.id === dosenWatch
+      );
+      setValue("nama", dtDosen?.nama);
+    } else {
+      setValue("nama", "");
+    }
+
+    return () => {};
+  }, [dosenWatch]);
+
   return (
     <>
       {dtDosenAll?.data && (
@@ -58,12 +72,20 @@ const BodyForm: FC<Props> = ({
         />
       )}
       <InputTextDefault
+        label="Nama"
+        name="nama"
+        register={register}
+        minLength={6}
+        errors={errors.nama}
+        addClass="col-span-4"
+      />
+      <InputTextDefault
         label="Password"
         name="password"
         register={register}
         minLength={6}
         errors={errors.password}
-        addClass="col-span-4 lg:col-span-2"
+        addClass="col-span-4"
       />
     </>
   );
