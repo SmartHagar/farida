@@ -8,10 +8,10 @@ import InputRadio from "@/components/input/InputRadio";
 import InputTextDefault from "@/components/input/InputTextDefault";
 import { SelectDefault } from "@/components/select/SelectDefault";
 import SelectFromDb from "@/components/select/SelectFromDB";
-import useJadwalApi from "@/stores/api/Jadwal";
 import React, { FC, useEffect } from "react";
 
 import "react-datepicker/dist/react-datepicker.css";
+import useJadwalApiEdom from "@/stores/api/Jadwal";
 
 type Props = {
   register: any;
@@ -21,8 +21,6 @@ type Props = {
   watch: any;
   setValue: any;
   showModal: boolean;
-  tgl_lahir: Date | string;
-  setTgl_lahir: any;
   myFile: any;
   setMyFile: any;
   tahunWatch: string | number;
@@ -37,24 +35,21 @@ const BodyForm: FC<Props> = ({
   watch,
   setValue,
   showModal,
-  tgl_lahir,
-  setTgl_lahir,
   myFile,
   setMyFile,
   tahunWatch,
   semesterWatch,
 }) => {
   const dosen_id = Cookies.get("dosen_id");
-  const { setJadwalByDosen, dtJadwal } = useJadwalApi();
+  const { setJadwalByDosenFull, dtJadwal } = useJadwalApiEdom();
   // memanggil data prodi
   const fetchDataJadwal = async () => {
-    await setJadwalByDosen({
+    await setJadwalByDosenFull({
       tahun: tahunWatch,
       semester: semesterWatch,
       dosen_id,
     });
   };
-  console.log(dtJadwal?.data);
   useEffect(() => {
     fetchDataJadwal();
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -85,10 +85,7 @@ const Jadwal = () => {
       <div>
         <Toaster />
         <div className="mb-4 flex justify-between">
-          <p>Silahkan Mengolah data Jadwal</p>
-          <div>
-            <ButtonPrimary text="Tambah Jadwal" onClick={handleTambah} />
-          </div>
+          <p>Berikut adalah jadwal perkuliahan</p>
         </div>
         {/* pilih tahun dan semester */}
         <div className="mb-4 flex justify-between gap-4">

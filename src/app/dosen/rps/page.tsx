@@ -72,10 +72,10 @@ const Rps = () => {
             <ButtonPrimary text="Tambah RPS" onClick={handleTambah} />
           </div>
         </div>
-        <InputTextSearch
+        {/* <InputTextSearch
           placeholder="Cari RPS"
           onChange={(e) => setSearch(e)}
-        />
+        /> */}
       </div>
 
       <ShowData

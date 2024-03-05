@@ -11,20 +11,18 @@ type Props = {
   id?: number | string;
   page?: number;
   limit?: number;
-  search?: string;
-  semester?: string;
-  tahun?: string | number;
+  jadwal_id?: number | string;
 };
 
 type Store = {
   dtRps: any;
   showRps: any;
-  setRps: ({ page, limit, search, tahun, semester }: Props) => Promise<{
+  setRps: ({ page, limit }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
   }>;
-  setShowRps: ({ id, tahun, semester }: Props) => Promise<{
+  setShowRps: ({ id, jadwal_id }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -50,7 +48,7 @@ const useRps = create(
     },
     dtRps: [],
     showRps: [],
-    setRps: async ({ page = 1, limit = 10, search, tahun, semester }) => {
+    setRps: async ({ page = 1, limit = 10 }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
@@ -60,9 +58,6 @@ const useRps = create(
           params: {
             limit,
             page,
-            search,
-            tahun,
-            semester,
           },
         });
         set((state) => ({ ...state, dtRps: response.data.data }));
@@ -77,7 +72,7 @@ const useRps = create(
         };
       }
     },
-    setShowRps: async ({ id, tahun, semester }) => {
+    setShowRps: async ({ id, jadwal_id }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
@@ -85,8 +80,7 @@ const useRps = create(
           url: `/upload/rps/${id}`,
           headers: { Authorization: `Bearer ${token}` },
           params: {
-            tahun,
-            semester,
+            jadwal_id,
           },
         });
         console.log({ response });
@@ -115,8 +109,12 @@ const useRps = create(
           },
           data: formData,
         });
-        const dosen_id = res?.data?.data?.jadwal?.dosen_id;
-        await get().setShowRps(dosen_id);
+        // add res.data.data to showRps
+
+        set((prevState: any) => ({
+          showRps: [res.data.data, ...prevState.showRps],
+        }));
+
         return {
           status: "berhasil tambah",
           data: res.data,
@@ -179,10 +177,10 @@ const useRps = create(
         const dosen_id = response?.data?.data?.jadwal?.dosen_id;
         const jadwal = response?.data?.data?.jadwal;
         await get().setShowRps(dosen_id);
-        await get().setRps({
-          tahun: jadwal?.tahun,
-          semester: jadwal?.semester,
-        });
+        // await get().setRps({
+        //   tahun: jadwal?.tahun,
+        //   semester: jadwal?.semester,
+        // });
         return {
           status: "berhasil update",
           data: response.data,

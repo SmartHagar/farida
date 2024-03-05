@@ -25,7 +25,7 @@ type Store = {
     data?: {};
     error?: {};
   }>;
-  setJadwalByDosen: ({ tahun, semester, dosen_id }: Props) => Promise<{
+  setJadwalByDosenFull: ({ tahun, semester, dosen_id }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -86,11 +86,11 @@ const useJadwalApiEdom = create(
         };
       }
     },
-    setJadwalByDosen: async ({ tahun, semester, dosen_id }) => {
+    setJadwalByDosenFull: async ({ tahun, semester, dosen_id }) => {
       try {
         const response = await api_edom({
           method: "get",
-          url: `/jadwal/by-dosen`,
+          url: `/jadwal/byDosenFull`,
           params: {
             tahun,
             semester,

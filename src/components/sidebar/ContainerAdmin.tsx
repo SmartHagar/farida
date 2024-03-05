@@ -35,9 +35,9 @@ const ContainerAdmin = (props: Props) => {
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? (
-          <FaXmark className=" text-3xl absolute left-[15rem] bg-side-bar text-dark rounded-tr-lg rounded-br-lg" />
+          <FaXmark className="cursor-pointer text-3xl absolute left-[15rem] bg-side-bar text-dark rounded-tr-lg rounded-br-lg" />
         ) : (
-          <FaAlignJustify className="text-2xl" />
+          <FaAlignJustify className="text-2xl cursor-pointer" />
         )}
       </div>
       <AnimatePresence>

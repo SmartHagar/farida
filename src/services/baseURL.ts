@@ -4,8 +4,8 @@ import axios from "axios";
 
 // const BASE_URL = "https://back.faridapatai.my.id";
 const BASE_URL = "http://127.0.0.1:8000";
-// const URL_EDOM = "https://back.edom.fstuogp.com";
-const URL_EDOM = "http://127.0.0.1:8001";
+const URL_EDOM = "https://back.edom.fstuogp.com";
+// const URL_EDOM = "http://127.0.0.1:8001";
 const url_auth = `${BASE_URL}/auth`;
 const url_api = `${BASE_URL}/api`;
 const url_crud = `${BASE_URL}/crud`;

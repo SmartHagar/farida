@@ -77,13 +77,15 @@ const BodyForm: FC<Props> = ({
         register={register}
         minLength={6}
         errors={errors.nama}
-        addClass="col-span-4"
+        type="hidden"
+        addClass="col-span-4 hidden"
       />
       <InputTextDefault
         label="Password"
         name="password"
         register={register}
         minLength={6}
+        required
         errors={errors.password}
         addClass="col-span-4"
       />

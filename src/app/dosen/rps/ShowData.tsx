@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import useRps from "@/stores/crud/upload/Rps";
 import TableRps from "@/components/tables/TableRps";
+import useJadwalApiEdom from "@/stores/api/Jadwal";
 
 type DeleteProps = {
   id?: number | string;
@@ -28,34 +29,82 @@ const ShowData: FC<Props> = ({
 }) => {
   // dosen_id
   const dosen_id = Cookies.get("dosen_id") || "";
+  // store
   const { setShowRps, showRps } = useRps();
+  const { setJadwalByDosenFull, dtJadwal } = useJadwalApiEdom();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [dtShow, setDtShow] = useState<any>();
 
-  const fetchDataRps = async () => {
+  // memanggil data Jadwal
+  const fetchDataJadwal = async () => {
     if (tahunWatch && semesterWatch) {
-      const res = await setShowRps({
-        id: dosen_id,
+      await setJadwalByDosenFull({
         tahun: tahunWatch,
         semester: semesterWatch,
+        dosen_id,
       });
     }
     setIsLoading(false);
   };
   useEffect(() => {
-    fetchDataRps();
+    fetchDataJadwal();
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit, tahunWatch, semesterWatch]);
+  }, [page, limit, tahunWatch, semesterWatch, dosen_id]);
   // ketika search berubah
+
+  // memanggil data rps
+  const fetchRPS = async () => {
+    const jadwal_id: any[] = [];
+    dtJadwal?.data?.map((item: any) => {
+      jadwal_id.push(item.id);
+    });
+    // convert jadwal_id to string
+    const jadwal_id_string = jadwal_id.join(",");
+    if (jadwal_id.length > 0) {
+      await setShowRps({
+        id: dosen_id,
+        jadwal_id: jadwal_id_string,
+      });
+    }
+  };
+
+  // ketika data jadwal berubah
   useEffect(() => {
-    setPage(1);
-    fetchDataRps();
+    fetchRPS();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, [JSON.stringify(dtJadwal)]);
+
+  //  mengisi dtShow
+  const getDataShow = (dtJadwal: any, showRps: any) => {
+    console.log({ dtJadwal, showRps });
+    const dt = showRps
+      ?.map((item: any) => {
+        const matchedData = dtJadwal?.find(
+          (data: any) => data.id === item.jadwal_id
+        );
+        return matchedData ? { ...item, jadwal: matchedData } : null;
+      })
+      .filter((item: any) => item !== null);
+
+    const getData = {
+      data: dt,
+    };
+
+    setDtShow(getData);
+
+    setIsLoading(false);
+  };
+
+  // ketika dtRPS beruba
+  useEffect(() => {
+    getDataShow(dtJadwal?.data, showRps);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(showRps)]);
 
   // table
   const headTable = [
@@ -87,7 +136,7 @@ const ShowData: FC<Props> = ({
             <TableRps
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={showRps}
+              dataTable={dtShow.data}
               page={page}
               limit={limit}
               setEdit={setEdit}

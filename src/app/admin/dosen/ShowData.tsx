@@ -62,8 +62,6 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
       })
       .filter((item: any) => item !== null);
 
-    console.log({ dt });
-
     const loginPage = {
       current_page: dtDosenLogin?.current_page,
       last_page: dtDosenLogin?.last_page,

@@ -31,6 +31,7 @@ const ShowData: FC<Props> = ({ setEdit, search }) => {
   const semester = params.get("semester") || "";
   const tahun = params.get("tahun") || "";
   const fetchDataJadwal = async () => {
+    setIsLoading(true);
     const res = await setJadwal({
       page,
       limit,
