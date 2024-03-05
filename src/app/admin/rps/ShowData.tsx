@@ -6,6 +6,7 @@ import TablesDefault from "@/components/tables/TablesDefault";
 import React, { FC, useEffect, useState } from "react";
 import useRps from "@/stores/crud/upload/Rps";
 import { useSearchParams } from "next/navigation";
+import useJadwalApiEdom from "@/stores/api/Jadwal";
 
 type DeleteProps = {
   id?: number | string;
@@ -21,39 +22,82 @@ type Props = {
 const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
   // params
   const params = useSearchParams();
-  const { setRps, dtRps, setShowRps, showRps } = useRps();
+  const { setRps, dtRps } = useRps();
+  const { setByTahunSemester, dtJadwal } = useJadwalApiEdom();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [dtShow, setDtShow] = useState<any>();
+
   // get params semester dan tahun
   const semester = params.get("semester") || "";
   const tahun = params.get("tahun") || "";
-  const fetchDataRps = async () => {
-    const res = await setRps({
-      page,
-      limit,
-      search,
-      semester,
-      tahun,
-    });
-    setIsLoading(false);
+  // memanggil data Jadwal
+  const fetchDataJadwal = async () => {
+    setIsLoading(true);
+    if (semester && tahun) {
+      await setByTahunSemester({
+        tahun,
+        semester,
+        search,
+      });
+    }
   };
+
   useEffect(() => {
     if (semester && tahun) {
-      fetchDataRps();
+      fetchDataJadwal();
+    }
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [semester, tahun, search]);
+  const fetchRps = async () => {
+    await setRps({
+      page,
+      limit,
+    });
+  };
+  // call rps api
+  useEffect(() => {
+    fetchRps();
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, limit]);
+
+  //  mengisi dtShow
+  const getDataShow = () => {
+    const dt = dtRps?.data
+      ?.map((item: any) => {
+        const matchedData = dtJadwal?.find(
+          (data: any) => data.id === item.jadwal_id
+        );
+        return matchedData ? { ...item, jadwal: matchedData } : null;
+      })
+      .filter((item: any) => item !== null);
+
+    const getData = {
+      current_page: dtRps?.current_page,
+      last_page: dtRps?.last_page,
+      total: dtRps?.total,
+      per_page: dtRps?.per_page,
+      from: dtRps?.from,
+      to: dtRps?.to,
+      data: dt,
+    };
+    setDtShow(getData);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (dtRps?.data && dtJadwal.length > 0) {
+      getDataShow();
     }
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit, semester, tahun]);
-  // ketika search berubah
-  useEffect(() => {
-    setPage(1);
-    fetchDataRps();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, [dtJadwal, dtRps]);
 
   // table
   const headTable = [
@@ -87,7 +131,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
             <TablesDefault
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={dtRps.data}
+              dataTable={dtShow.data}
               page={page}
               limit={limit}
               setEdit={setEdit}
@@ -96,7 +140,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
               hapus={false}
             />
           </div>
-          {dtRps?.last_page > 1 && (
+          {dtShow?.last_page > 1 && (
             <div className="mt-4">
               <PaginationDefault
                 currentPage={dtRps?.current_page}

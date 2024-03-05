@@ -74,7 +74,7 @@ const Form = ({
 
   return (
     <ModalDefault
-      title="Form Dosen"
+      title={dtEdit ? dtEdit.jadwal.matkul.nama : "Upload RPS"}
       showModal={showModal}
       setShowModal={setShowModal}
     >

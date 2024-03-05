@@ -43,6 +43,7 @@ const useRps = create(
     setFormData: (row: any) => {
       const formData = new FormData();
       formData.append("jadwal_id", row.jadwal_id);
+      formData.append("status", row.status);
       formData.append("file", row.file);
       return formData;
     },
@@ -97,7 +98,7 @@ const useRps = create(
       }
     },
     addData: async (row) => {
-      const formData = row?.foto ? get().setFormData(row) : row;
+      const formData = row?.file ? get().setFormData(row) : row;
       try {
         const token = await useLogin.getState().setToken();
         const res = await crud({
@@ -153,8 +154,10 @@ const useRps = create(
       }
     },
     updateData: async (id, row) => {
+      const dosen = row.dosen;
       delete row.id;
-      const formData = row?.foto ? get().setFormData(row) : row;
+      delete row.dosen;
+      const formData = row?.file ? get().setFormData(row) : row;
       const token = await useLogin.getState().setToken();
       const headersImg = {
         "Content-Type": "multipart/form-data",
@@ -164,7 +167,7 @@ const useRps = create(
         const response = await crud({
           url: `/upload/rps/${id}`,
           method: "post",
-          headers: row?.foto
+          headers: row?.file
             ? headersImg
             : {
                 Authorization: `Bearer ${token}`,
@@ -174,13 +177,38 @@ const useRps = create(
             _method: "PUT",
           },
         });
-        const dosen_id = response?.data?.data?.jadwal?.dosen_id;
-        const jadwal = response?.data?.data?.jadwal;
-        await get().setShowRps(dosen_id);
-        // await get().setRps({
-        //   tahun: jadwal?.tahun,
-        //   semester: jadwal?.semester,
-        // });
+        // jika dosen yang mengubah data.
+        if (dosen) {
+          set((prevState: any) => ({
+            showRps: prevState.showRps.map((item: any) => {
+              if (item.id === id) {
+                return {
+                  ...item,
+                  ...response.data.data,
+                };
+              } else {
+                return item;
+              }
+            }),
+          }));
+        } else {
+          set((prevState: any) => ({
+            dtRps: {
+              last_page: prevState.dtRps.last_page,
+              current_page: prevState.dtRps.current_page,
+              data: prevState.dtRps.data.map((item: any) => {
+                if (item.id === id) {
+                  return {
+                    ...item,
+                    ...response.data.data,
+                  };
+                } else {
+                  return item;
+                }
+              }),
+            },
+          }));
+        }
         return {
           status: "berhasil update",
           data: response.data,

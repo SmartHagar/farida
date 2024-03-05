@@ -22,6 +22,7 @@ type Inputs = {
   jadwal_id: number | string;
   status: string;
   file: string;
+  dosen?: boolean;
 };
 
 const Form = ({
@@ -70,6 +71,7 @@ const Form = ({
     console.log({ row });
     // jika dtEdit tidak kosong maka update
     if (dtEdit) {
+      row.dosen = true;
       const { data } = await updateData(dtEdit.id, row);
       toastShow({
         event: data,
