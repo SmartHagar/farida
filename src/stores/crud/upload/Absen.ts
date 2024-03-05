@@ -8,30 +8,21 @@ import useLogin from "@/stores/auth/login";
 // crud absen
 
 type Props = {
+  id?: number | string;
   page?: number;
   limit?: number;
-  search?: string;
-  dosen_id?: string;
-  tahun?: string | number;
-  semester?: string;
+  jadwal_id?: number | string;
 };
 
 type Store = {
   dtAbsen: any;
   showAbsen: any;
-  setAbsen: ({
-    page = 1,
-    limit = 10,
-    search,
-    dosen_id,
-    tahun,
-    semester,
-  }: Props) => Promise<{
+  setAbsen: ({ page, limit }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
   }>;
-  setShowAbsen: (id: string | number) => Promise<{
+  setShowAbsen: ({ id, jadwal_id }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -57,14 +48,7 @@ const useAbsen = create(
     },
     dtAbsen: [],
     showAbsen: [],
-    setAbsen: async ({
-      page = 1,
-      limit = 10,
-      search,
-      dosen_id,
-      tahun,
-      semester,
-    }) => {
+    setAbsen: async ({ page = 1, limit = 10 }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
@@ -74,10 +58,6 @@ const useAbsen = create(
           params: {
             limit,
             page,
-            search,
-            dosen_id,
-            tahun,
-            semester,
           },
         });
         set((state) => ({ ...state, dtAbsen: response.data.data }));
@@ -92,15 +72,17 @@ const useAbsen = create(
         };
       }
     },
-    setShowAbsen: async (id) => {
+    setShowAbsen: async ({ id, jadwal_id }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
           method: "get",
           url: `/upload/absen/${id}`,
           headers: { Authorization: `Bearer ${token}` },
+          params: {
+            jadwal_id,
+          },
         });
-        console.log({ response });
         set((state) => ({ ...state, showAbsen: response.data.data }));
         return {
           status: "berhasil",
@@ -127,11 +109,7 @@ const useAbsen = create(
           data: formData,
         });
         set((prevState: any) => ({
-          dtAbsen: {
-            last_page: prevState.dtAbsen.last_page,
-            current_page: prevState.dtAbsen.current_page,
-            data: [res.data.data, ...prevState.dtAbsen.data],
-          },
+          showAbsen: [res.data.data, ...prevState.showAbsen],
         }));
         return {
           status: "berhasil tambah",
@@ -193,20 +171,16 @@ const useAbsen = create(
           },
         });
         set((prevState: any) => ({
-          dtAbsen: {
-            last_page: prevState.dtAbsen.last_page,
-            current_page: prevState.dtAbsen.current_page,
-            data: prevState.dtAbsen.data.map((item: any) => {
-              if (item.id === id) {
-                return {
-                  ...item,
-                  ...response.data.data,
-                };
-              } else {
-                return item;
-              }
-            }),
-          },
+          showAbsen: prevState.showAbsen.map((item: any) => {
+            if (item.id === id) {
+              return {
+                ...item,
+                ...response.data.data,
+              };
+            } else {
+              return item;
+            }
+          }),
         }));
         return {
           status: "berhasil update",
