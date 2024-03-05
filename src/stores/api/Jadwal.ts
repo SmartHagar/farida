@@ -41,6 +41,11 @@ type Store = {
     data?: {};
     error?: {};
   }>;
+  setShowJadwal: (id: number | string) => Promise<{
+    status: string;
+    data?: {};
+    error?: {};
+  }>;
 };
 
 const useJadwalApiEdom = create(
@@ -144,12 +149,28 @@ const useJadwalApiEdom = create(
           method: "get",
           url: `/jadwal/by-rps`,
           params: {
-            tahun,
-            semester,
             dosen_id,
           },
         });
         set((state) => ({ ...state, dtJadwal: response?.data }));
+        return {
+          status: "berhasil",
+          data: response.data,
+        };
+      } catch (error: any) {
+        return {
+          status: "error",
+          error: error.response.data,
+        };
+      }
+    },
+    setShowJadwal: async (id) => {
+      try {
+        const response = await api_edom({
+          method: "get",
+          url: `/jadwal/${id}`,
+        });
+        set((state) => ({ ...state, dtJadwal: response.data.data }));
         return {
           status: "berhasil",
           data: response.data,

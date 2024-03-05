@@ -36,17 +36,6 @@ const BodyForm: FC<Props> = ({
   myFile,
   setMyFile,
 }) => {
-  const { setProdiAll, dtProdi } = useProdiApi();
-  // memanggil data prodi
-  const fetchDataProdi = async ({ search }: any) => {
-    await setProdiAll({
-      search,
-    });
-  };
-  useEffect(() => {
-    fetchDataProdi({});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showModal]);
   // menghitung kebelakang
   function subDays(date: Date, days: number) {
     return new Date(date.getTime() - days * 24 * 60 * 60 * 1000);

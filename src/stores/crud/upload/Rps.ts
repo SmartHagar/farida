@@ -12,6 +12,7 @@ type Props = {
   page?: number;
   limit?: number;
   jadwal_id?: number | string;
+  status?: string;
 };
 
 type Store = {
@@ -22,7 +23,7 @@ type Store = {
     data?: {};
     error?: {};
   }>;
-  setShowRps: ({ id, jadwal_id }: Props) => Promise<{
+  setShowRps: ({ id, status, jadwal_id }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -73,7 +74,7 @@ const useRps = create(
         };
       }
     },
-    setShowRps: async ({ id, jadwal_id }) => {
+    setShowRps: async ({ id, jadwal_id, status }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
@@ -82,9 +83,9 @@ const useRps = create(
           headers: { Authorization: `Bearer ${token}` },
           params: {
             jadwal_id,
+            status,
           },
         });
-        console.log({ response });
         set((state) => ({ ...state, showRps: response.data.data }));
         return {
           status: "berhasil",

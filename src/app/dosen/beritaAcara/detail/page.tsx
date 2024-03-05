@@ -13,6 +13,7 @@ import useDetBeritaAcara from "@/stores/crud/DetBeritaAcara";
 import { useSearchParams } from "next/navigation";
 import { BASE_URL } from "@/services/baseURL";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
+import useJadwalApiEdom from "@/stores/api/Jadwal";
 
 // type setDelete
 type Delete = {
@@ -22,12 +23,13 @@ type Delete = {
 
 const Dosen = () => {
   // store
-  const { removeData, setShowDetBeritaAcara, showDetBeritaAcara } =
-    useDetBeritaAcara();
+  const { removeData, showDetBeritaAcara } = useDetBeritaAcara();
+  const { setShowJadwal, dtJadwal } = useJadwalApiEdom();
   // get search params
   const params = useSearchParams();
   // get berita_acara_id
   const berita_acara_id = params.get("berita_acara_id") || "";
+  const jadwal_id = params.get("jadwal_id") || "";
   // state
   const [showModal, setShowModal] = useState(false);
   const [showDelete, setShowDelete] = useState<boolean>(false);
@@ -59,12 +61,12 @@ const Dosen = () => {
 
   // memanggil showDetBeritaAcara
   useEffect(() => {
-    setShowDetBeritaAcara(berita_acara_id);
+    setShowJadwal(jadwal_id);
 
     return () => {};
-  }, [berita_acara_id, setShowDetBeritaAcara]);
+  }, [jadwal_id, setShowJadwal]);
 
-  const jadwal = showDetBeritaAcara?.jadwal;
+  const jadwal = dtJadwal;
 
   const cetak = () => {
     setLoadPdf(true);

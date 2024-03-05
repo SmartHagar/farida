@@ -1,6 +1,6 @@
 /** @format */
 "use client";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import useRps from "@/stores/crud/upload/Rps";
@@ -9,6 +9,8 @@ import useJadwalApi from "@/stores/api/Jadwal";
 import TablesDefault from "@/components/tables/TablesDefault";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import Link from "next/link";
+import useJadwalApiEdom from "@/stores/api/Jadwal";
+import useBeritaAcaraApi from "@/stores/api/BeritaAcara";
 
 type DeleteProps = {
   id?: number | string;
@@ -32,38 +34,76 @@ const ShowData: FC<Props> = ({
 }) => {
   // dosen_id
   const dosen_id = Cookies.get("dosen_id") || "";
-  const { setJadwalByRps, dtJadwal } = useJadwalApi();
+  // store
+  const { setBeritaAcaraByJadwal, dtBeritaAcara } = useBeritaAcaraApi();
+  const { setJadwalByDosenFull, dtJadwal } = useJadwalApiEdom();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [dtShow, setDtShow] = useState<any>();
 
-  const fetchDataRps = async () => {
-    const res = await setJadwalByRps({
+  const fetchDataJadwal = async () => {
+    setIsLoading(true);
+    const res = await setJadwalByDosenFull({
       dosen_id,
-      page,
-      limit,
       search,
       tahun: tahunWatch,
       semester: semesterWatch,
     });
     setIsLoading(false);
   };
-  useEffect(() => {
-    if (tahunWatch && semesterWatch) {
-      fetchDataRps();
+  // memo fetch data jadwal
+  useMemo(
+    () => tahunWatch && semesterWatch && fetchDataJadwal(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [dosen_id, tahunWatch, semesterWatch]
+  );
+  // memanggil data rps
+  const fetchBeritaAcara = async () => {
+    const jadwal_id: any[] = [];
+    dtJadwal?.data?.map((item: any) => {
+      jadwal_id.push(item.id);
+    });
+    // convert jadwal_id to string
+    const jadwal_id_string = jadwal_id.join(",");
+    if (jadwal_id.length > 0) {
+      await setBeritaAcaraByJadwal({
+        jadwal_id: jadwal_id_string,
+      });
     }
-
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit, tahunWatch, semesterWatch]);
-  // ketika search berubah
+  };
+  // ketika data jadwal berubah
   useEffect(() => {
-    setPage(1);
-    fetchDataRps();
+    fetchBeritaAcara();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, [JSON.stringify(dtJadwal)]);
+  //  mengisi dtShow
+  const getDataShow = (dtJadwal: any, dtBeritaAcara: any) => {
+    console.log({ dtJadwal, dtBeritaAcara });
+    const dt = dtBeritaAcara
+      ?.map((item: any) => {
+        const matchedData = dtJadwal?.find(
+          (data: any) => data.id === item.jadwal_id
+        );
+        return matchedData ? { ...item, jadwal: matchedData } : null;
+      })
+      .filter((item: any) => item !== null);
 
+    const getData = {
+      data: dt,
+    };
+
+    setDtShow(getData);
+
+    setIsLoading(false);
+  };
+
+  // ketika dtRPS beruba
+  useEffect(() => {
+    getDataShow(dtJadwal?.data, dtBeritaAcara?.data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(dtBeritaAcara)]);
   // table
   const headTable = [
     "No",
@@ -73,13 +113,19 @@ const ShowData: FC<Props> = ({
     "JML. SKS",
     "Aksi",
   ];
-  const tableBodies = ["hari", "matkul.nama", "matkul.kode", "matkul.sks"];
+  const tableBodies = [
+    "jadwal.hari",
+    "jadwal.matkul.nama",
+    "jadwal.matkul.kode",
+    "jadwal.matkul.sks",
+  ];
 
   const costume = (row: any) => {
     return (
       <Link
-        href={`/dosen/beritaAcara/detail?berita_acara_id=${row.berita_acara.id}`}
+        href={`/dosen/beritaAcara/detail?berita_acara_id=${row?.id}&jadwal_id=${row?.jadwal_id}`}
         title="Lihat Detail"
+        target="_blank"
       >
         <BsFillInfoCircleFill />
       </Link>
@@ -96,7 +142,7 @@ const ShowData: FC<Props> = ({
             <TablesDefault
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={dtJadwal?.data}
+              dataTable={dtShow?.data}
               page={page}
               limit={limit}
               setEdit={setEdit}

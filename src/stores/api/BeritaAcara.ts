@@ -5,17 +5,12 @@ import { devtools } from "zustand/middleware";
 import { api } from "@/services/baseURL";
 // api beritaAcara
 type Props = {
-  page?: number;
-  limit?: number;
-  search?: string;
-  tahun?: string | number;
-  semester?: string;
-  dosen_id?: string;
+  jadwal_id?: number | string;
 };
 
 type Store = {
   dtBeritaAcara: any;
-  setBeritaAcaraByDosen: ({ tahun, semester, dosen_id }: Props) => Promise<{
+  setBeritaAcaraByJadwal: ({ jadwal_id }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -25,15 +20,13 @@ type Store = {
 const useBeritaAcaraApi = create(
   devtools<Store>((set, get) => ({
     dtBeritaAcara: [],
-    setBeritaAcaraByDosen: async ({ tahun, semester, dosen_id }) => {
+    setBeritaAcaraByJadwal: async ({ jadwal_id }) => {
       try {
         const response = await api({
           method: "get",
-          url: `/berita-acara/by-dosen`,
+          url: `/berita-acara/byJadwal`,
           params: {
-            tahun,
-            semester,
-            dosen_id,
+            jadwal_id,
           },
         });
         set((state) => ({ ...state, dtBeritaAcara: response?.data }));
