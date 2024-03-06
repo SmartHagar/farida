@@ -8,30 +8,21 @@ import useLogin from "@/stores/auth/login";
 // crud nilai
 
 type Props = {
+  id?: number | string;
   page?: number;
   limit?: number;
-  search?: string;
-  dosen_id?: string;
-  tahun?: string | number;
-  semester?: string;
+  jadwal_id?: number | string;
 };
 
 type Store = {
   dtNilai: any;
   showNilai: any;
-  setNilai: ({
-    page = 1,
-    limit = 10,
-    search,
-    dosen_id,
-    tahun,
-    semester,
-  }: Props) => Promise<{
+  setNilai: ({ page, limit }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
   }>;
-  setShowNilai: (id: string | number) => Promise<{
+  setShowNilai: ({ id, jadwal_id }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -57,14 +48,7 @@ const useNilai = create(
     },
     dtNilai: [],
     showNilai: [],
-    setNilai: async ({
-      page = 1,
-      limit = 10,
-      search,
-      dosen_id,
-      tahun,
-      semester,
-    }) => {
+    setNilai: async ({ page = 1, limit = 10 }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
@@ -74,10 +58,6 @@ const useNilai = create(
           params: {
             limit,
             page,
-            search,
-            dosen_id,
-            tahun,
-            semester,
           },
         });
         set((state) => ({ ...state, dtNilai: response.data.data }));
@@ -92,15 +72,17 @@ const useNilai = create(
         };
       }
     },
-    setShowNilai: async (id) => {
+    setShowNilai: async ({ id, jadwal_id }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
           method: "get",
           url: `/upload/nilai/${id}`,
           headers: { Authorization: `Bearer ${token}` },
+          params: {
+            jadwal_id,
+          },
         });
-        console.log({ response });
         set((state) => ({ ...state, showNilai: response.data.data }));
         return {
           status: "berhasil",
@@ -127,11 +109,7 @@ const useNilai = create(
           data: formData,
         });
         set((prevState: any) => ({
-          dtNilai: {
-            last_page: prevState.dtNilai.last_page,
-            current_page: prevState.dtNilai.current_page,
-            data: [res.data.data, ...prevState.dtNilai.data],
-          },
+          showNilai: [res.data.data, ...prevState.showNilai],
         }));
         return {
           status: "berhasil tambah",
@@ -153,11 +131,7 @@ const useNilai = create(
           headers: { Authorization: `Bearer ${token}` },
         });
         set((prevState: any) => ({
-          dtNilai: {
-            last_page: prevState.dtNilai.last_page,
-            current_page: prevState.dtNilai.current_page,
-            data: prevState.dtNilai.data.filter((item: any) => item.id !== id),
-          },
+          showNilai: prevState.showNilai.filter((item: any) => item.id !== id),
         }));
         return {
           status: "berhasil hapus",
@@ -193,20 +167,16 @@ const useNilai = create(
           },
         });
         set((prevState: any) => ({
-          dtNilai: {
-            last_page: prevState.dtNilai.last_page,
-            current_page: prevState.dtNilai.current_page,
-            data: prevState.dtNilai.data.map((item: any) => {
-              if (item.id === id) {
-                return {
-                  ...item,
-                  ...response.data.data,
-                };
-              } else {
-                return item;
-              }
-            }),
-          },
+          showNilai: prevState.showNilai.map((item: any) => {
+            if (item.id === id) {
+              return {
+                ...item,
+                ...response.data.data,
+              };
+            } else {
+              return item;
+            }
+          }),
         }));
         return {
           status: "berhasil update",

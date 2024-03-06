@@ -1,10 +1,11 @@
 /** @format */
 "use client";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import TablesDefault from "@/components/tables/TablesDefault";
 import useNilai from "@/stores/crud/upload/Nilai";
+import useJadwalApiEdom from "@/stores/api/Jadwal";
 
 type DeleteProps = {
   id?: number | string;
@@ -28,37 +29,80 @@ const ShowData: FC<Props> = ({
 }) => {
   // dosen_id
   const dosen_id = Cookies.get("dosen_id") || "";
-  const { setNilai, dtNilai } = useNilai();
+  // store
+  const { setShowNilai, showNilai } = useNilai();
+  const { setJadwalByDosenFull, dtJadwal } = useJadwalApiEdom();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [dtShow, setDtShow] = useState<any>();
 
-  const fetchDataNilai = async () => {
-    const res = await setNilai({
+  const fetchDataJadwal = async () => {
+    setIsLoading(true);
+    const res = await setJadwalByDosenFull({
       dosen_id,
-      page,
-      limit,
       search,
       tahun: tahunWatch,
       semester: semesterWatch,
     });
     setIsLoading(false);
   };
-  useEffect(() => {
-    if (tahunWatch && semesterWatch) {
-      fetchDataNilai();
-    }
+  // memo fetch data jadwal
+  useMemo(
+    () => tahunWatch && semesterWatch && fetchDataJadwal(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [dosen_id, tahunWatch, semesterWatch]
+  );
 
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit, tahunWatch, semesterWatch]);
-  // ketika search berubah
+  // memanggil data rps
+  const fetchRPS = async () => {
+    const jadwal_id: any[] = [];
+    dtJadwal?.data?.map((item: any) => {
+      jadwal_id.push(item.id);
+    });
+    // convert jadwal_id to string
+    const jadwal_id_string = jadwal_id.join(",");
+    if (jadwal_id.length > 0) {
+      await setShowNilai({
+        id: dosen_id,
+        jadwal_id: jadwal_id_string,
+      });
+    }
+  };
+
+  // ketika data jadwal berubah
   useEffect(() => {
-    setPage(1);
-    fetchDataNilai();
+    fetchRPS();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, [JSON.stringify(dtJadwal)]);
+
+  //  mengisi dtShow
+  const getDataShow = (dtJadwal: any, showNilai: any) => {
+    console.log({ dtJadwal, showNilai });
+    const dt = showNilai
+      ?.map((item: any) => {
+        const matchedData = dtJadwal?.find(
+          (data: any) => data.id === item.jadwal_id
+        );
+        return matchedData ? { ...item, jadwal: matchedData } : null;
+      })
+      .filter((item: any) => item !== null);
+
+    const getData = {
+      data: dt,
+    };
+
+    setDtShow(getData);
+
+    setIsLoading(false);
+  };
+
+  // ketika dtRPS beruba
+  useEffect(() => {
+    getDataShow(dtJadwal?.data, showNilai);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(showNilai)]);
 
   // table
   const headTable = [
@@ -88,7 +132,7 @@ const ShowData: FC<Props> = ({
             <TablesDefault
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={dtNilai?.data}
+              dataTable={dtShow?.data}
               page={page}
               limit={limit}
               setEdit={setEdit}

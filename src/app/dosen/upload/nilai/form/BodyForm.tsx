@@ -4,10 +4,10 @@
 import Cookies from "js-cookie";
 import InputFile from "@/components/input/InputFile";
 import SelectFromDb from "@/components/select/SelectFromDB";
-import useJadwalApi from "@/stores/api/Jadwal";
 import React, { FC, useEffect } from "react";
 
 import "react-datepicker/dist/react-datepicker.css";
+import useJadwalApiEdom from "@/stores/api/Jadwal";
 
 type Props = {
   register: any;
@@ -37,10 +37,10 @@ const BodyForm: FC<Props> = ({
   semesterWatch,
 }) => {
   const dosen_id = Cookies.get("dosen_id");
-  const { setJadwalByDosen, dtJadwal } = useJadwalApi();
+  const { setJadwalByDosenFull, dtJadwal } = useJadwalApiEdom();
   // memanggil data prodi
   const fetchDataJadwal = async () => {
-    await setJadwalByDosen({
+    await setJadwalByDosenFull({
       tahun: tahunWatch,
       semester: semesterWatch,
       dosen_id,
@@ -70,7 +70,7 @@ const BodyForm: FC<Props> = ({
       )}
 
       <InputFile
-        label="RPS"
+        label="Nilai"
         name="file"
         register={register}
         accept="application/pdf"

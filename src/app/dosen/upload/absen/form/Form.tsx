@@ -86,7 +86,7 @@ const Form = ({
 
   return (
     <ModalDefault
-      title="Form Dosen"
+      title="Form Absen"
       showModal={showModal}
       setShowModal={setShowModal}
     >
