@@ -65,7 +65,6 @@ const ShowData: FC<Props> = ({
       jadwal_id.push(item.id);
     });
 
-    console.log({ jadwal_id });
     // convert jadwal_id to string
     const jadwal_id_string = jadwal_id.join(",");
     if (jadwal_id.length > 0) {
