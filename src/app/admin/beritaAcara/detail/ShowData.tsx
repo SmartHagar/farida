@@ -13,7 +13,7 @@ type DeleteProps = {
 };
 
 type Props = {
-  setDelete?: ({ id, isDelete }: DeleteProps) => void;
+  setDelete: ({ id, isDelete }: DeleteProps) => void;
   setEdit: (row: any) => void;
   search: string;
 };
