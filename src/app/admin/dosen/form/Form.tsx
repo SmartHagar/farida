@@ -19,6 +19,7 @@ type Inputs = {
   id: number | string;
   dosen_id: number | string;
   nama: string;
+  password: string;
 };
 
 const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
@@ -39,6 +40,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
     setValue("id", "");
     setValue("dosen_id", "");
     setValue("nama", "");
+    setValue("password", "");
   };
 
   // data edit
@@ -47,6 +49,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
       setValue("id", dtEdit.id);
       setValue("dosen_id", dtEdit.dosen_id);
       setValue("nama", dtEdit.nama);
+      setValue("password", dtEdit.password);
     } else {
       resetForm();
     }

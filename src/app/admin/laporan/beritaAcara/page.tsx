@@ -63,15 +63,41 @@ const BeritaAcara = () => {
 
   const tahunWatch = watch("tahun");
   const semesterWatch = watch("semester");
-
+  // set tahun dan semester
+  const tahunParams = params.get("tahun");
+  const semesterParams = params.get("semester");
   useEffect(() => {
-    const tahun = new Date().getFullYear();
-    const semester = "Genap";
-    setValue("tahun", tahun);
-    setValue("semester", semester);
+    if (!tahunParams && !semesterParams) {
+      const tahun = new Date().getFullYear();
+      const semester = "Genap";
+      setValue("tahun", tahun);
+      setValue("semester", semester);
+      // add parameter to url
+      router.push(
+        "/admin/laporan/beritaAcara?tahun=" + tahun + "&semester=" + semester
+      );
+    } else {
+      setValue("tahun", parseInt(tahunParams || ""));
+      setValue("semester", semesterParams);
+    }
+
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (tahunWatch && semesterWatch) {
+      router.push(
+        "/admin/laporan/beritaAcara?tahun=" +
+          tahunWatch +
+          "&semester=" +
+          semesterWatch
+      );
+    }
+
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tahunWatch, semesterWatch]);
 
   return (
     <div className="flex flex-col h-full">

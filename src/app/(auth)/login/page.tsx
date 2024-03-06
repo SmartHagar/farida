@@ -33,7 +33,10 @@ const Login = (props: Props) => {
       if (!cekAuth?.error) {
         const role = cekAuth?.data?.data?.user?.role;
         // redirect to login
-        router.push(`/${role}`);
+        if (role !== "dosen") {
+          return router.push("/admin");
+        }
+        return router.push("/dosen");
       }
     }
     setIsLoading(false);
@@ -64,7 +67,11 @@ const Login = (props: Props) => {
       const { data } = res;
       Cookies.set("token", data.token);
       Cookies.set("role", data.role);
-      router.push(data.role);
+      Cookies.set("email", data.email);
+      if (data.role !== "dosen") {
+        return router.push("/admin");
+      }
+      return router.push("/dosen");
     }
     setTimeout(() => {
       setIsLoading(false);

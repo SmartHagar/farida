@@ -27,9 +27,10 @@ const Layout = (props: Props) => {
       route.push("/login");
     } else {
       const role = Cookies.get("role");
-      if (role !== "admin") {
-        route.push(`/${role}`);
+      if (role !== "dosen") {
+        return;
       }
+      route.push(`/dosen`);
     }
     return res;
   };
@@ -49,7 +50,7 @@ const Layout = (props: Props) => {
 
   useEffect(() => {
     loadData();
-    console.log("pertama render");
+    console.log("pertama render admin");
     return () => {};
   }, []);
 

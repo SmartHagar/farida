@@ -9,7 +9,7 @@ type Props = {
 };
 
 const HeaderDosen: FC<Props> = ({ user }) => {
-  Cookies.set("dosen_id", user?.id);
+  Cookies.set("dosen_id", user?.dosen_login?.dosen_id);
   const pathname = usePathname();
   return (
     <div className="lg:backdrop-blur-sm lg:py-2 pl-7">
