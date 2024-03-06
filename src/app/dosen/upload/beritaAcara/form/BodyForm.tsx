@@ -5,9 +5,10 @@ import Cookies from "js-cookie";
 import InputFile from "@/components/input/InputFile";
 import SelectFromDb from "@/components/select/SelectFromDB";
 import useBeritaAcaraApi from "@/stores/api/BeritaAcara";
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 
 import "react-datepicker/dist/react-datepicker.css";
+import useJadwalApiEdom from "@/stores/api/Jadwal";
 
 type Props = {
   register: any;
@@ -37,27 +38,73 @@ const BodyForm: FC<Props> = ({
   semesterWatch,
 }) => {
   const dosen_id = Cookies.get("dosen_id");
-  const { setBeritaAcaraByDosen, dtBeritaAcara } = useBeritaAcaraApi();
-  // memanggil data prodi
-  const fetchDataBeritaAcara = async () => {
-    await setBeritaAcaraByDosen({
+  const { setJadwalByDosenFull, dtJadwal } = useJadwalApiEdom();
+  const { setBeritaAcaraByJadwal, dtBeritaAcara } = useBeritaAcaraApi();
+  // state
+  const [dtShow, setDtShow] = useState<any>();
+  const fetchDataJadwal = async () => {
+    const res = await setJadwalByDosenFull({
+      dosen_id,
       tahun: tahunWatch,
       semester: semesterWatch,
-      dosen_id,
     });
   };
-  useEffect(() => {
-    fetchDataBeritaAcara();
+  // memo fetch data jadwal
+  useMemo(
+    () => tahunWatch && semesterWatch && fetchDataJadwal(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showModal]);
+    [dosen_id, tahunWatch, semesterWatch, showModal]
+  );
+  // memanggil data rps
+  const fetchBeritaAcara = async () => {
+    const jadwal_id: any[] = [];
+    dtJadwal?.data?.map((item: any) => {
+      jadwal_id.push(item.id);
+    });
+    // convert jadwal_id to string
+    const jadwal_id_string = jadwal_id.join(",");
+    if (jadwal_id.length > 0) {
+      await setBeritaAcaraByJadwal({
+        jadwal_id: jadwal_id_string,
+      });
+    }
+  };
+  // ketika data jadwal berubah
+  useEffect(() => {
+    fetchBeritaAcara();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(dtJadwal)]);
+  //  mengisi dtShow
+  const getDataShow = (dtJadwal: any, dtBeritaAcara: any) => {
+    const dt = dtBeritaAcara
+      ?.map((item: any) => {
+        const matchedData = dtJadwal?.find(
+          (data: any) => data.id === item.jadwal_id
+        );
+        return matchedData ? { ...item, jadwal: matchedData } : null;
+      })
+      .filter((item: any) => item !== null);
+
+    const getData = {
+      data: dt,
+    };
+
+    setDtShow(getData);
+  };
+
+  // ketika dtRPS beruba
+  useEffect(() => {
+    getDataShow(dtJadwal?.data, dtBeritaAcara?.data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(dtBeritaAcara)]);
   return (
     <>
-      {dtBeritaAcara?.data && (
+      {dtShow?.data && (
         <SelectFromDb
           label="Jadwal"
           placeholder="Pilih Jadwal"
           name="berita_acara_id"
-          dataDb={dtBeritaAcara?.data}
+          dataDb={dtShow?.data}
           body={[
             "id",
             "jadwal.hari",

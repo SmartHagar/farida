@@ -56,7 +56,7 @@ const ShowData: FC<Props> = ({
   );
 
   // memanggil data rps
-  const fetchRPS = async () => {
+  const fetchNilai = async () => {
     const jadwal_id: any[] = [];
     dtJadwal?.data?.map((item: any) => {
       jadwal_id.push(item.id);
@@ -73,7 +73,7 @@ const ShowData: FC<Props> = ({
 
   // ketika data jadwal berubah
   useEffect(() => {
-    fetchRPS();
+    fetchNilai();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(dtJadwal)]);
 

@@ -8,23 +8,22 @@ import useLogin from "@/stores/auth/login";
 // crud beritaAcara
 
 type Props = {
+  id?: number | string;
   page?: number;
   limit?: number;
-  search?: string;
-  dosen_id?: string;
-  tahun?: string | number;
-  semester?: string;
+  berita_acara_id?: number | string;
+  jadwal_id?: number | string;
 };
 
 type Store = {
   dtBeritaAcara: any;
   showBeritaAcara: any;
-  setBeritaAcara: ({ page, limit, search, dosen_id }: Props) => Promise<{
+  setBeritaAcara: ({ page, limit }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
   }>;
-  setShowBeritaAcara: (id: string | number) => Promise<{
+  setShowBeritaAcara: ({ id, jadwal_id }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -50,14 +49,7 @@ const useBeritaAcara = create(
     },
     dtBeritaAcara: [],
     showBeritaAcara: [],
-    setBeritaAcara: async ({
-      page = 1,
-      limit = 10,
-      search,
-      dosen_id,
-      tahun,
-      semester,
-    }) => {
+    setBeritaAcara: async ({ page = 1, limit = 10 }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
@@ -67,10 +59,6 @@ const useBeritaAcara = create(
           params: {
             limit,
             page,
-            search,
-            dosen_id,
-            tahun,
-            semester,
           },
         });
         set((state) => ({ ...state, dtBeritaAcara: response.data.data }));
@@ -85,15 +73,17 @@ const useBeritaAcara = create(
         };
       }
     },
-    setShowBeritaAcara: async (id) => {
+    setShowBeritaAcara: async ({ id, jadwal_id }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
           method: "get",
           url: `/upload/berita-acara/${id}`,
           headers: { Authorization: `Bearer ${token}` },
+          params: {
+            jadwal_id,
+          },
         });
-        console.log({ response });
         set((state) => ({ ...state, showBeritaAcara: response.data.data }));
         return {
           status: "berhasil",
@@ -119,13 +109,11 @@ const useBeritaAcara = create(
           },
           data: formData,
         });
+
         set((prevState: any) => ({
-          dtBeritaAcara: {
-            last_page: prevState.dtBeritaAcara.last_page,
-            current_page: prevState.dtBeritaAcara.current_page,
-            data: [res.data.data, ...prevState.dtBeritaAcara.data],
-          },
+          showBeritaAcara: [res.data.data, ...prevState.showBeritaAcara],
         }));
+
         return {
           status: "berhasil tambah",
           data: res.data,
@@ -146,13 +134,9 @@ const useBeritaAcara = create(
           headers: { Authorization: `Bearer ${token}` },
         });
         set((prevState: any) => ({
-          dtBeritaAcara: {
-            last_page: prevState.dtBeritaAcara.last_page,
-            current_page: prevState.dtBeritaAcara.current_page,
-            data: prevState.dtBeritaAcara.data.filter(
-              (item: any) => item.id !== id
-            ),
-          },
+          showBeritaAcara: prevState.showBeritaAcara.filter(
+            (item: any) => item.id !== id
+          ),
         }));
         return {
           status: "berhasil hapus",
@@ -188,20 +172,16 @@ const useBeritaAcara = create(
           },
         });
         set((prevState: any) => ({
-          dtBeritaAcara: {
-            last_page: prevState.dtBeritaAcara.last_page,
-            current_page: prevState.dtBeritaAcara.current_page,
-            data: prevState.dtBeritaAcara.data.map((item: any) => {
-              if (item.id === id) {
-                return {
-                  ...item,
-                  ...response.data.data,
-                };
-              } else {
-                return item;
-              }
-            }),
-          },
+          showBeritaAcara: prevState.showBeritaAcara.map((item: any) => {
+            if (item.id === id) {
+              return {
+                ...item,
+                ...response.data.data,
+              };
+            } else {
+              return item;
+            }
+          }),
         }));
         return {
           status: "berhasil update",
