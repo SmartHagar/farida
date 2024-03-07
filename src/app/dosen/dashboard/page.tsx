@@ -1,7 +1,7 @@
 /** @format */
 "use client";
 import useMatkulApi from "@/stores/api/Matkul";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { config } from "@react-spring/web";
 import {
   BsFillBookFill,
@@ -12,6 +12,7 @@ import AnimatedNumber from "@/components/animated/AnimatedNumber";
 import Kelengkapan from "./kelengkapan/Kelengkapan";
 import useRuanganApiEdom from "@/stores/api/Ruangan";
 import useDosenApiEdom from "@/stores/api/Dosen";
+import { useForm } from "react-hook-form";
 
 type Props = {};
 
@@ -19,7 +20,9 @@ const Dashboard = (props: Props) => {
   const { setRuanganAll, dtRuangan } = useRuanganApiEdom();
   const { setMatkulAll, dtMatkul } = useMatkulApi();
   const { setDosenAll, dtDosenAll } = useDosenApiEdom();
-
+  // state
+  const [tahunWatch, setTahunWatch] = useState<number | string>("");
+  const [semesterWatch, setSemesterWatch] = useState<string>("");
   useEffect(() => {
     setRuanganAll({
       search: "",
@@ -31,6 +34,25 @@ const Dashboard = (props: Props) => {
       search: "",
     });
   }, []);
+
+  // hook form
+  const {
+    register,
+    control,
+    formState: { errors },
+    watch,
+    setValue,
+  } = useForm();
+
+  useEffect(() => {
+    const tahun = new Date().getFullYear();
+    const semester = "Genap";
+    setTahunWatch(tahun);
+    setSemesterWatch(semester);
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="h-full w-full overflow-auto">
       <div className="mb-4">
@@ -39,7 +61,9 @@ const Dashboard = (props: Props) => {
           (Sistem Informasi Perkuliahan Fakultas Sains & Teknologi)
         </p>
       </div>
-      <>{/* <Kelengkapan /> */}</>
+      <>
+        <Kelengkapan tahun={tahunWatch} semester={semesterWatch} />
+      </>
       <div className="flex gap-4 flex-wrap">
         <div className="flex flex-col bg-primary/10 p-4 px-8 rounded-md gap-1">
           {/* icon */}

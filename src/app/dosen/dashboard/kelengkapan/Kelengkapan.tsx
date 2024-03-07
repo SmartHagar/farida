@@ -2,78 +2,171 @@
 "use client";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import PaginationDefault from "@/components/pagination/PaginationDefault";
-import TablesDefault from "@/components/tables/TablesDefault";
-import useKelengkapanApi from "@/stores/api/Kelengkapan";
 import { usePathname, useSearchParams } from "next/navigation";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 import TableCostume from "./TableCostume";
 import Cookies from "js-cookie";
+import useAbsen from "@/stores/crud/upload/Absen";
+import useNilai from "@/stores/crud/upload/Nilai";
+import useBeritaAcara from "@/stores/crud/upload/BeritaAcara";
+import useRps from "@/stores/crud/upload/Rps";
+import useJadwalApiEdom from "@/stores/api/Jadwal";
+import {
+  fetchAbsen,
+  fetchBeritaAcara,
+  fetchNilai,
+  fetchRPS,
+} from "@/app/admin/kelengkapan/fetchData";
 
-type Props = {};
+type Props = {
+  tahun: number | string;
+  semester: string;
+};
 
-const Kelengkapan: FC<Props> = ({}) => {
+const Kelengkapan: FC<Props> = ({ tahun, semester }) => {
   // params
   const params = useSearchParams();
   // pathname
   const pathname = usePathname();
   // store
-  const { setKelengkapan, dtKelengkapan } = useKelengkapanApi();
+  const { setShowAbsen, showAbsen } = useAbsen();
+  const { setShowNilai, showNilai } = useNilai();
+  const { setShowBeritaAcara, showBeritaAcara } = useBeritaAcara();
+  const { setShowRps, showRps } = useRps();
+  const { setByTahunSemester, dtJadwal } = useJadwalApiEdom();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>("");
-  const [tahunWatch, setTahunWatch] = useState<number | string>("");
-  const [semesterWatch, setSemesterWatch] = useState<string>("");
   const [lengkap, setLengkap] = useState<boolean>(false);
+  const [dtShow, setDtShow] = useState<any>();
   // dosen_id
   const dosen_id = Cookies.get("dosen_id") || "";
-  // atur tahun dan semester
-  useEffect(() => {
-    const tahun = new Date().getFullYear();
-    const semester = "Genap";
-    setTahunWatch(tahun);
-    setSemesterWatch(semester);
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  // ambil data jadwal
+  // fetch data jadwal
   const fetchDataJadwal = async () => {
-    if (tahunWatch && tahunWatch) {
-      const res = await setKelengkapan({
-        page,
-        limit,
-        search,
-        semester: semesterWatch,
-        tahun: tahunWatch,
-        dosen_id,
-      });
-    }
+    setIsLoading(true);
+    const res = await setByTahunSemester({
+      search,
+      tahun,
+      semester,
+      dosen_id,
+    });
     setIsLoading(false);
   };
-  useEffect(() => {
-    fetchDataJadwal();
-    return () => {};
+  // memo fetch data jadwal
+  useMemo(
+    () => tahun && semester && fetchDataJadwal(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit, params, tahunWatch, semesterWatch, pathname]);
+    [tahun, semester, dosen_id]
+  );
+
+  // ketika data jadwal berubah
+  useEffect(() => {
+    fetchAbsen({ dtJadwal, setShowAbsen });
+    fetchNilai({ dtJadwal, setShowNilai });
+    fetchBeritaAcara({ dtJadwal, setShowBeritaAcara });
+    fetchRPS({ dtJadwal, setShowRps });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(dtJadwal)]);
+
+  //  mengisi dtShow
+  const getDataShow = (
+    dtJadwal: any,
+    showAbsen: any,
+    showNilai: any,
+    showBeritaAcara: any,
+    showRps: any
+  ) => {
+    setIsLoading(true);
+    const dt = dtJadwal
+      ?.map((item: any) => {
+        const matchAbsen = showAbsen?.find(
+          (data: any) => parseInt(data.jadwal_id) === item.id
+        );
+        const matchNilai = showNilai?.find(
+          (data: any) => parseInt(data.jadwal_id) === item.id
+        );
+        const matchBeritaAcara = showBeritaAcara?.find(
+          (data: any) => parseInt(data.berita_acara.jadwal_id) === item.id
+        );
+        const matchRps = showRps?.find(
+          (data: any) => parseInt(data.jadwal_id) === item.id
+        );
+        // Jika keduanya ditemukan, kembalikan keduanya
+        if (matchNilai || matchAbsen || matchBeritaAcara || matchRps) {
+          return {
+            ...item,
+            nilai: matchNilai,
+            absen: matchAbsen,
+            berita_acara: matchBeritaAcara,
+            rps: matchRps,
+          };
+        }
+
+        // Jika matchNilai tidak ditemukan, kembalikan null
+        return null;
+      })
+      .filter((item: any) => item !== null);
+    const getData = {
+      data: dt,
+    };
+
+    setDtShow(getData);
+
+    setIsLoading(false);
+  };
+
   // ketika search berubah
   useEffect(() => {
-    setPage(1);
-    fetchDataJadwal();
+    const originalData = dtShow?.originalData || dtShow?.data;
+    let filteredData = originalData;
+
+    if (search.trim() !== "") {
+      filteredData = originalData?.filter((item: any) => {
+        return (
+          item.jadwal.hari.toLowerCase().includes(search.toLowerCase()) ||
+          item.jadwal.matkul.nama
+            .toLowerCase()
+            .includes(search.toLowerCase()) ||
+          item.jadwal.matkul.kode.toLowerCase().includes(search.toLowerCase())
+        );
+      });
+    }
+
+    const getData = {
+      data: filteredData,
+      originalData: originalData,
+    };
+
+    setDtShow(getData);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
+
+  // ketika showAbsen beruba
+  useEffect(() => {
+    getDataShow(dtJadwal, showAbsen, showNilai, showBeritaAcara, showRps);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    JSON.stringify(showAbsen),
+    JSON.stringify(dtJadwal),
+    JSON.stringify(showNilai),
+    JSON.stringify(showBeritaAcara),
+    JSON.stringify(showRps),
+  ]);
   // table
   const headTable = ["No", "Tidak Ada", "Hari", "Jam", "Mata Kuliah"];
 
   useEffect(() => {
     const rowsWithNullData =
-      dtKelengkapan?.data &&
-      dtKelengkapan?.data.filter(
+      dtShow?.data &&
+      dtShow?.data.filter(
         (row: any) =>
-          !row.upload_rps ||
+          !row.rps ||
           !row.berita_acara?.uload_berita_acara ||
-          !row.upload_absen ||
-          !row.upload_nilai
+          !row.absen ||
+          !row.nilai
       );
     if (rowsWithNullData && rowsWithNullData.length > 0) {
       setLengkap(true);
@@ -82,7 +175,7 @@ const Kelengkapan: FC<Props> = ({}) => {
     }
 
     return () => {};
-  }, [dtKelengkapan?.data, pathname]);
+  }, [dtShow?.data, pathname]);
 
   return (
     <div className="flex flex-col">
@@ -96,20 +189,11 @@ const Kelengkapan: FC<Props> = ({}) => {
               <div className="">
                 <TableCostume
                   headTable={headTable}
-                  dataTable={dtKelengkapan.data}
+                  dataTable={dtShow?.data}
                   page={page}
                   limit={limit}
                 />
               </div>
-              {dtKelengkapan?.last_page > 1 && (
-                <div className="mt-4">
-                  <PaginationDefault
-                    currentPage={dtKelengkapan?.current_page}
-                    totalPages={dtKelengkapan?.last_page}
-                    setPage={setPage}
-                  />
-                </div>
-              )}
             </div>
           </div>
         )

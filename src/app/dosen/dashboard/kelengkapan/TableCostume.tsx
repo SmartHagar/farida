@@ -33,16 +33,13 @@ const TableCostume: FC<Props> = ({ headTable, dataTable, limit, page }) => {
           dataTable.map((row: any, index) => {
             // mencari data kosong
             const hasEmptyValue =
-              !row.upload_rps ||
-              !row.berita_acara?.uload_berita_acara ||
-              !row.upload_absen ||
-              !row.upload_nilai;
+              !row.rps || !row.berita_acara || !row.absen || !row.nilai;
             // menampilkan label
             const labels = [
-              !row.upload_rps && "RPS",
-              !row.berita_acara?.uload_berita_acara && "BERITA ACARA",
-              !row.upload_absen && "ABSEN",
-              !row.upload_nilai && "NILAI",
+              !row.rps && "RPS",
+              !row.berita_acara && "BERITA ACARA",
+              !row.absen && "ABSEN",
+              !row.nilai && "NILAI",
             ].filter(Boolean); // Menghapus elemen-elemen yang falsy dari array
             return (
               hasEmptyValue && (
