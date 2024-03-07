@@ -125,7 +125,9 @@ const ShowData: FC<Props> = ({
 
   // ketika showNilai beruba
   useEffect(() => {
-    getDataShow(dtJadwal, showNilai);
+    if (dtJadwal.length > 0) {
+      getDataShow(dtJadwal, showNilai);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(showNilai), JSON.stringify(dtJadwal)]);
 
