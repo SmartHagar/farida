@@ -1,8 +1,6 @@
 /** @format */
 "use client";
-import useDosenApi from "@/stores/api/Dosen";
 import useMatkulApi from "@/stores/api/Matkul";
-import useRuanganApi from "@/stores/api/Ruangan";
 import React, { useEffect } from "react";
 import { config } from "@react-spring/web";
 import {
@@ -12,13 +10,15 @@ import {
 } from "react-icons/bs";
 import AnimatedNumber from "@/components/animated/AnimatedNumber";
 import Kelengkapan from "./kelengkapan/Kelengkapan";
+import useRuanganApiEdom from "@/stores/api/Ruangan";
+import useDosenApiEdom from "@/stores/api/Dosen";
 
 type Props = {};
 
 const Dashboard = (props: Props) => {
-  const { setRuanganAll, dtRuangan } = useRuanganApi();
+  const { setRuanganAll, dtRuangan } = useRuanganApiEdom();
   const { setMatkulAll, dtMatkul } = useMatkulApi();
-  const { setDosenAll, dtDosen } = useDosenApi();
+  const { setDosenAll, dtDosenAll } = useDosenApiEdom();
 
   useEffect(() => {
     setRuanganAll({
@@ -72,7 +72,7 @@ const Dashboard = (props: Props) => {
           <BsFillPersonLinesFill className="text-2xl text-warning" />
           {/* number */}
           <AnimatedNumber
-            endValue={dtDosen?.data?.length}
+            endValue={dtDosenAll?.data?.length}
             addClass="text-2xl"
             animationConfig={config.slow}
           />

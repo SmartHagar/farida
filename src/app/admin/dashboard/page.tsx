@@ -1,9 +1,10 @@
 /** @format */
 "use client";
 import AnimatedNumber from "@/components/animated/AnimatedNumber";
+import useDosenApiEdom from "@/stores/api/Dosen";
 import useDosenApi from "@/stores/api/Dosen";
 import useMatkulApi from "@/stores/api/Matkul";
-import useRuanganApi from "@/stores/api/Ruangan";
+import useRuanganApiEdom from "@/stores/api/Ruangan";
 import { config } from "@react-spring/web";
 import React, { useEffect } from "react";
 import {
@@ -15,9 +16,9 @@ import {
 type Props = {};
 
 const Home = (props: Props) => {
-  const { setRuanganAll, dtRuangan } = useRuanganApi();
+  const { setRuanganAll, dtRuangan } = useRuanganApiEdom();
   const { setMatkulAll, dtMatkul } = useMatkulApi();
-  const { setDosenAll, dtDosen } = useDosenApi();
+  const { setDosenAll, dtDosenAll } = useDosenApiEdom();
 
   useEffect(() => {
     setRuanganAll({
@@ -31,11 +32,12 @@ const Home = (props: Props) => {
     });
   }, []);
 
+  console.log({ dtDosenAll });
+
   return (
     <div>
       <div className="mb-4">
-        <p className="text-lg text-center tracking-[0.2rem]">SILAKU</p>
-        <p className="text-center text-sm text-font-1">
+        <p className="text-center text-sm md:text-lg text-font-1">
           (Sistem Informasi Perkuliahan Fakultas Sains & Teknologi)
         </p>
       </div>
@@ -69,7 +71,7 @@ const Home = (props: Props) => {
           <BsFillPersonLinesFill className="text-2xl text-warning" />
           {/* number */}
           <AnimatedNumber
-            endValue={dtDosen?.data?.length}
+            endValue={dtDosenAll?.data?.length}
             addClass="text-2xl"
             animationConfig={config.slow}
           />

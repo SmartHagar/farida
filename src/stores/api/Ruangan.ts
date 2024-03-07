@@ -2,7 +2,7 @@
 
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { api } from "@/services/baseURL";
+import { api, api_edom } from "@/services/baseURL";
 // api ruangan
 type Props = {
   page?: number;
@@ -24,12 +24,12 @@ type Store = {
   }>;
 };
 
-const useRuanganApi = create(
+const useRuanganApiEdom = create(
   devtools<Store>((set, get) => ({
     dtRuangan: [],
     setRuangan: async ({ page = 1, limit = 10, search }) => {
       try {
-        const response = await api({
+        const response = await api_edom({
           method: "get",
           url: `/ruangan`,
           params: {
@@ -52,7 +52,7 @@ const useRuanganApi = create(
     },
     setRuanganAll: async ({ search }) => {
       try {
-        const response = await api({
+        const response = await api_edom({
           method: "get",
           url: `/ruangan/all`,
           params: {
@@ -74,4 +74,4 @@ const useRuanganApi = create(
   }))
 );
 
-export default useRuanganApi;
+export default useRuanganApiEdom;
