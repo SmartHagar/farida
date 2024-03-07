@@ -30,7 +30,7 @@ const Layout = (props: Props) => {
       if (role !== "dosen") {
         return;
       }
-      route.push(`/dosen`);
+      route.push(`/dosen/dashboard`);
     }
     return res;
   };

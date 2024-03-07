@@ -25,9 +25,9 @@ export default function Home() {
         const role = cekAuth?.data?.data?.user?.role;
         // redirect to login
         if (role !== "dosen") {
-          return router.push("/admin");
+          return router.push("/admin/dashboard");
         }
-        router.push(`/${role}`);
+        router.push(`/${role}/dashboard`);
       } else {
         router.push("/login");
       }

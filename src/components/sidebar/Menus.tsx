@@ -11,7 +11,7 @@ import {
 const menus: MenuTypes[] = [
   {
     name: "Dashboard",
-    href: "/admin",
+    href: "/admin/dashboard",
     icon: <BsHouseDoorFill />,
   },
   {
@@ -72,7 +72,7 @@ const menus: MenuTypes[] = [
 const DosenMenus: MenuTypes[] = [
   {
     name: "Dashboard",
-    href: "/dosen",
+    href: "/dosen/dashboard",
     icon: <BsHouseDoorFill />,
   },
   {
