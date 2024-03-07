@@ -16,7 +16,14 @@ type Props = {
 
 type Store = {
   dtJadwal: any;
-  setJadwal: ({ page, limit, search, tahun, semester }: Props) => Promise<{
+  setJadwal: ({
+    page,
+    limit,
+    search,
+    tahun,
+    semester,
+    prodi_id,
+  }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -51,7 +58,14 @@ type Store = {
 const useJadwalApiEdom = create(
   devtools<Store>((set, get) => ({
     dtJadwal: [],
-    setJadwal: async ({ page = 1, limit = 10, search, tahun, semester }) => {
+    setJadwal: async ({
+      page = 1,
+      limit = 10,
+      search,
+      tahun,
+      semester,
+      prodi_id,
+    }) => {
       try {
         const response = await api_edom({
           method: "get",
@@ -62,6 +76,7 @@ const useJadwalApiEdom = create(
             search,
             tahun,
             semester,
+            prodi_id,
           },
         });
         set((state) => ({ ...state, dtJadwal: response.data.data }));
@@ -120,7 +135,7 @@ const useJadwalApiEdom = create(
         };
       }
     },
-    setByTahunSemester: async ({ search, tahun, semester }) => {
+    setByTahunSemester: async ({ search, tahun, semester, prodi_id }) => {
       try {
         const response = await api_edom({
           method: "get",
@@ -129,6 +144,7 @@ const useJadwalApiEdom = create(
             search,
             tahun,
             semester,
+            prodi_id,
           },
         });
         set((state) => ({ ...state, dtJadwal: response.data.data }));

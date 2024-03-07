@@ -8,6 +8,7 @@ type Props = {
   page?: number;
   limit?: number;
   search?: string;
+  prodi_id?: string | number;
 };
 
 type Store = {
@@ -18,7 +19,7 @@ type Store = {
     data?: {};
     error?: {};
   }>;
-  setDosenAll: ({ search }: Props) => Promise<{
+  setDosenAll: ({ search, prodi_id }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -52,13 +53,14 @@ const useDosenApiEdom = create(
         };
       }
     },
-    setDosenAll: async ({ search }) => {
+    setDosenAll: async ({ search, prodi_id }) => {
       try {
         const response = await api_edom({
           method: "get",
           url: `/dosen/all`,
           params: {
             search,
+            prodi_id,
           },
         });
         set((state) => ({ ...state, dtDosenAll: response.data }));

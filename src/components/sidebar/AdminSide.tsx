@@ -131,6 +131,7 @@ const AdminSide = ({ menus }: Props) => {
     Cookies.remove("role");
     Cookies.remove("dosen_id");
     Cookies.remove("email");
+    Cookies.remove("prodi_id");
     // redirect to roote page
     router.push("/");
     setIsLoading(false);

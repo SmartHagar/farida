@@ -35,12 +35,15 @@ const ShowData: FC<Props> = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [dtShow, setDtShow] = useState<any>();
 
+  const prodi_id = Cookies.get("prodi_id");
+  // fetch data jadwal
   const fetchDataJadwal = async () => {
     setIsLoading(true);
     const res = await setByTahunSemester({
       search,
       tahun: tahunWatch,
       semester: semesterWatch,
+      prodi_id,
     });
     setIsLoading(false);
   };
@@ -48,7 +51,7 @@ const ShowData: FC<Props> = ({
   useMemo(
     () => tahunWatch && semesterWatch && fetchDataJadwal(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [tahunWatch, semesterWatch]
+    [tahunWatch, semesterWatch, prodi_id]
   );
   // memanggil data berita acara
   const fetchAbsen = async () => {

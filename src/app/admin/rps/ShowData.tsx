@@ -7,6 +7,7 @@ import React, { FC, useEffect, useState } from "react";
 import useRps from "@/stores/crud/upload/Rps";
 import { useSearchParams } from "next/navigation";
 import useJadwalApiEdom from "@/stores/api/Jadwal";
+import Cookies from "js-cookie";
 
 type DeleteProps = {
   id?: number | string;
@@ -34,6 +35,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
   // get params semester dan tahun
   const semester = params.get("semester") || "";
   const tahun = params.get("tahun") || "";
+  const prodi_id = Cookies.get("prodi_id");
   // memanggil data Jadwal
   const fetchDataJadwal = async () => {
     setIsLoading(true);
@@ -42,6 +44,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
         tahun,
         semester,
         search,
+        prodi_id,
       });
     }
   };
@@ -52,7 +55,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
     }
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [semester, tahun, search]);
+  }, [semester, tahun, search, prodi_id]);
   const fetchRps = async () => {
     await setRps({
       page,

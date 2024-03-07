@@ -6,6 +6,7 @@ import TablesDefault from "@/components/tables/TablesDefault";
 import useJadwalApiEdom from "@/stores/api/Jadwal";
 import { useSearchParams } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 type DeleteProps = {
   id?: number | string;
@@ -30,6 +31,7 @@ const ShowData: FC<Props> = ({ setEdit, search }) => {
   // get params semester dan tahun
   const semester = params.get("semester") || "";
   const tahun = params.get("tahun") || "";
+  const prodi_id = Cookies.get("prodi_id");
   const fetchDataJadwal = async () => {
     setIsLoading(true);
     const res = await setJadwal({
@@ -38,6 +40,7 @@ const ShowData: FC<Props> = ({ setEdit, search }) => {
       search,
       semester,
       tahun,
+      prodi_id,
     });
     setIsLoading(false);
   };
@@ -48,7 +51,7 @@ const ShowData: FC<Props> = ({ setEdit, search }) => {
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit, params]);
+  }, [page, limit, params, prodi_id, semester, tahun]);
   // ketika search berubah
   useEffect(() => {
     setPage(1);
@@ -66,7 +69,6 @@ const ShowData: FC<Props> = ({ setEdit, search }) => {
     "Progdi SMT",
     "Ruangan",
     "Dosen",
-    "Aksi",
   ];
   const tableBodies = [
     "hari",
@@ -92,8 +94,8 @@ const ShowData: FC<Props> = ({ setEdit, search }) => {
               page={page}
               limit={limit}
               setEdit={setEdit}
-              ubah={true}
-              hapus={true}
+              ubah={false}
+              hapus={false}
             />
           </div>
           {dtJadwal?.last_page > 1 && (

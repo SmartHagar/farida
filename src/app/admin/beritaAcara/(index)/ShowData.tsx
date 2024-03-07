@@ -3,16 +3,11 @@
 import React, { FC, useEffect, useMemo, useState } from "react";
 import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
-import useRps from "@/stores/crud/upload/Rps";
-import TableRps from "@/components/tables/TableRps";
-import useJadwalApi from "@/stores/api/Jadwal";
 import TablesDefault from "@/components/tables/TablesDefault";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import Link from "next/link";
 import useJadwalApiEdom from "@/stores/api/Jadwal";
-import useBeritaAcara from "@/stores/crud/upload/BeritaAcara";
 import useBeritaAcaraApi from "@/stores/api/BeritaAcara";
-
 type DeleteProps = {
   id?: number | string;
   isDelete: boolean;
@@ -33,8 +28,6 @@ const ShowData: FC<Props> = ({
   tahunWatch,
   semesterWatch,
 }) => {
-  // dosen_id
-  const dosen_id = "";
   const { setByTahunSemester, dtJadwal } = useJadwalApiEdom();
   const { setBeritaAcaraByJadwal, dtBeritaAcara } = useBeritaAcaraApi();
   // state
@@ -43,12 +36,14 @@ const ShowData: FC<Props> = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [dtShow, setDtShow] = useState<any>();
 
+  const prodi_id = Cookies.get("prodi_id");
   const fetchDataJadwal = async () => {
     setIsLoading(true);
     const res = await setByTahunSemester({
       search,
       tahun: tahunWatch,
       semester: semesterWatch,
+      prodi_id,
     });
     setIsLoading(false);
   };
@@ -56,7 +51,7 @@ const ShowData: FC<Props> = ({
   useMemo(
     () => tahunWatch && semesterWatch && fetchDataJadwal(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [tahunWatch, semesterWatch]
+    [tahunWatch, semesterWatch, prodi_id]
   );
   // memanggil data berita acara
   const fetchBeritaAcara = async () => {

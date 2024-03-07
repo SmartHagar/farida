@@ -62,6 +62,11 @@ const menus: MenuTypes[] = [
       },
     ],
   },
+  {
+    name: "Akun",
+    href: "/admin/akun",
+    icon: <BsPeopleFill />,
+  },
 ];
 // list menu Dosen
 const DosenMenus: MenuTypes[] = [
@@ -102,6 +107,11 @@ const DosenMenus: MenuTypes[] = [
         icon: <BsPeopleFill />,
       },
     ],
+  },
+  {
+    name: "Akun",
+    href: "/dosen/akun",
+    icon: <BsPeopleFill />,
   },
 ];
 
