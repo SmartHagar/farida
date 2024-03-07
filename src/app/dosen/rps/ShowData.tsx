@@ -128,7 +128,6 @@ const ShowData: FC<Props> = ({
     "file",
     "status",
   ];
-
   return (
     <div className="flex-1 flex-col max-w-full h-full overflow-auto">
       {isLoading ? (

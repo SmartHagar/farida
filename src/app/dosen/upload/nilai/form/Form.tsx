@@ -57,7 +57,7 @@ const Form = ({
   useEffect(() => {
     if (dtEdit) {
       setValue("id", dtEdit.id);
-      setValue("jadwal_id", dtEdit.jadwal_id);
+      setValue("jadwal_id", parseInt(dtEdit.jadwal_id));
       setValue("file", dtEdit.file);
     } else {
       resetForm();
