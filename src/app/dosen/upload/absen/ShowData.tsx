@@ -100,11 +100,11 @@ const ShowData: FC<Props> = ({
 
   // ketika dtRPS beruba
   useEffect(() => {
-    if (dtJadwal?.data) {
+    if (dtJadwal?.data?.length > 0) {
       getDataShow(dtJadwal?.data, showAbsen);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(showAbsen)]);
+  }, [JSON.stringify(showAbsen), JSON.stringify(dtJadwal)]);
 
   // table
   const headTable = [

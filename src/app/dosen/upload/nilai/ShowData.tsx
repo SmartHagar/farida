@@ -104,7 +104,7 @@ const ShowData: FC<Props> = ({
       getDataShow(dtJadwal?.data, showNilai);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(showNilai)]);
+  }, [JSON.stringify(showNilai), JSON.stringify(dtJadwal)]);
 
   // table
   const headTable = [

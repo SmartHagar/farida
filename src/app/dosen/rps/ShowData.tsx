@@ -103,11 +103,11 @@ const ShowData: FC<Props> = ({
 
   // ketika dtRPS beruba
   useEffect(() => {
-    if (dtJadwal?.data) {
+    if (dtJadwal?.data?.length > 0 && showRps?.length > 0) {
       getDataShow(dtJadwal?.data, showRps);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(showRps)]);
+  }, [JSON.stringify(showRps), JSON.stringify(dtJadwal)]);
 
   // table
   const headTable = [
@@ -139,7 +139,7 @@ const ShowData: FC<Props> = ({
             <TableRps
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={dtShow.data}
+              dataTable={dtShow?.data}
               page={page}
               limit={limit}
               setEdit={setEdit}
