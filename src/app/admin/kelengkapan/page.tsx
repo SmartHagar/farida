@@ -107,7 +107,12 @@ const Kelengkapan = () => {
         />
       </div>
 
-      <ShowData setEdit={() => {}} search={search} />
+      <ShowData
+        setEdit={() => {}}
+        search={search}
+        tahunWatch={tahunWatch}
+        semesterWatch={semesterWatch}
+      />
     </div>
   );
 };

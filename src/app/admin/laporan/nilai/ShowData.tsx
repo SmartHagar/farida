@@ -56,7 +56,7 @@ const ShowData: FC<Props> = ({
     [tahunWatch, semesterWatch, prodi_id]
   );
   // memanggil data berita acara
-  const fetchAbsen = async () => {
+  const fetchNilai = async () => {
     const jadwal_id: any[] = [];
     dtJadwal?.map((item: any) => {
       jadwal_id.push(item.id);
@@ -72,7 +72,7 @@ const ShowData: FC<Props> = ({
   };
   // ketika data jadwal berubah
   useEffect(() => {
-    fetchAbsen();
+    fetchNilai();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(dtJadwal)]);
   //  mengisi dtShow
