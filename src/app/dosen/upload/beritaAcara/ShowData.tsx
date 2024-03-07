@@ -82,7 +82,7 @@ const ShowData: FC<Props> = ({
     const dt = showBeritaAcara
       ?.map((item: any) => {
         const matchedData = dtJadwal?.find(
-          (data: any) => data.id === item.berita_acara.jadwal_id
+          (data: any) => data.id === parseInt(item.berita_acara.jadwal_id)
         );
         return matchedData ? { ...item, jadwal: matchedData } : null;
       })

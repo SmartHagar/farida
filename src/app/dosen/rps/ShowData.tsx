@@ -81,11 +81,12 @@ const ShowData: FC<Props> = ({
 
   //  mengisi dtShow
   const getDataShow = (dtJadwal: any, showRps: any) => {
+    setIsLoading(true);
     console.log({ dtJadwal, showRps });
     const dt = showRps
       ?.map((item: any) => {
         const matchedData = dtJadwal?.find(
-          (data: any) => data.id === item.jadwal_id
+          (data: any) => data.id === parseInt(item.jadwal_id)
         );
         return matchedData ? { ...item, jadwal: matchedData } : null;
       })

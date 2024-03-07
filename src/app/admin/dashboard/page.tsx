@@ -32,8 +32,6 @@ const Home = (props: Props) => {
     });
   }, []);
 
-  console.log({ dtDosenAll });
-
   return (
     <div>
       <div className="mb-4">

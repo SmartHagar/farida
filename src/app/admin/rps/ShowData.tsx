@@ -74,7 +74,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
     const dt = dtRps?.data
       ?.map((item: any) => {
         const matchedData = dtJadwal?.find(
-          (data: any) => data.id === item.jadwal_id
+          (data: any) => data.id === parseInt(item.jadwal_id)
         );
         return matchedData ? { ...item, jadwal: matchedData } : null;
       })

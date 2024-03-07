@@ -53,15 +53,15 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
 
   //  mengisi dtShow
   const getDataShow = (dtLogin: any, dtAll: any) => {
+    console.log({ dtLogin, dtAll });
     const dt = dtLogin
       ?.map((item: any) => {
         const matchedData = dtAll?.find(
-          (data: any) => data.id === item.dosen_id
+          (data: any) => data.id === parseInt(item.dosen_id)
         );
         return matchedData ? { ...item, dosen: matchedData } : null;
       })
       .filter((item: any) => item !== null);
-
     const loginPage = {
       current_page: dtDosenLogin?.current_page,
       last_page: dtDosenLogin?.last_page,
