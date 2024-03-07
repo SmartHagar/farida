@@ -20,6 +20,7 @@ type Inputs = {
   dosen_id: number | string;
   nama: string;
   password: string;
+  prodi: string;
 };
 
 const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
@@ -41,6 +42,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
     setValue("dosen_id", "");
     setValue("nama", "");
     setValue("password", "");
+    setValue("prodi", "");
   };
 
   // data edit
@@ -58,6 +60,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
   // simpan data
   const onSubmit: SubmitHandler<Inputs> = async (row) => {
     console.log({ row });
+    // return;
     // jika dtEdit tidak kosong maka update
     if (dtEdit) {
       const { data } = await updateData(dtEdit.id, row);

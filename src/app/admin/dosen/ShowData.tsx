@@ -9,6 +9,7 @@ import { BsFillInfoCircleFill } from "react-icons/bs";
 import useDosenApiEdom from "@/stores/api/Dosen";
 import useDosenLogin from "@/stores/crud/DosenLogin";
 import useUserApi from "@/stores/api/User";
+import Cookies from "js-cookie";
 
 type DeleteProps = {
   id?: number | string;
@@ -32,10 +33,12 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [dtShow, setDtShow] = useState<any>();
 
+  const prodi_id = Cookies.get("prodi_id");
   const fetchDataDosen = async () => {
     setIsLoading(true);
     await setDosenAll({
       search,
+      prodi_id,
     });
     await setDosenLogin({});
   };

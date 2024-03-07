@@ -4,6 +4,7 @@ import InputTextDefault from "@/components/input/InputTextDefault";
 import SelectFromDb from "@/components/select/SelectFromDB";
 import useDosenApiEdom from "@/stores/api/Dosen";
 import React, { FC, useEffect } from "react";
+import Cookies from "js-cookie";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -27,10 +28,11 @@ const BodyForm: FC<Props> = ({
   showModal,
 }) => {
   const { setDosenAll, dtDosenAll } = useDosenApiEdom();
-
+  const prodi_id = Cookies.get("prodi_id");
   const fetchOption = async () => {
     const res = await setDosenAll({
       search: "",
+      prodi_id,
     });
     return res;
   };
@@ -49,6 +51,8 @@ const BodyForm: FC<Props> = ({
         (item: any) => item.id === dosenWatch
       );
       setValue("nama", dtDosen?.nama);
+      const singkat = dtDosen?.prodi?.singkat;
+      setValue("prodi", singkat.toLowerCase());
     } else {
       setValue("nama", "");
     }

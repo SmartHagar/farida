@@ -34,6 +34,7 @@ const BodyForm: FC<Props> = ({
         errors={errors.email}
         type="email"
         addClass="col-span-4 lg:col-span-3"
+        readOnly
       />
       <InputTextPassword
         label="Password"
