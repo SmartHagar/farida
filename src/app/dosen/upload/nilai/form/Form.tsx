@@ -68,6 +68,7 @@ const Form = ({
   }, [showModal, dtEdit]);
   // simpan data
   const onSubmit: SubmitHandler<Inputs> = async (row) => {
+    setIsLoading(true);
     console.log({ row });
     // jika dtEdit tidak kosong maka update
     if (dtEdit) {
@@ -84,6 +85,7 @@ const Form = ({
       });
       data?.type !== "success" ? null : resetForm();
     }
+    setIsLoading(false);
   };
 
   return (
