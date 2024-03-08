@@ -2,13 +2,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-import ShowData from "./ShowData";
 import { Toaster } from "react-hot-toast";
 import InputTextSearch from "@/components/input/InputTextSerch";
 import { useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SelectDefault } from "@/components/select/SelectDefault";
 import SelectTahun from "@/components/select/SelectTahun";
+import ShowData from "./ShowData";
 
 // type setDelete
 type Delete = {
@@ -49,7 +49,7 @@ const BeritaAcara = () => {
       setValue("semester", semester);
       // add parameter to url
       router.push(
-        "/admin/beritaAcara?tahun=" + tahun + "&semester=" + semester
+        "/admin/beritaAcara/daftar?tahun=" + tahun + "&semester=" + semester
       );
     } else {
       setValue("tahun", parseInt(tahunParams || ""));
@@ -63,7 +63,10 @@ const BeritaAcara = () => {
   useEffect(() => {
     if (tahunWatch && semesterWatch) {
       router.push(
-        "/admin/beritaAcara?tahun=" + tahunWatch + "&semester=" + semesterWatch
+        "/admin/beritaAcara/daftar?tahun=" +
+          tahunWatch +
+          "&semester=" +
+          semesterWatch
       );
     }
 

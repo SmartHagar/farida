@@ -31,7 +31,7 @@ const menus: MenuTypes[] = [
   },
   {
     name: "Berita Acara",
-    href: "/admin/beritaAcara",
+    href: "/admin/beritaAcara/daftar",
     icon: <BsPeopleFill />,
   },
   {
@@ -82,7 +82,7 @@ const DosenMenus: MenuTypes[] = [
   },
   {
     name: "Berita Acara",
-    href: "/dosen/beritaAcara",
+    href: "/dosen/beritaAcara/daftar",
     icon: <BsPeopleFill />,
   },
   {
