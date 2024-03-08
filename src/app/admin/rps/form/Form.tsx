@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import BodyForm from "./BodyForm";
 import useRps from "@/stores/crud/upload/Rps";
+import LoadingSpiner from "@/components/loading/LoadingSpiner";
 
 type Props = {
   showModal: boolean;
@@ -33,6 +34,7 @@ const Form = ({
 }: Props) => {
   // store
   const { updateData } = useRps();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   // hook form
   const {
     register,
@@ -64,6 +66,7 @@ const Form = ({
   }, [showModal, dtEdit]);
   // simpan data
   const onSubmit: SubmitHandler<Inputs> = async (row) => {
+    setIsLoading(true);
     console.log({ row });
     const { data } = await updateData(dtEdit.id, row);
     toastShow({
@@ -95,7 +98,11 @@ const Form = ({
           />
         </div>
         <div>
-          <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+          {isLoading ? (
+            <LoadingSpiner />
+          ) : (
+            <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+          )}
         </div>
       </form>
     </ModalDefault>
