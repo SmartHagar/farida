@@ -62,7 +62,9 @@ const BeritaAcara = () => {
 
   useEffect(() => {
     const tahun = new Date().getFullYear();
-    const semester = "Genap";
+    // get month
+    const month = new Date().getMonth();
+    const semester = month > 6 ? "Ganjil" : "Genap";
     setTahunWatch(tahun);
     setSemesterWatch(semester);
     return () => {};

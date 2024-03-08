@@ -34,6 +34,7 @@ const TableCostume: FC<Props> = ({ headTable, dataTable, limit, page }) => {
             // mencari data kosong
             const hasEmptyValue =
               !row.rps || !row.berita_acara || !row.absen || !row.nilai;
+            hasEmptyValue && index - 1;
             // menampilkan label
             const labels = [
               !row.rps && "RPS",
@@ -44,9 +45,9 @@ const TableCostume: FC<Props> = ({ headTable, dataTable, limit, page }) => {
             return (
               hasEmptyValue && (
                 <tr key={index}>
-                  <td className="px-6 py-4 whitespace-nowrap capitalize">
+                  {/* <td className="px-6 py-4 whitespace-nowrap capitalize">
                     {showNo(index)}
-                  </td>
+                  </td> */}
                   <td className="px-6 py-4 whitespace-nowrap capitalize">
                     {labels.join(", ")}
                   </td>

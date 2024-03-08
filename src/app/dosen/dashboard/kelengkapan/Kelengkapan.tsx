@@ -63,10 +63,10 @@ const Kelengkapan: FC<Props> = ({ tahun, semester }) => {
 
   // ketika data jadwal berubah
   useEffect(() => {
-    fetchAbsen({ dtJadwal, setShowAbsen });
-    fetchNilai({ dtJadwal, setShowNilai });
-    fetchBeritaAcara({ dtJadwal, setShowBeritaAcara });
-    fetchRPS({ dtJadwal, setShowRps });
+    fetchAbsen({ dtJadwal: dtJadwal?.data, setShowAbsen });
+    fetchNilai({ dtJadwal: dtJadwal?.data, setShowNilai });
+    fetchBeritaAcara({ dtJadwal: dtJadwal?.data, setShowBeritaAcara });
+    fetchRPS({ dtJadwal: dtJadwal?.data, setShowRps });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(dtJadwal)]);
 
@@ -94,18 +94,13 @@ const Kelengkapan: FC<Props> = ({ tahun, semester }) => {
           (data: any) => parseInt(data.jadwal_id) === item.id
         );
         // Jika keduanya ditemukan, kembalikan keduanya
-        if (matchNilai || matchAbsen || matchBeritaAcara || matchRps) {
-          return {
-            ...item,
-            nilai: matchNilai,
-            absen: matchAbsen,
-            berita_acara: matchBeritaAcara,
-            rps: matchRps,
-          };
-        }
-
-        // Jika matchNilai tidak ditemukan, kembalikan null
-        return null;
+        return {
+          ...item,
+          nilai: matchNilai,
+          absen: matchAbsen,
+          berita_acara: matchBeritaAcara,
+          rps: matchRps,
+        };
       })
       .filter((item: any) => item !== null);
     const getData = {
@@ -117,35 +112,9 @@ const Kelengkapan: FC<Props> = ({ tahun, semester }) => {
     setIsLoading(false);
   };
 
-  // ketika search berubah
-  useEffect(() => {
-    const originalData = dtShow?.originalData || dtShow?.data;
-    let filteredData = originalData;
-
-    if (search.trim() !== "") {
-      filteredData = originalData?.filter((item: any) => {
-        return (
-          item.jadwal.hari.toLowerCase().includes(search.toLowerCase()) ||
-          item.jadwal.matkul.nama
-            .toLowerCase()
-            .includes(search.toLowerCase()) ||
-          item.jadwal.matkul.kode.toLowerCase().includes(search.toLowerCase())
-        );
-      });
-    }
-
-    const getData = {
-      data: filteredData,
-      originalData: originalData,
-    };
-
-    setDtShow(getData);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
-
   // ketika showAbsen beruba
   useEffect(() => {
+    console.log({ dtJadwal });
     if (dtJadwal?.data?.length > 0) {
       getDataShow(
         dtJadwal?.data,
@@ -164,7 +133,7 @@ const Kelengkapan: FC<Props> = ({ tahun, semester }) => {
     JSON.stringify(showRps),
   ]);
   // table
-  const headTable = ["No", "Tidak Ada", "Hari", "Jam", "Mata Kuliah"];
+  const headTable = ["Tidak Ada", "Hari", "Jam", "Mata Kuliah"];
 
   useEffect(() => {
     const rowsWithNullData =
@@ -183,7 +152,7 @@ const Kelengkapan: FC<Props> = ({ tahun, semester }) => {
     }
 
     return () => {};
-  }, [dtShow?.data, pathname]);
+  }, [dtShow?.data]);
 
   return (
     <div className="flex flex-col">
