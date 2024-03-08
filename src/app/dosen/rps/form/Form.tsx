@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import BodyForm from "./BodyForm";
 import useRps from "@/stores/crud/upload/Rps";
+import LoadingSpiner from "@/components/loading/LoadingSpiner";
 
 type Props = {
   showModal: boolean;
@@ -34,6 +35,7 @@ const Form = ({
 }: Props) => {
   // state
   const [myFile, setMyFile] = useState<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   // store
   const { addData, updateData } = useRps();
   // hook form
@@ -67,6 +69,7 @@ const Form = ({
   }, [showModal, dtEdit]);
   // simpan data
   const onSubmit: SubmitHandler<Inputs> = async (row) => {
+    setIsLoading(true);
     row.status = "diproses";
     console.log({ row });
     // jika dtEdit tidak kosong maka update
@@ -85,6 +88,7 @@ const Form = ({
       });
       data?.type !== "success" ? null : resetForm();
     }
+    setIsLoading(false);
   };
 
   return (
@@ -112,7 +116,13 @@ const Form = ({
           />
         </div>
         <div>
-          <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+          <div>
+            {isLoading ? (
+              <LoadingSpiner />
+            ) : (
+              <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+            )}
+          </div>
         </div>
       </form>
     </ModalDefault>

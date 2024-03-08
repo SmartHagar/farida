@@ -33,7 +33,7 @@ const Kelengkapan: FC<Props> = ({ tahun, semester }) => {
   const { setShowNilai, showNilai } = useNilai();
   const { setShowBeritaAcara, showBeritaAcara } = useBeritaAcara();
   const { setShowRps, showRps } = useRps();
-  const { setByTahunSemester, dtJadwal } = useJadwalApiEdom();
+  const { setJadwalByDosenFull, dtJadwal } = useJadwalApiEdom();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
@@ -46,7 +46,7 @@ const Kelengkapan: FC<Props> = ({ tahun, semester }) => {
   // fetch data jadwal
   const fetchDataJadwal = async () => {
     setIsLoading(true);
-    const res = await setByTahunSemester({
+    const res = await setJadwalByDosenFull({
       search,
       tahun,
       semester,
@@ -146,13 +146,19 @@ const Kelengkapan: FC<Props> = ({ tahun, semester }) => {
 
   // ketika showAbsen beruba
   useEffect(() => {
-    if (dtJadwal.length > 0) {
-      getDataShow(dtJadwal, showAbsen, showNilai, showBeritaAcara, showRps);
+    if (dtJadwal?.data?.length > 0) {
+      getDataShow(
+        dtJadwal?.data,
+        showAbsen,
+        showNilai,
+        showBeritaAcara,
+        showRps
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     JSON.stringify(showAbsen),
-    JSON.stringify(dtJadwal),
+    JSON.stringify(dtJadwal?.data),
     JSON.stringify(showNilai),
     JSON.stringify(showBeritaAcara),
     JSON.stringify(showRps),

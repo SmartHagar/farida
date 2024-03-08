@@ -10,6 +10,7 @@ import BodyForm from "./BodyForm";
 import useDosen from "@/stores/crud/Dosen";
 import { useSearchParams } from "next/navigation";
 import useDetBeritaAcara from "@/stores/crud/DetBeritaAcara";
+import LoadingSpiner from "@/components/loading/LoadingSpiner";
 
 type Props = {
   showModal: boolean;
@@ -35,6 +36,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
   // state
   const [tgl, setTgl] = useState<string | Date>(new Date("01-01-1980"));
   const [myFile, setMyFile] = useState<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   // store
   const { addData, updateData } = useDetBeritaAcara();
   // hook form
@@ -75,6 +77,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
   }, [showModal, dtEdit]);
   // simpan data
   const onSubmit: SubmitHandler<Inputs> = async (row) => {
+    setIsLoading(true);
     row.berita_acara_id = berita_acara_id;
     console.log({ row });
     // jika dtEdit tidak kosong maka update
@@ -92,6 +95,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
       });
       data?.type !== "success" ? null : resetForm();
     }
+    setIsLoading(false);
   };
 
   return (
@@ -119,7 +123,11 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
           />
         </div>
         <div>
-          <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+          {isLoading ? (
+            <LoadingSpiner />
+          ) : (
+            <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+          )}
         </div>
       </form>
     </ModalDefault>

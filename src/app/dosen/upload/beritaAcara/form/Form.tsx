@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import BodyForm from "./BodyForm";
 import useBeritaAcara from "@/stores/crud/upload/BeritaAcara";
+import LoadingSpiner from "@/components/loading/LoadingSpiner";
 
 type Props = {
   showModal: boolean;
@@ -35,6 +36,7 @@ const Form = ({
   const [myFile, setMyFile] = useState<any>();
   // store
   const { addData, updateData } = useBeritaAcara();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   // hook form
   const {
     register,
@@ -66,6 +68,7 @@ const Form = ({
   }, [showModal, dtEdit]);
   // simpan data
   const onSubmit: SubmitHandler<Inputs> = async (row) => {
+    setIsLoading(true);
     console.log({ row });
     // jika dtEdit tidak kosong maka update
     if (dtEdit) {
@@ -82,6 +85,7 @@ const Form = ({
       });
       data?.type !== "success" ? null : resetForm();
     }
+    setIsLoading(false);
   };
 
   return (
@@ -109,7 +113,11 @@ const Form = ({
           />
         </div>
         <div>
-          <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+          {isLoading ? (
+            <LoadingSpiner />
+          ) : (
+            <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+          )}
         </div>
       </form>
     </ModalDefault>

@@ -61,9 +61,7 @@ const Dashboard = (props: Props) => {
           (Sistem Informasi Perkuliahan Fakultas Sains & Teknologi)
         </p>
       </div>
-      <>
-        <Kelengkapan tahun={tahunWatch} semester={semesterWatch} />
-      </>
+      <>{/* <Kelengkapan tahun={tahunWatch} semester={semesterWatch} /> */}</>
       <div className="flex gap-4 flex-wrap">
         <div className="flex flex-col bg-primary/10 p-4 px-8 rounded-md gap-1">
           {/* icon */}

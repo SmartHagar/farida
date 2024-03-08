@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import BodyForm from "./BodyForm";
 import useDosenLogin from "@/stores/crud/DosenLogin";
+import LoadingSpiner from "@/components/loading/LoadingSpiner";
 
 type Props = {
   showModal: boolean;
@@ -26,6 +27,7 @@ type Inputs = {
 const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
   // store
   const { addData, updateData } = useDosenLogin();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   // hook form
   const {
     register,
@@ -59,6 +61,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
   }, [showModal, dtEdit]);
   // simpan data
   const onSubmit: SubmitHandler<Inputs> = async (row) => {
+    setIsLoading(true);
     console.log({ row });
     // return;
     // jika dtEdit tidak kosong maka update
@@ -76,6 +79,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
       });
       data?.type !== "success" ? null : resetForm();
     }
+    setIsLoading(false);
   };
 
   return (
@@ -99,7 +103,11 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
           />
         </div>
         <div>
-          <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+          {isLoading ? (
+            <LoadingSpiner />
+          ) : (
+            <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+          )}
         </div>
       </form>
     </ModalDefault>
