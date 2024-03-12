@@ -107,6 +107,7 @@ const BodyForm: FC<Props> = ({
           dataDb={dtShow?.data}
           body={[
             "id",
+            "jadwal.matkul.kode",
             "jadwal.hari",
             "jadwal.matkul.nama",
             "jadwal.mulai",

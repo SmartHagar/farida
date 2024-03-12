@@ -1,9 +1,9 @@
-1:HL["/_next/static/css/0c3fa14956b43102.css",{"as":"style"}]
-0:["sXRAh5drhrkiUnutrlrMm",[[["",{"children":["dosen",{"children":["akun",{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],"$L2",[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/0c3fa14956b43102.css","precedence":"next"}]],["$L3",null]]]]]
+1:HL["/_next/static/css/06a7efeee51684d2.css",{"as":"style"}]
+0:["ZY2kgFB3QRhq6BpINHItX",[[["",{"children":["dosen",{"children":["akun",{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],"$L2",[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/06a7efeee51684d2.css","precedence":"next"}]],["$L3",null]]]]]
 4:HL["/_next/static/css/7ac8cb26da507440.css",{"as":"style"}]
-5:I{"id":7513,"chunks":["3185:static/chunks/app/layout-2a9c0c63b35192f7.js"],"name":"","async":false}
-6:I{"id":9180,"chunks":["2272:static/chunks/webpack-d799e88058a6807a.js","9253:static/chunks/bce60fc1-12317074627e91f6.js","7698:static/chunks/7698-61f6ae5a93d37916.js"],"name":"default","async":false}
-7:I{"id":2306,"chunks":["2272:static/chunks/webpack-d799e88058a6807a.js","9253:static/chunks/bce60fc1-12317074627e91f6.js","7698:static/chunks/7698-61f6ae5a93d37916.js"],"name":"default","async":false}
+5:I{"id":7513,"chunks":["3185:static/chunks/app/layout-09ad6f4c2bba461f.js"],"name":"","async":false}
+6:I{"id":9180,"chunks":["2272:static/chunks/webpack-7a61e0a0e1c92ae8.js","9253:static/chunks/bce60fc1-12317074627e91f6.js","7698:static/chunks/7698-61f6ae5a93d37916.js"],"name":"default","async":false}
+7:I{"id":2306,"chunks":["2272:static/chunks/webpack-7a61e0a0e1c92ae8.js","9253:static/chunks/bce60fc1-12317074627e91f6.js","7698:static/chunks/7698-61f6ae5a93d37916.js"],"name":"default","async":false}
 8:I{"id":9623,"chunks":["6680:static/chunks/ff48af57-46a6c653da494936.js","5639:static/chunks/fdd0be6d-31192feec89f44f2.js","4288:static/chunks/4288-2fd8401fbb9e443d.js","1092:static/chunks/1092-0f63dd217caf80e1.js","8487:static/chunks/8487-543d9d45041ddd20.js","486:static/chunks/486-05bb2e7d133469bf.js","8580:static/chunks/app/dosen/layout-f63640b64770706e.js"],"name":"","async":false}
 9:I{"id":8919,"chunks":["6680:static/chunks/ff48af57-46a6c653da494936.js","4288:static/chunks/4288-2fd8401fbb9e443d.js","2772:static/chunks/2772-0f1e9b3127632f02.js","9342:static/chunks/9342-eb47df204d309e12.js","2373:static/chunks/app/dosen/akun/page-08a80551e07e5525.js"],"name":"Toaster","async":false}
 a:I{"id":3889,"chunks":["6680:static/chunks/ff48af57-46a6c653da494936.js","4288:static/chunks/4288-2fd8401fbb9e443d.js","2772:static/chunks/2772-0f1e9b3127632f02.js","9342:static/chunks/9342-eb47df204d309e12.js","2373:static/chunks/app/dosen/akun/page-08a80551e07e5525.js"],"name":"","async":false}

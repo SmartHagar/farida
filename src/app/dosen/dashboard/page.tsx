@@ -14,6 +14,8 @@ import useRuanganApiEdom from "@/stores/api/Ruangan";
 import useDosenApiEdom from "@/stores/api/Dosen";
 import { useForm } from "react-hook-form";
 
+import Cookies from "js-cookie";
+
 type Props = {};
 
 const Dashboard = (props: Props) => {
@@ -23,6 +25,10 @@ const Dashboard = (props: Props) => {
   // state
   const [tahunWatch, setTahunWatch] = useState<number | string>("");
   const [semesterWatch, setSemesterWatch] = useState<string>("");
+  const [dtDosen, setDtDosen] = useState<any>([]);
+  //
+  const dosen_id = Cookies.get("dosen_id") || "";
+
   useEffect(() => {
     setRuanganAll({
       search: "",
@@ -55,13 +61,26 @@ const Dashboard = (props: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const dtDosen = dtDosenAll?.data?.find(
+      (d: any) => d.id === parseInt(dosen_id)
+    );
+    setDtDosen(dtDosen);
+    return () => {};
+  }, [dosen_id, dtDosenAll]);
+
+  console.log({ dtDosenAll });
+
   return (
     <div className="h-full w-full overflow-auto">
       <div className="mb-4">
-        <p className="text-lg text-center tracking-[0.2rem]">SILAKU</p>
-        <p className="text-center text-sm text-font-1">
+        <p className="text-lg md:text-xl text-center tracking-[0.2rem]">
+          SILAKU
+        </p>
+        <p className="text-center text-sm md:text-base text-font-1">
           (Sistem Informasi Perkuliahan Fakultas Sains & Teknologi)
         </p>
+        <h5 className="text-center my-4">Prodi {dtDosen?.prodi?.nama}</h5>
       </div>
       <>
         <Kelengkapan tahun={tahunWatch} semester={semesterWatch} />

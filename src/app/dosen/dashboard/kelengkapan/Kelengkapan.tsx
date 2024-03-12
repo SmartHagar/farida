@@ -1,8 +1,6 @@
 /** @format */
 "use client";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
-import PaginationDefault from "@/components/pagination/PaginationDefault";
-import { usePathname, useSearchParams } from "next/navigation";
 import React, { FC, useEffect, useMemo, useState } from "react";
 import TableCostume from "./TableCostume";
 import Cookies from "js-cookie";
@@ -24,10 +22,6 @@ type Props = {
 };
 
 const Kelengkapan: FC<Props> = ({ tahun, semester }) => {
-  // params
-  const params = useSearchParams();
-  // pathname
-  const pathname = usePathname();
   // store
   const { setShowAbsen, showAbsen } = useAbsen();
   const { setShowNilai, showNilai } = useNilai();

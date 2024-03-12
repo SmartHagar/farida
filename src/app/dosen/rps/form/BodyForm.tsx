@@ -62,7 +62,7 @@ const BodyForm: FC<Props> = ({
           placeholder="Pilih Jadwal"
           name="jadwal_id"
           dataDb={dtJadwal?.data}
-          body={["id", "hari", "matkul.nama", "mulai", "seles"]}
+          body={["id", "matkul.kode", "hari", "matkul.nama", "mulai", "seles"]}
           control={control}
           required
           errors={errors.jadwal_id}
