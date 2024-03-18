@@ -72,7 +72,7 @@ const BodyForm: FC<Props> = ({
       />
 
       <InputTextDefault
-        label="Materi"
+        label="Materi (Kuliah Perpertemuan)"
         name="materi"
         register={register}
         required
@@ -87,14 +87,14 @@ const BodyForm: FC<Props> = ({
         errors={errors}
         name="sistem"
         options={[
-          { value: "Daring", label: "Daring" },
-          { value: "Luring", label: "Luring" },
+          { value: "Daring", label: "Daring (Online)" },
+          { value: "Luring", label: "Luring (Tatap Muka)" },
         ]}
         addClass="col-span-4"
       />
 
       <InputFile
-        label="Foto"
+        label="Foto (Aktivitas BBM di Kelas)"
         name="foto"
         register={register}
         accept="image/*"
