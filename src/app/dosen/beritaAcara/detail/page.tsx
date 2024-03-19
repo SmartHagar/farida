@@ -14,6 +14,7 @@ import { useSearchParams } from "next/navigation";
 import { BASE_URL } from "@/services/baseURL";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import useJadwalApiEdom from "@/stores/api/Jadwal";
+import ParafDosenMhs from "./ParafDosenMhs";
 
 // type setDelete
 type Delete = {
@@ -114,21 +115,26 @@ const Dosen = () => {
               <span>: {jadwal?.ruangan?.kode}</span>
             </div>
           </div>
-          <div className="flex justify-between self-start md:w-64">
-            {loadPdf ? (
-              <LoadingSpiner />
-            ) : (
+          <div className="flex lg:justify-normal flex-col gap-4">
+            <div className="flex gap-2 self-start md:w-64">
+              {loadPdf ? (
+                <LoadingSpiner />
+              ) : (
+                <ButtonPrimary
+                  text="Cetak"
+                  addClass=" bg-secondary"
+                  onClick={cetak}
+                />
+              )}
               <ButtonPrimary
-                text="Cetak"
-                addClass="self-end bg-secondary"
-                onClick={cetak}
+                text="Tambah Data"
+                addClass=""
+                onClick={handleTambah}
               />
-            )}
-            <ButtonPrimary
-              text="Tambah Data"
-              addClass="self-end"
-              onClick={handleTambah}
-            />
+            </div>
+            <div className="flex gap-2 self-start md:w-64">
+              <ParafDosenMhs />
+            </div>
           </div>
         </div>
         <InputTextSearch
