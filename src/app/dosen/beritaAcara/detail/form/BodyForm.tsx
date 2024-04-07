@@ -57,7 +57,7 @@ const BodyForm: FC<Props> = ({
         errors={errors.tgl}
         addClass="col-span-4 lg:col-span-2"
         includeDateIntervals={[
-          { start: subDays(new Date(), 14), end: new Date() },
+          { start: subDays(new Date(), 40), end: new Date() },
         ]}
       />
 
