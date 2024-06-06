@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FC, useRef } from "react";
+import { FC, useRef } from "react";
 import { Controller } from "react-hook-form";
 import SignatureCanvas from "react-signature-canvas";
 import ButtonSecondary from "../button/ButtonSecondary";
@@ -45,7 +45,7 @@ const InputCanvas: FC<Props> = ({
     <div className={addClass}>
       <label className="text-sm font-medium text-gray-700 tracking-wide block">
         {label}
-        {required && <span className="ml-1 text-red-600">*</span>}
+        {required && <span className="ml-1 text-red-600 ">*</span>}
       </label>
       <Controller
         name={name}
@@ -53,9 +53,9 @@ const InputCanvas: FC<Props> = ({
         rules={{ required }}
         render={({ field }) => (
           <SignatureCanvas
-            penColor="blue"
+            penColor="black"
             canvasProps={{
-              className: "sigCanvas border border-black w-full rounded-xl",
+              className: "sigCanvas border border-primary w-full rounded-xl",
             }}
             ref={(ref) => {
               sigCanvasRef.current = ref;

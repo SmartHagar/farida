@@ -7,7 +7,6 @@ import toastShow from "@/utils/toast-show";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import BodyForm from "./BodyForm";
-import useDosen from "@/stores/crud/Dosen";
 import { useSearchParams } from "next/navigation";
 import useDetBeritaAcara from "@/stores/crud/DetBeritaAcara";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";

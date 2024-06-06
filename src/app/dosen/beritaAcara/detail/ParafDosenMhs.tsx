@@ -1,40 +1,56 @@
 /** @format */
 
 import ButtonPrimary from "@/components/button/ButtonPrimary";
-import React, { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ModalDefault from "@/components/modal/ModalDefault";
-import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import submitData from "@/services/submitData";
-import ButtonSecondary from "@/components/button/ButtonSecondary";
 import InputCanvas from "@/components/input/InputCanvas";
+import useParafBeritaAcara from "@/stores/crud/ParafBeritaAcara";
+import toastShow from "@/utils/toast-show";
+import Image from "next/image";
+import { BASE_URL } from "@/services/baseURL";
 
 type Props = {};
 
 type Inputs = {
   berita_acara_id: string;
   paraf: string;
+  jabatan: string;
 };
 
 const ParafDosenMhs = (props: Props) => {
+  // store
+  const { addData, dtParafBeritaAcara, setParafBeritaAcara } =
+    useParafBeritaAcara();
   // state
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
+  const [jabatan, setJabatan] = useState<string>("");
   // get search params
   const params = useSearchParams();
   // get berita_acara_id
   const berita_acara_id = params.get("berita_acara_id") || "";
-  const jadwal_id = params.get("jadwal_id") || "";
   const parafDosen = () => {
     setShowModal(true);
     setTitle("Dosen");
+    setJabatan("dosen");
   };
   const parafMhs = () => {
     setShowModal(true);
     setTitle("Mahasiswa");
+    setJabatan("mahasiswa");
   };
+
+  // fetch paraf berita acara
+  const fetchDataParafBeritaAcara = useCallback(async () => {
+    const res = await setParafBeritaAcara({ berita_acara_id });
+  }, [berita_acara_id, setParafBeritaAcara]);
+  useEffect(() => {
+    fetchDataParafBeritaAcara();
+  }, [fetchDataParafBeritaAcara]);
 
   const {
     register,
@@ -52,28 +68,51 @@ const ParafDosenMhs = (props: Props) => {
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (row) => {
-    // row.paraf = sign.getTrimmedCanvas().toDataURL("image/png");
     row.berita_acara_id = berita_acara_id;
+    row.jabatan = jabatan;
     console.log({ row });
-    return;
+    // return;
     // simpan data
     submitData({
+      addData,
       row,
       setShowModal,
       setIsLoading,
-      toastShow: null,
+      toastShow,
     });
+    // close modal
+    setShowModal(false);
+    // reset form
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-2">
       {/* button */}
-      <ButtonPrimary
-        text="Paraf Dosen"
-        addClass="self-end"
-        onClick={parafDosen}
-      />
-      <ButtonPrimary text="Paraf Mhs" addClass="self-end" onClick={parafMhs} />
+      <div className="flex gap-2">
+        <ButtonPrimary
+          text="Paraf Dosen"
+          addClass="self-end"
+          onClick={parafDosen}
+        />
+        <ButtonPrimary
+          text="Paraf Mhs"
+          addClass="self-end"
+          onClick={parafMhs}
+        />
+      </div>
+
+      <div className="flex gap-2">
+        {dtParafBeritaAcara &&
+          dtParafBeritaAcara.map((item: any) => (
+            <Image
+              alt="paraf"
+              src={`${BASE_URL}/${item.paraf}`}
+              width={100}
+              height={100}
+              key={item.id}
+            />
+          ))}
+      </div>
 
       {/* modal */}
       <ModalDefault
@@ -97,7 +136,7 @@ const ParafDosenMhs = (props: Props) => {
           <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
         </div>
       </ModalDefault>
-    </>
+    </div>
   );
 };
 
