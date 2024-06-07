@@ -1,9 +1,9 @@
-1:HL["/_next/static/css/7148bd84ad9ce7e4.css",{"as":"style"}]
-0:["fZ8NfLa2WxRJIxGWSzp_C",[[["",{"children":["__PAGE__",{}]},"$undefined","$undefined",true],"$L2",[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/7148bd84ad9ce7e4.css","precedence":"next"}]],["$L3",null]]]]]
-4:I{"id":7513,"chunks":["3185:static/chunks/app/layout-bde4f7edb3fb313a.js"],"name":"","async":false}
-5:I{"id":9180,"chunks":["2272:static/chunks/webpack-c5dcb7300810a368.js","9253:static/chunks/bce60fc1-12317074627e91f6.js","7698:static/chunks/7698-61f6ae5a93d37916.js"],"name":"default","async":false}
-6:I{"id":2306,"chunks":["2272:static/chunks/webpack-c5dcb7300810a368.js","9253:static/chunks/bce60fc1-12317074627e91f6.js","7698:static/chunks/7698-61f6ae5a93d37916.js"],"name":"default","async":false}
-7:I{"id":8531,"chunks":["2272:static/chunks/webpack-c5dcb7300810a368.js","9253:static/chunks/bce60fc1-12317074627e91f6.js","7698:static/chunks/7698-61f6ae5a93d37916.js"],"name":"default","async":false}
+1:HL["/_next/static/css/3eb1267ab0aa9a49.css",{"as":"style"}]
+0:["yS4SJd4x_mb97WY-z7ZeJ",[[["",{"children":["__PAGE__",{}]},"$undefined","$undefined",true],"$L2",[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/3eb1267ab0aa9a49.css","precedence":"next"}]],["$L3",null]]]]]
+4:I{"id":7513,"chunks":["3185:static/chunks/app/layout-228e5476c1e51fa1.js"],"name":"","async":false}
+5:I{"id":9180,"chunks":["2272:static/chunks/webpack-bf32f7dc6b2ddd26.js","9253:static/chunks/bce60fc1-12317074627e91f6.js","7698:static/chunks/7698-61f6ae5a93d37916.js"],"name":"default","async":false}
+6:I{"id":2306,"chunks":["2272:static/chunks/webpack-bf32f7dc6b2ddd26.js","9253:static/chunks/bce60fc1-12317074627e91f6.js","7698:static/chunks/7698-61f6ae5a93d37916.js"],"name":"default","async":false}
+7:I{"id":8531,"chunks":["2272:static/chunks/webpack-bf32f7dc6b2ddd26.js","9253:static/chunks/bce60fc1-12317074627e91f6.js","7698:static/chunks/7698-61f6ae5a93d37916.js"],"name":"default","async":false}
 8:I{"id":7433,"chunks":["4288:static/chunks/4288-2fd8401fbb9e443d.js","1931:static/chunks/app/page-8069b7270b0f41c2.js"],"name":"","async":false}
 2:[["$","html",null,{"lang":"en","children":["$","body",null,{"children":["$","$L4",null,{"children":["$","$L5",null,{"parallelRouterKey":"children","segmentPath":["children"],"error":"$undefined","errorStyles":"$undefined","loading":"$undefined","loadingStyles":"$undefined","hasLoading":false,"template":["$","$L6",null,{}],"templateStyles":"$undefined","notFound":"$undefined","notFoundStyles":"$undefined","childProp":{"current":[["$","$L7",null,{"propsForComponent":{"params":{}},"Component":"$8"}],null],"segment":"__PAGE__"},"styles":[]}]}]}]}],null]
 3:[["$","meta","0",{"charSet":"utf-8"}],["$","title","1",{"children":"FST Perkuliahan"}],["$","meta","2",{"name":"description","content":"Website Perkuliahan Fakultas Sains & Teknologi Universitas Ottow Geissler"}],["$","meta","3",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","link","4",{"rel":"icon","href":"/favicon.ico","type":"image/x-icon","sizes":"any"}]]

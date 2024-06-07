@@ -3,9 +3,10 @@
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import PaginationDefault from "@/components/pagination/PaginationDefault";
 import TablesDefault from "@/components/tables/TablesDefault";
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import useDetBeritaAcara from "@/stores/crud/DetBeritaAcara";
 import { useSearchParams } from "next/navigation";
+import Periksa from "./Periksa";
 
 type DeleteProps = {
   id?: number | string;
@@ -60,8 +61,13 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
     "Jumlah MHS",
     "Sistem Belajar",
     "Foto",
+    "Periksa",
   ];
   const tableBodies = ["tgl", "materi", "jmlh_mhs", "sistem", "foto"];
+
+  const costume = (row: any) => {
+    return <Periksa row={row} />;
+  };
 
   return (
     <div className="flex-1 flex-col max-w-full h-full overflow-auto">
@@ -80,6 +86,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
               setDelete={setDelete}
               ubah={false}
               hapus={false}
+              costume={costume}
             />
           </div>
           {dtDetBeritaAcara?.last_page > 1 && (
