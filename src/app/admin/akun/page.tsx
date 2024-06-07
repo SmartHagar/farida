@@ -1,14 +1,18 @@
 /** @format */
-import React from "react";
+"use client";
 import Form from "./form/Form";
 import { Toaster } from "react-hot-toast";
 import useLogin from "@/stores/auth/login";
+import ParafUser from "./ParafUser";
 
 type Props = {};
 
 const Akun = (props: Props) => {
+  const { cekToken, dtLogin } = useLogin();
+  console.log({ dtLogin });
   return (
     <div className="flex flex-col h-full w-full">
+      {dtLogin?.user?.role === "prodi" && <ParafUser dtLogin={dtLogin} />}
       <div className="mb-4">
         <p>
           Silahkan mengubah data akun anda pada form dibawah ini. Masukanlah
@@ -18,7 +22,7 @@ const Akun = (props: Props) => {
       <Toaster />
       <div className="lg:mx-10">
         {" "}
-        <Form />
+        <Form dtLogin={dtLogin} cekToken={cekToken} />
       </div>
     </div>
   );

@@ -2,11 +2,7 @@
 
 import getProperty from "@/services/getProperty";
 import { useRouter } from "next/navigation";
-import {
-  BsFillEmojiSunglassesFill,
-  BsFillPencilFill,
-  BsFillTrashFill,
-} from "react-icons/bs";
+import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 
 type Props = {
   headTable: string[];
@@ -57,7 +53,7 @@ const TablesDefault = (props: Props) => {
                 {/* loop td */}
                 {props.tableBodies.map((column, index) => {
                   return (
-                    <td key={index} className={`px-6 py-4 whitespace-nowrap`}>
+                    <td key={index} className={`px-6 py-4`}>
                       {getProperty(row, column)}
                     </td>
                   );

@@ -12,7 +12,10 @@ import useLogin from "@/stores/auth/login";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-type Props = {};
+type Props = {
+  dtLogin: any;
+  cekToken: () => void;
+};
 
 type Inputs = {
   email: string;
@@ -20,9 +23,9 @@ type Inputs = {
   confirmPwd: string;
 };
 
-const Form = ({}: Props) => {
+const Form = ({ dtLogin, cekToken }: Props) => {
   // store
-  const { cekToken, dtLogin } = useLogin();
+
   useEffect(() => {
     cekToken();
 
