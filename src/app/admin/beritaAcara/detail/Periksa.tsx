@@ -32,12 +32,11 @@ const Periksa: FC<Props> = ({ row }) => {
     const row = {
       periksa: !parsedRow.periksa,
     };
-
     updateData(parsedRow.id, row);
 
     setIsLoading(false);
   };
-  console.log({ row });
+
   return (
     <div>
       {isLoading ? (

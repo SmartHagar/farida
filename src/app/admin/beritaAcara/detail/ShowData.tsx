@@ -66,7 +66,12 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
   const tableBodies = ["tgl", "materi", "jmlh_mhs", "sistem", "foto"];
 
   const costume = (row: any) => {
-    return <Periksa row={row} />;
+    // change to int
+    const rowPeriksa = parseInt(row.periksa);
+    // add rowPeriksa to row
+    const parsedRow = { ...row, periksa: rowPeriksa };
+
+    return <Periksa row={parsedRow} />;
   };
 
   return (

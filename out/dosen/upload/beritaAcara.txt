@@ -1,5 +1,5 @@
 1:HL["/_next/static/css/3eb1267ab0aa9a49.css",{"as":"style"}]
-0:["yS4SJd4x_mb97WY-z7ZeJ",[[["",{"children":["dosen",{"children":["upload",{"children":["beritaAcara",{"children":["__PAGE__",{}]}]}]}]},"$undefined","$undefined",true],"$L2",[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/3eb1267ab0aa9a49.css","precedence":"next"}]],["$L3",null]]]]]
+0:["ZuRVSPt5zK2FTYDSRGfZX",[[["",{"children":["dosen",{"children":["upload",{"children":["beritaAcara",{"children":["__PAGE__",{}]}]}]}]},"$undefined","$undefined",true],"$L2",[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/3eb1267ab0aa9a49.css","precedence":"next"}]],["$L3",null]]]]]
 4:HL["/_next/static/css/7ac8cb26da507440.css",{"as":"style"}]
 5:I{"id":7513,"chunks":["3185:static/chunks/app/layout-228e5476c1e51fa1.js"],"name":"","async":false}
 6:I{"id":9180,"chunks":["2272:static/chunks/webpack-bf32f7dc6b2ddd26.js","9253:static/chunks/bce60fc1-12317074627e91f6.js","7698:static/chunks/7698-61f6ae5a93d37916.js"],"name":"default","async":false}
