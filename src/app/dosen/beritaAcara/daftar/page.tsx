@@ -1,11 +1,10 @@
 /** @format */
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import ShowData from "./ShowData";
 import { Toaster } from "react-hot-toast";
-import InputTextSearch from "@/components/input/InputTextSerch";
-import { useForm } from "react-hook-form";
+import Searching from "./Searching";
 
 // type setDelete
 type Delete = {
@@ -31,24 +30,6 @@ const Dosen = () => {
     setDtEdit(row);
   };
 
-  // hook form
-  const {
-    formState: { errors },
-    watch,
-    setValue,
-  } = useForm();
-
-  useEffect(() => {
-    const tahun = new Date().getFullYear();
-    // get month
-    const month = new Date().getMonth();
-    const semester = month > 9 ? "Ganjil" : "Genap";
-    setTahunWatch(tahun);
-    setSemesterWatch(semester);
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <div className="flex flex-col h-full">
       <div>
@@ -56,18 +37,12 @@ const Dosen = () => {
         <div className="mb-4 flex justify-between">
           <p>Silahkan Mengolah data berita acara</p>
         </div>
-        <InputTextSearch
-          placeholder="Cari Jadwal"
-          onChange={(e) => setSearch(e)}
-        />
+        <div>
+          <Searching halaman="Berita Acara" />
+        </div>
       </div>
 
-      <ShowData
-        tahunWatch={tahunWatch}
-        semesterWatch={semesterWatch}
-        setEdit={setEdit}
-        search={search}
-      />
+      <ShowData setEdit={setEdit} />
     </div>
   );
 };

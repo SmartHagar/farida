@@ -2,13 +2,10 @@
 "use client";
 import { FC, useEffect, useState } from "react";
 import Select from "react-select";
-import moment from "moment";
 import { Controller } from "react-hook-form";
 
 type Props = {
   label?: string;
-  start: number;
-  end: number;
   control: any;
   required?: boolean;
   name: string;
@@ -16,13 +13,11 @@ type Props = {
   addClass: any;
   menuPosition?: "fixed" | "absolute";
   placeholder?: string;
-  fromMax?: boolean;
+  options: any[];
 };
 
-const SelectTahun: FC<Props> = ({
+const SelectDef: FC<Props> = ({
   label,
-  start = 2012,
-  end = moment().format("YYYY"),
   control,
   required,
   name,
@@ -30,21 +25,8 @@ const SelectTahun: FC<Props> = ({
   addClass,
   menuPosition = "fixed" as any,
   placeholder = "Pilih Tahun",
-  fromMax = false,
+  options = [],
 }) => {
-  const pilihTahun = () => {
-    const array = [];
-    if (fromMax) {
-      for (let index: any = end; index >= start; index--) {
-        array.push({ value: index, label: index });
-      }
-    } else {
-      for (let index: any = start; index <= end; index++) {
-        array.push({ value: index, label: index });
-      }
-    }
-    return array;
-  };
   const [menuPortalTarget, setMenuPortalTarget] = useState<any>(null);
   useEffect(() => {
     // Pastikan kode ini hanya dijalankan di lingkungan browser
@@ -69,12 +51,12 @@ const SelectTahun: FC<Props> = ({
             <Select
               isClearable={true}
               isSearchable={true}
-              options={pilihTahun()}
+              options={options}
               placeholder={placeholder}
               menuPosition={menuPosition}
               ref={ref}
               value={
-                value ? pilihTahun().find((x) => x.value === value) : value
+                value ? options.find((option) => option.value === value) : value
               }
               onChange={(option: any) =>
                 onChange(option ? option.value : option)
@@ -92,4 +74,4 @@ const SelectTahun: FC<Props> = ({
   );
 };
 
-export default SelectTahun;
+export default SelectDef;
