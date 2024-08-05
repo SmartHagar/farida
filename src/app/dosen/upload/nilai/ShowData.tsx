@@ -68,9 +68,11 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
 
   // ketika data jadwal berubah
   useEffect(() => {
-    fetchNilai();
+    if (dtJadwal.data) {
+      setIsLoading(true);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(dtJadwal)]);
+  }, [JSON.stringify(dtJadwal.data)]);
 
   //  mengisi dtShow
   const getDataShow = (dtJadwal: any, showNilai: any) => {
@@ -95,11 +97,11 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
 
   // ketika dtRPS beruba
   useEffect(() => {
-    if (dtJadwal.data) {
+    if (dtJadwal.data && showNilai) {
       getDataShow(dtJadwal?.data, showNilai);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(showNilai), JSON.stringify(dtJadwal)]);
+  }, [JSON.stringify(showNilai), JSON.stringify(dtJadwal.data)]);
 
   // table
   const headTable = [

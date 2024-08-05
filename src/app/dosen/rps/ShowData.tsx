@@ -49,7 +49,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
   useEffect(() => {
     year && semester && fetchDataJadwal();
     return () => {};
-  }, [page, limit, year, semester, dosen_id, fetchDataJadwal]);
+  }, [year, semester, fetchDataJadwal]);
   // ketika search berubah
 
   // memanggil data rps
@@ -70,7 +70,9 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
 
   // ketika data jadwal berubah
   useEffect(() => {
-    dtJadwal?.data && fetchRPS();
+    if (dtJadwal?.data) {
+      fetchRPS();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(dtJadwal.data)]);
 
@@ -98,11 +100,11 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
 
   // ketika dtRPS beruba
   useEffect(() => {
-    if (dtJadwal?.data?.length > 0 && showRps?.length > 0) {
+    if (dtJadwal?.data && showRps) {
       getDataShow(dtJadwal?.data, showRps);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(showRps), JSON.stringify(dtJadwal)]);
+  }, [JSON.stringify(showRps), JSON.stringify(dtJadwal.data)]);
 
   // table
   const headTable = [
