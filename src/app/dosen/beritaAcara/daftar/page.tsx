@@ -1,9 +1,8 @@
 /** @format */
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import ShowData from "./ShowData";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import { Toaster } from "react-hot-toast";
 import InputTextSearch from "@/components/input/InputTextSerch";
 import { useForm } from "react-hook-form";
@@ -43,7 +42,7 @@ const Dosen = () => {
     const tahun = new Date().getFullYear();
     // get month
     const month = new Date().getMonth();
-    const semester = month > 6 ? "Ganjil" : "Genap";
+    const semester = month > 9 ? "Ganjil" : "Genap";
     setTahunWatch(tahun);
     setSemesterWatch(semester);
     return () => {};
