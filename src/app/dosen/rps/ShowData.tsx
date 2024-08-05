@@ -1,11 +1,12 @@
 /** @format */
 "use client";
-import React, { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import useRps from "@/stores/crud/upload/Rps";
 import TableRps from "@/components/tables/TableRps";
 import useJadwalApiEdom from "@/stores/api/Jadwal";
+import { useSearchParams } from "next/navigation";
 
 type DeleteProps = {
   id?: number | string;
@@ -15,18 +16,9 @@ type DeleteProps = {
 type Props = {
   setDelete?: ({ id, isDelete }: DeleteProps) => void;
   setEdit: (row: any) => void;
-  search: string;
-  tahunWatch: string | number;
-  semesterWatch: string;
 };
 
-const ShowData: FC<Props> = ({
-  setDelete,
-  setEdit,
-  search,
-  tahunWatch,
-  semesterWatch,
-}) => {
+const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
   // dosen_id
   const dosen_id = Cookies.get("dosen_id") || "";
   // store
@@ -37,24 +29,26 @@ const ShowData: FC<Props> = ({
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [dtShow, setDtShow] = useState<any>();
+  // search params
+  const searchParams = useSearchParams();
+  const search = useSearchParams().get("cari") || "";
+  const semester = searchParams.get("semester") || "";
+  const year = searchParams.get("year") || "";
 
   // memanggil data Jadwal
-  const fetchDataJadwal = async () => {
-    if (tahunWatch && semesterWatch) {
-      await setJadwalByDosenFull({
-        tahun: tahunWatch,
-        semester: semesterWatch,
-        dosen_id,
-      });
-    }
+  const fetchDataJadwal = useCallback(async () => {
+    await setJadwalByDosenFull({
+      tahun: year,
+      semester: semester,
+      dosen_id,
+    });
     setIsLoading(false);
-  };
+  }, [dosen_id, semester, setJadwalByDosenFull, year]);
+  // ketika page dan limit berubah
   useEffect(() => {
-    fetchDataJadwal();
-
+    year && semester && fetchDataJadwal();
     return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit, tahunWatch, semesterWatch, dosen_id]);
+  }, [page, limit, year, semester, dosen_id, fetchDataJadwal]);
   // ketika search berubah
 
   // memanggil data rps
@@ -75,9 +69,9 @@ const ShowData: FC<Props> = ({
 
   // ketika data jadwal berubah
   useEffect(() => {
-    fetchRPS();
+    dtJadwal?.data && fetchRPS();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(dtJadwal)]);
+  }, [JSON.stringify(dtJadwal.data)]);
 
   //  mengisi dtShow
   const getDataShow = (dtJadwal: any, showRps: any) => {

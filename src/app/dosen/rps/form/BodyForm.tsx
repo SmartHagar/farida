@@ -1,17 +1,13 @@
 /** @format */
 "use client";
-
 import Cookies from "js-cookie";
-import InputDate from "@/components/input/InputDate";
 import InputFile from "@/components/input/InputFile";
-import InputRadio from "@/components/input/InputRadio";
-import InputTextDefault from "@/components/input/InputTextDefault";
-import { SelectDefault } from "@/components/select/SelectDefault";
 import SelectFromDb from "@/components/select/SelectFromDB";
-import React, { FC, useEffect } from "react";
+import { FC, useEffect } from "react";
 
 import "react-datepicker/dist/react-datepicker.css";
 import useJadwalApiEdom from "@/stores/api/Jadwal";
+import { useSearchParams } from "next/navigation";
 
 type Props = {
   register: any;
@@ -23,8 +19,6 @@ type Props = {
   showModal: boolean;
   myFile: any;
   setMyFile: any;
-  tahunWatch: string | number;
-  semesterWatch: string;
 };
 
 const BodyForm: FC<Props> = ({
@@ -37,16 +31,19 @@ const BodyForm: FC<Props> = ({
   showModal,
   myFile,
   setMyFile,
-  tahunWatch,
-  semesterWatch,
 }) => {
   const dosen_id = Cookies.get("dosen_id");
+  // search params
+  const searchParams = useSearchParams();
+  const semester = searchParams.get("semester") || "";
+  const year = searchParams.get("year") || "";
+
   const { setJadwalByDosenFull, dtJadwal } = useJadwalApiEdom();
   // memanggil data prodi
   const fetchDataJadwal = async () => {
     await setJadwalByDosenFull({
-      tahun: tahunWatch,
-      semester: semesterWatch,
+      tahun: year,
+      semester: semester,
       dosen_id,
     });
   };

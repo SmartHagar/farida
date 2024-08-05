@@ -1,10 +1,8 @@
 /** @format */
 import MenuTypes from "@/types/MenuTypes";
 import {
-  BsFillBookFill,
   BsFillPersonLinesFill,
   BsHouseDoorFill,
-  BsLampFill,
   BsPeopleFill,
   BsReverseLayoutTextWindowReverse,
 } from "react-icons/bs";
@@ -96,11 +94,11 @@ const DosenMenus: MenuTypes[] = [
         href: "/dosen/upload/absen",
         icon: <BsPeopleFill />,
       },
-      {
-        name: "Berita Acara",
-        href: "/dosen/upload/beritaAcara",
-        icon: <BsPeopleFill />,
-      },
+      // {
+      //   name: "Berita Acara",
+      //   href: "/dosen/upload/beritaAcara",
+      //   icon: <BsPeopleFill />,
+      // },
       {
         name: "Nilai",
         href: "/dosen/upload/nilai",

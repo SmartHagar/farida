@@ -1,6 +1,6 @@
 /** @format */
 "use client";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 
 import ShowData from "./ShowData";
 import ButtonPrimary from "@/components/button/ButtonPrimary";
@@ -8,9 +8,9 @@ import Form from "./form/Form";
 import ModalDelete from "@/components/modal/ModalDelete";
 import { Toaster } from "react-hot-toast";
 import toastShow from "@/utils/toast-show";
-import InputTextSearch from "@/components/input/InputTextSerch";
 import { useForm } from "react-hook-form";
 import useNilai from "@/stores/crud/upload/Nilai";
+import Searching from "./Searching";
 
 // type setDelete
 type Delete = {
@@ -58,20 +58,6 @@ const Nilai = () => {
     setValue,
   } = useForm();
 
-  const tahunWatch = watch("tahun");
-  const semesterWatch = watch("semester");
-
-  useEffect(() => {
-    const tahun = new Date().getFullYear();
-    // get month
-    const month = new Date().getMonth();
-    const semester = month > 6 ? "Ganjil" : "Genap";
-    setValue("tahun", tahun);
-    setValue("semester", semester);
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <div className="flex flex-col h-full">
       <div>
@@ -80,8 +66,6 @@ const Nilai = () => {
           dtEdit={dtEdit}
           showModal={showModal}
           setShowModal={setShowModal}
-          tahunWatch={tahunWatch}
-          semesterWatch={semesterWatch}
         />
         <ModalDelete
           showDel={showDelete}
@@ -94,19 +78,12 @@ const Nilai = () => {
             <ButtonPrimary text="Tambah nilai" onClick={handleTambah} />
           </div>
         </div>
-        <InputTextSearch
-          placeholder="Cari Nilai"
-          onChange={(e) => setSearch(e)}
-        />
+        <div>
+          <Searching halaman="Nilai" />
+        </div>
       </div>
 
-      <ShowData
-        setDelete={setDelete}
-        setEdit={setEdit}
-        search={search}
-        tahunWatch={tahunWatch}
-        semesterWatch={semesterWatch}
-      />
+      <ShowData setDelete={setDelete} setEdit={setEdit} />
     </div>
   );
 };

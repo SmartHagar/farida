@@ -14,8 +14,6 @@ type Props = {
   showModal: boolean;
   setShowModal: (data: boolean) => void;
   dtEdit: any;
-  tahunWatch: string | number;
-  semesterWatch: string;
 };
 
 type Inputs = {
@@ -25,13 +23,7 @@ type Inputs = {
   file: string;
 };
 
-const Form = ({
-  showModal,
-  setShowModal,
-  dtEdit,
-  tahunWatch,
-  semesterWatch,
-}: Props) => {
+const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
   // state
   const [myFile, setMyFile] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -108,8 +100,6 @@ const Form = ({
             showModal={showModal}
             myFile={myFile}
             setMyFile={setMyFile}
-            tahunWatch={tahunWatch}
-            semesterWatch={semesterWatch}
           />
         </div>
         <div>

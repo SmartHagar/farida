@@ -1,11 +1,12 @@
 /** @format */
 "use client";
-import React, { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import TablesDefault from "@/components/tables/TablesDefault";
 import useNilai from "@/stores/crud/upload/Nilai";
 import useJadwalApiEdom from "@/stores/api/Jadwal";
+import { useSearchParams } from "next/navigation";
 
 type DeleteProps = {
   id?: number | string;
@@ -15,20 +16,16 @@ type DeleteProps = {
 type Props = {
   setDelete?: ({ id, isDelete }: DeleteProps) => void;
   setEdit: (row: any) => void;
-  search: string;
-  tahunWatch: string | number;
-  semesterWatch: string;
 };
 
-const ShowData: FC<Props> = ({
-  setDelete,
-  setEdit,
-  search,
-  tahunWatch,
-  semesterWatch,
-}) => {
+const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
   // dosen_id
   const dosen_id = Cookies.get("dosen_id") || "";
+  // search params
+  const searchParams = useSearchParams();
+  const search = useSearchParams().get("cari") || "";
+  const semester = searchParams.get("semester") || "";
+  const year = searchParams.get("year") || "";
   // store
   const { setShowNilai, showNilai } = useNilai();
   const { setJadwalByDosenFull, dtJadwal } = useJadwalApiEdom();
@@ -38,22 +35,20 @@ const ShowData: FC<Props> = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [dtShow, setDtShow] = useState<any>();
 
-  const fetchDataJadwal = async () => {
+  const fetchDataJadwal = useCallback(async () => {
     setIsLoading(true);
     const res = await setJadwalByDosenFull({
       dosen_id,
       search,
-      tahun: tahunWatch,
-      semester: semesterWatch,
+      tahun: year,
+      semester: semester,
     });
     setIsLoading(false);
-  };
-  // memo fetch data jadwal
-  useMemo(
-    () => tahunWatch && semesterWatch && fetchDataJadwal(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [dosen_id, tahunWatch, semesterWatch]
-  );
+  }, [dosen_id, search, semester, setJadwalByDosenFull, year]);
+  // ketika year dan semester berubah
+  useEffect(() => {
+    year && semester && fetchDataJadwal();
+  }, [year, semester, fetchDataJadwal]);
 
   // memanggil data rps
   const fetchNilai = async () => {
