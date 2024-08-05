@@ -37,6 +37,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
 
   // memanggil data Jadwal
   const fetchDataJadwal = useCallback(async () => {
+    setIsLoading(true);
     await setJadwalByDosenFull({
       tahun: year,
       semester: semester,
