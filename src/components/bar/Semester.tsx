@@ -52,6 +52,8 @@ const SemesterBar: FC<Props> = ({ semesterWatch, setValue, time }) => {
   useEffect(() => {
     if (semesterWatch) {
       barSemester(semesterWatch.toString());
+    } else {
+      barSemester("");
     }
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
