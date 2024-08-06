@@ -6,7 +6,7 @@ import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 
 type Props = {
   headTable: string[];
-  dataTable: [];
+  dataTable: any[];
   tableBodies: string[];
   setEdit?: (data: any) => void;
   setDelete?: ({

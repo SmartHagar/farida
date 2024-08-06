@@ -1,6 +1,5 @@
 /** @format */
 
-import React from "react";
 import { BASE_URL } from "./baseURL";
 import Image from "next/image";
 import moment from "moment";
@@ -38,7 +37,7 @@ const getProperty = (obj: any, prop: any) => {
     if (prop === "tgl_mulai" || prop === "tgl_selesai" || prop === "tgl") {
       return moment(obj).format("DD/MM/YYYY");
     }
-    if (prop === "gambar" || prop === "foto") {
+    if (prop === "gambar" || prop === "foto" || prop === "paraf") {
       return (
         obj && (
           <Image src={`${BASE_URL}/${obj}`} width={100} height={100} alt="" />

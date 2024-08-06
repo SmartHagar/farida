@@ -18,6 +18,11 @@ const menus: MenuTypes[] = [
     icon: <BsFillPersonLinesFill />,
   },
   {
+    name: "Paraf Pimpinan",
+    href: "/admin/parafPimpinan",
+    icon: <BsPeopleFill />,
+  },
+  {
     name: "Jadwal",
     href: "/admin/jadwal",
     icon: <BsReverseLayoutTextWindowReverse />,
