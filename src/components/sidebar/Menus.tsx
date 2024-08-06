@@ -3,8 +3,14 @@ import MenuTypes from "@/types/MenuTypes";
 import {
   BsFillPersonLinesFill,
   BsHouseDoorFill,
+  BsMotherboard,
+  BsNewspaper,
+  BsPaperclip,
+  BsPenFill,
   BsPeopleFill,
+  BsReception4,
   BsReverseLayoutTextWindowReverse,
+  BsUpload,
 } from "react-icons/bs";
 const menus: MenuTypes[] = [
   {
@@ -20,7 +26,7 @@ const menus: MenuTypes[] = [
   {
     name: "Paraf Pimpinan",
     href: "/admin/parafPimpinan",
-    icon: <BsPeopleFill />,
+    icon: <BsPenFill />,
   },
   {
     name: "Jadwal",
@@ -30,23 +36,23 @@ const menus: MenuTypes[] = [
   {
     name: "RPS",
     href: "/admin/rps",
-    icon: <BsPeopleFill />,
+    icon: <BsPaperclip />,
   },
   {
     name: "Berita Acara",
     href: "/admin/beritaAcara/daftar",
-    icon: <BsPeopleFill />,
+    icon: <BsNewspaper />,
   },
   {
     name: "Kelengkapan",
     href: "/admin/kelengkapan",
-    icon: <BsPeopleFill />,
+    icon: <BsMotherboard />,
   },
   {
     name: "Laporan",
     href: "#",
     slug: "laporan",
-    icon: <BsPeopleFill />,
+    icon: <BsReception4 />,
     subMenus: [
       {
         name: "Absen",
@@ -81,18 +87,18 @@ const DosenMenus: MenuTypes[] = [
   {
     name: "RPS",
     href: "/dosen/rps",
-    icon: <BsPeopleFill />,
+    icon: <BsPaperclip />,
   },
   {
     name: "Berita Acara",
     href: "/dosen/beritaAcara/daftar",
-    icon: <BsPeopleFill />,
+    icon: <BsNewspaper />,
   },
   {
     name: "Upload",
     href: "#",
     slug: "upload",
-    icon: <BsPeopleFill />,
+    icon: <BsUpload />,
     subMenus: [
       {
         name: "Absen",

@@ -83,7 +83,7 @@ const BodyForm: FC<Props> = ({
         errors={errors.paraf}
         setValue={setValue}
         clear
-        addClass="col-span-4"
+        addClass="col-span-3"
       />
     </>
   );
