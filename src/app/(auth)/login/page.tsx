@@ -2,7 +2,7 @@
 "use client";
 import useLogin from "@/stores/auth/login";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormLogin from "./FormLogin";
@@ -78,8 +78,8 @@ const Login = (props: Props) => {
     }, 1000);
   };
   return (
-    <div className="min-h-screen bg-login bg-cover bg-center font-prompt">
-      <div className="flex flex-col items-center min-h-screen justify-center backdrop-blur-sm z-10">
+    <div className="min-h-screen bg-1 bg-cover bg-center font-prompt">
+      <div className="flex flex-col items-center min-h-screen justify-center backdrop-blur-sm bg-black/50 z-10">
         <div className="bg-white/10 text-font-1 rounded py-8 px-4 mx-6 md:py-8 md:px-12 flex flex-col items-center justify-center z-50">
           <div className="w-full mb-2">
             <h5 className="text-sm font-bold text-center sm:text-lg">
