@@ -6,7 +6,6 @@ import TablesDefault from "@/components/tables/TablesDefault";
 import { FC, useEffect, useState } from "react";
 import useDetBeritaAcara from "@/stores/crud/DetBeritaAcara";
 import { useSearchParams } from "next/navigation";
-import Periksa from "./Periksa";
 
 type DeleteProps = {
   id?: number | string;
@@ -14,7 +13,7 @@ type DeleteProps = {
 };
 
 type Props = {
-  setDelete: ({ id, isDelete }: DeleteProps) => void;
+  setDelete?: ({ id, isDelete }: DeleteProps) => void;
   setEdit: (row: any) => void;
   search: string;
 };
@@ -61,18 +60,17 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
     "Jumlah MHS",
     "Sistem Belajar",
     "Foto",
-    "Periksa",
+    "Paraf",
+    "Aksi",
   ];
-  const tableBodies = ["tgl", "materi", "jmlh_mhs", "sistem", "foto"];
-
-  const costume = (row: any) => {
-    // change to int
-    const rowPeriksa = parseInt(row.periksa);
-    // add rowPeriksa to row
-    const parsedRow = { ...row, periksa: rowPeriksa };
-
-    return <Periksa row={parsedRow} />;
-  };
+  const tableBodies = [
+    "tgl",
+    "materi",
+    "jmlh_mhs",
+    "sistem",
+    "foto",
+    "paraf_pemeriksa",
+  ];
 
   return (
     <div className="flex-1 flex-col max-w-full h-full overflow-auto">
@@ -89,9 +87,8 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
               limit={limit}
               setEdit={setEdit}
               setDelete={setDelete}
-              ubah={false}
+              ubah={true}
               hapus={false}
-              costume={costume}
             />
           </div>
           {dtDetBeritaAcara?.last_page > 1 && (

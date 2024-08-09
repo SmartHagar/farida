@@ -82,6 +82,7 @@ const BodyForm: FC<Props> = ({
         required
         errors={errors.paraf}
         setValue={setValue}
+        watch={watch}
         clear
         addClass="col-span-3"
       />

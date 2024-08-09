@@ -3,7 +3,7 @@
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import PaginationDefault from "@/components/pagination/PaginationDefault";
 import TablesDefault from "@/components/tables/TablesDefault";
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import useDetBeritaAcara from "@/stores/crud/DetBeritaAcara";
 import { useSearchParams } from "next/navigation";
 
@@ -59,10 +59,22 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
     "Materi",
     "Jumlah MHS",
     "Sistem Belajar",
+    "Paraf MHS",
+    "Paraf Dosen",
+    "Paraf Pemeriksa",
     "Foto",
     "Aksi",
   ];
-  const tableBodies = ["tgl", "materi", "jmlh_mhs", "sistem", "foto"];
+  const tableBodies = [
+    "tgl",
+    "materi",
+    "jmlh_mhs",
+    "sistem",
+    "paraf_mhs",
+    "paraf_dosen",
+    "paraf_pemeriksa",
+    "foto",
+  ];
 
   return (
     <div className="flex-1 flex-col max-w-full h-full overflow-auto">

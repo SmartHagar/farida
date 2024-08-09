@@ -37,13 +37,21 @@ const getProperty = (obj: any, prop: any) => {
     if (prop === "tgl_mulai" || prop === "tgl_selesai" || prop === "tgl") {
       return moment(obj).format("DD/MM/YYYY");
     }
-    if (prop === "gambar" || prop === "foto" || prop === "paraf") {
-      return (
-        obj && (
-          <Image src={`${BASE_URL}/${obj}`} width={100} height={100} alt="" />
-        )
-      );
+    const img = [
+      "gambar",
+      "foto",
+      "paraf",
+      "paraf_mhs",
+      "paraf_dosen",
+      "paraf_pemeriksa",
+    ];
+    if (img.includes(prop)) {
+      const nullObj = ["undefined", null, undefined];
+      return obj && !nullObj.includes(obj) ? (
+        <Image src={`${BASE_URL}/${obj}`} width={100} height={100} alt="" />
+      ) : null;
     }
+
     if (prop === "file") {
       return (
         obj && (

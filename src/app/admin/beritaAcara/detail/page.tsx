@@ -1,17 +1,17 @@
 /** @format */
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import ShowData from "./ShowData";
 import ButtonPrimary from "@/components/button/ButtonPrimary";
 import { Toaster } from "react-hot-toast";
-import toastShow from "@/utils/toast-show";
 import InputTextSearch from "@/components/input/InputTextSerch";
 import useDetBeritaAcara from "@/stores/crud/DetBeritaAcara";
 import { useSearchParams } from "next/navigation";
 import { BASE_URL } from "@/services/baseURL";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import useJadwalApiEdom from "@/stores/api/Jadwal";
+import Form from "./form/Form";
 
 // type setDelete
 type Delete = {
@@ -30,31 +30,14 @@ const Dosen = () => {
   const jadwal_id = params.get("jadwal_id") || "";
   // state
   const [showModal, setShowModal] = useState(false);
-  const [showDelete, setShowDelete] = useState<boolean>(false);
   const [idDel, setIdDel] = useState<number | string>();
   const [dtEdit, setDtEdit] = useState<any>();
   const [search, setSearch] = useState("");
   const [loadPdf, setLoadPdf] = useState(false);
 
-  const handleTambah = () => {
-    setShowModal(true);
-    setDtEdit(null);
-  };
-
   const setEdit = (row: any) => {
     setShowModal(true);
     setDtEdit(row);
-  };
-
-  const setDelete = async ({ id, isDelete }: Delete) => {
-    setIdDel(id);
-    if (isDelete) {
-      const { data } = await removeData(idDel);
-      toastShow({
-        event: data,
-      });
-      setShowDelete(false);
-    } else setShowDelete(true);
   };
 
   // memanggil showDetBeritaAcara
@@ -77,6 +60,11 @@ const Dosen = () => {
     <div className="flex flex-col h-full">
       <div>
         <Toaster />
+        <Form
+          dtEdit={dtEdit}
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
         <div className="mb-4 flex flex-col-reverse justify-between md:flex-row">
           <div className="flex flex-col w-full">
             <div>
@@ -120,7 +108,7 @@ const Dosen = () => {
         />
       </div>
 
-      <ShowData setDelete={setDelete} setEdit={setEdit} search={search} />
+      <ShowData setEdit={setEdit} search={search} />
     </div>
   );
 };

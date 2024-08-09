@@ -1,5 +1,6 @@
 /** @format */
 "use client";
+import InputCanvas from "@/components/input/InputCanvas";
 import InputDateIncludeIntervals from "@/components/input/InputDateIncludeIntervals";
 import InputFile from "@/components/input/InputFile";
 import InputTextDefault from "@/components/input/InputTextDefault";
@@ -90,6 +91,30 @@ const BodyForm: FC<Props> = ({
           { value: "Luring", label: "Luring (Tatap Muka)" },
         ]}
         addClass="col-span-4"
+      />
+
+      <InputCanvas
+        watch={watch}
+        control={control}
+        name="paraf_mhs"
+        label={`Paraf Mhs`}
+        required={dtEdit ? false : true}
+        errors={errors.paraf_mhs}
+        setValue={setValue}
+        clear
+        addClass="col-span-4 lg:col-span-2"
+      />
+
+      <InputCanvas
+        control={control}
+        name="paraf_dosen"
+        label={`Paraf Dosen`}
+        required={dtEdit ? false : true}
+        errors={errors.paraf_dosen}
+        setValue={setValue}
+        clear
+        watch={watch}
+        addClass="col-span-4 lg:col-span-2"
       />
 
       <InputFile

@@ -1,6 +1,6 @@
 /** @format */
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import ShowData from "./ShowData";
 import ButtonPrimary from "@/components/button/ButtonPrimary";
@@ -14,7 +14,6 @@ import { useSearchParams } from "next/navigation";
 import { BASE_URL } from "@/services/baseURL";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import useJadwalApiEdom from "@/stores/api/Jadwal";
-import ParafDosenMhs from "./ParafDosenMhs";
 
 // type setDelete
 type Delete = {
@@ -132,9 +131,9 @@ const Dosen = () => {
                 onClick={handleTambah}
               />
             </div>
-            <div className="flex gap-2 self-start md:w-64">
+            {/* <div className="flex gap-2 self-start md:w-64">
               <ParafDosenMhs />
-            </div>
+            </div> */}
           </div>
         </div>
         <InputTextSearch

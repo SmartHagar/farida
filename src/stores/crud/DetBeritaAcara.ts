@@ -52,6 +52,9 @@ const useDetBeritaAcara = create(
       formData.append("materi", row.materi);
       formData.append("jmlh_mhs", row.jmlh_mhs);
       formData.append("sistem", row.sistem);
+      formData.append("paraf_pemeriksa", row.paraf_pemeriksa);
+      formData.append("paraf_dosen", row.paraf_dosen);
+      formData.append("paraf_mhs", row.paraf_mhs);
       formData.append("foto", row.foto);
       return formData;
     },
