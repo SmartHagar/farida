@@ -4,7 +4,7 @@ import { BASE_URL } from "./baseURL";
 import Image from "next/image";
 import moment from "moment";
 
-const getProperty = (obj: any, prop: any) => {
+const getProperty = (obj: any, prop: any, index: number, setIndexBox: any) => {
   const angkatan = obj?.thn_angkatan?.substring(2);
   let parts = prop.split(".");
   if (Array.isArray(parts)) {
@@ -48,7 +48,16 @@ const getProperty = (obj: any, prop: any) => {
     if (img.includes(prop)) {
       const nullObj = ["undefined", null, undefined];
       return obj && !nullObj.includes(obj) ? (
-        <Image src={`${BASE_URL}/${obj}`} width={100} height={100} alt="" />
+        <Image
+          src={`${BASE_URL}/${obj}`}
+          width={100}
+          height={100}
+          className="cursor-pointer"
+          alt=""
+          onClick={
+            setIndexBox ? () => setIndexBox(`${index}-${prop}`) : undefined
+          }
+        />
       ) : null;
     }
 

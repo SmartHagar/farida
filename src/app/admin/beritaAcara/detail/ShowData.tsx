@@ -6,6 +6,8 @@ import TablesDefault from "@/components/tables/TablesDefault";
 import { FC, useEffect, useState } from "react";
 import useDetBeritaAcara from "@/stores/crud/DetBeritaAcara";
 import { useSearchParams } from "next/navigation";
+import lightImgDB from "@/components/lightBox/lightImgDB";
+import LightPlugins from "@/components/lightBox/LightPlugins";
 
 type DeleteProps = {
   id?: number | string;
@@ -29,6 +31,8 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [slides, setSlides] = useState<any>();
+  const [indexBox, setIndexBox] = useState<string>("-1");
 
   const fetchDataDetBeritaAcara = async () => {
     const res = await setDetBeritaAcara({
@@ -71,9 +75,21 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
     "foto",
     "paraf_pemeriksa",
   ];
+  useEffect(() => {
+    setSlides(
+      lightImgDB({
+        data: dtDetBeritaAcara?.data,
+        pictures: ["foto", "paraf_pemeriksa"],
+        title: { path: "materi" },
+        description: { path: "tgl" },
+      })
+    );
+  }, [dtDetBeritaAcara?.data]);
 
   return (
     <div className="flex-1 flex-col max-w-full h-full overflow-auto">
+      {/* lightBox */}
+      <LightPlugins index={indexBox} setIndex={setIndexBox} slides={slides} />
       {isLoading ? (
         <LoadingSpiner />
       ) : (
@@ -89,6 +105,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
               setDelete={setDelete}
               ubah={true}
               hapus={false}
+              setIndexBox={setIndexBox}
             />
           </div>
           {dtDetBeritaAcara?.last_page > 1 && (

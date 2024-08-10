@@ -1,0 +1,44 @@
+/**
+ * lightbox-custom.css
+ *
+ * @format
+ */
+
+/* Thumbnails button background */
+.yarl__thumbnails_thumbnail {
+  background-color: white !important; /* Change the background to white */
+  border: 1px solid black; /* Optional: Add a black border */
+}
+
+/* Thumbnails button hover effect */
+.yarl__thumbnails_thumbnail:hover {
+  background-color: #f0f0f0 !important; /* Light gray on hover */
+}
+
+/* General Lightbox Container */
+.yarl__container {
+  background-color: white !important; /* Background color */
+}
+
+/* Thumbnails container background */
+.yarl__thumbnails__container {
+  background-color: white !important; /* Thumbnails background color */
+}
+
+/* Thumbnails individual item background */
+.yarl__thumbnails__image {
+  background-color: white !important; /* Background of each thumbnail */
+  border-color: black !important; /* Thumbnails border color */
+}
+
+/* Caption text */
+.yarl__slide__caption,
+.yarl__slide__caption__title,
+.yarl__slide__caption__subtitle {
+  color: black !important; /* Text color for captions */
+}
+
+/* Toolbar buttons */
+.yarl__toolbar__button {
+  color: black !important; /* Toolbar buttons color */
+}
