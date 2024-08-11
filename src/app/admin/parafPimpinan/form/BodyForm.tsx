@@ -57,7 +57,7 @@ const BodyForm: FC<Props> = ({
           control={control}
           required
           errors={errors.dosen_id}
-          addClass="col-span-4"
+          addClass="col-span-8"
         />
       )}
       <SelectDefault
@@ -73,7 +73,7 @@ const BodyForm: FC<Props> = ({
         ]}
         required
         errors={errors.jabatan}
-        addClass="col-span-4"
+        addClass="col-span-8"
       />
       <InputCanvas
         control={control}

@@ -55,7 +55,7 @@ const BodyForm: FC<Props> = ({
         setStartDate={setTgl}
         required
         errors={errors.tgl}
-        addClass="col-span-4 lg:col-span-2"
+        addClass="col-span-8 lg:col-span-2"
         includeDateIntervals={[
           { start: subDays(new Date(), 200), end: new Date() },
         ]}
@@ -68,7 +68,7 @@ const BodyForm: FC<Props> = ({
         required
         errors={errors.jmlh_mhs}
         type="number"
-        addClass="col-span-4 lg:col-span-2"
+        addClass="col-span-8 lg:col-span-2"
       />
 
       <InputTextDefault
@@ -77,7 +77,7 @@ const BodyForm: FC<Props> = ({
         register={register}
         required
         errors={errors.materi}
-        addClass="col-span-4"
+        addClass="col-span-8"
       />
 
       <SelectDefault
@@ -90,7 +90,7 @@ const BodyForm: FC<Props> = ({
           { value: "Daring", label: "Daring (Online)" },
           { value: "Luring", label: "Luring (Tatap Muka)" },
         ]}
-        addClass="col-span-4"
+        addClass="col-span-8"
       />
 
       <InputCanvas
@@ -102,7 +102,7 @@ const BodyForm: FC<Props> = ({
         errors={errors.paraf_mhs}
         setValue={setValue}
         clear
-        addClass="col-span-4 lg:col-span-2"
+        addClass="col-span-8 lg:col-span-4"
       />
 
       <InputCanvas
@@ -114,7 +114,7 @@ const BodyForm: FC<Props> = ({
         setValue={setValue}
         clear
         watch={watch}
-        addClass="col-span-4 lg:col-span-2"
+        addClass="col-span-8 lg:col-span-4"
       />
 
       <InputFile
@@ -124,7 +124,7 @@ const BodyForm: FC<Props> = ({
         accept="image/*"
         required
         errors={errors.foto}
-        addClass="col-span-4"
+        addClass="col-span-8"
         setValue={setValue}
         fileEdit={dtEdit?.foto}
         myFile={myFile}

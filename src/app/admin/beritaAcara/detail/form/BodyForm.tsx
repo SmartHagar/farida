@@ -52,7 +52,7 @@ const BodyForm: FC<Props> = ({
         errors={errors.paraf_pemeriksa}
         setValue={setValue}
         clear
-        addClass="col-span-4 lg:col-span-2"
+        addClass="col-span-8 lg:col-span-3"
       />
     </>
   );

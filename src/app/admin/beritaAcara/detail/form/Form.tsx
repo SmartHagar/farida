@@ -113,7 +113,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputTextDefault name="id" register={register} type="hidden" />
 
-        <div className="grid grid-cols-4 gap-2 mb-4">
+        <div className="grid grid-cols-8 gap-2 mb-4">
           <BodyForm
             register={register}
             errors={errors}

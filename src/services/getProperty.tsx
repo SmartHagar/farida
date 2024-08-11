@@ -4,7 +4,12 @@ import { BASE_URL } from "./baseURL";
 import Image from "next/image";
 import moment from "moment";
 
-const getProperty = (obj: any, prop: any, index: number, setIndexBox: any) => {
+const getProperty = (
+  obj: any,
+  prop: any,
+  index?: number,
+  setIndexBox?: any
+) => {
   const angkatan = obj?.thn_angkatan?.substring(2);
   let parts = prop.split(".");
   if (Array.isArray(parts)) {
