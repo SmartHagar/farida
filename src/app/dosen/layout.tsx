@@ -1,7 +1,7 @@
 /** @format */
 
 "use client";
-import React, { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { usePathname, useRouter } from "next/navigation";
 import useLogin from "@/stores/auth/login";
@@ -14,7 +14,6 @@ type Props = {
 };
 
 const Layout = (props: Props) => {
-  const [user, setUser] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   // pathname
   const pathname = usePathname();
@@ -28,9 +27,8 @@ const Layout = (props: Props) => {
       route.push("/login");
     } else {
       const role = Cookies.get("role");
-      setUser(res?.data?.data?.user);
       if (role !== "dosen") {
-        route.push(`/admin`);
+        route.push(`/auth/login`);
       }
     }
     return res;
@@ -69,7 +67,7 @@ const Layout = (props: Props) => {
         <ContainerDosen />
         <div className="flex h-full w-full overflow-hidden p-1 rounded-lg flex-col">
           <div className="lg:-mx-4 lg:-mt-2 mb-1">
-            <HeaderDosen user={user} />
+            <HeaderDosen />
           </div>
           <div className="bg-white h-full overflow-hidden p-2 drop-shadow-2xl shadow-black rounded-lg">
             {props.children}

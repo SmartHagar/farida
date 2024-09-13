@@ -2,8 +2,8 @@
 
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { api_edom } from "@/services/baseURL";
-// api_edom jadwal
+import { api_siakad } from "@/services/baseURL";
+// api_siakad jadwal
 type Props = {
   page?: number;
   limit?: number;
@@ -55,7 +55,7 @@ type Store = {
   }>;
 };
 
-const useJadwalApiEdom = create(
+const useJadwalApiSiakad = create(
   devtools<Store>((set, get) => ({
     dtJadwal: [],
     setJadwal: async ({
@@ -67,7 +67,7 @@ const useJadwalApiEdom = create(
       prodi_id,
     }) => {
       try {
-        const response = await api_edom({
+        const response = await api_siakad({
           method: "get",
           url: `/jadwal`,
           params: {
@@ -93,7 +93,7 @@ const useJadwalApiEdom = create(
     },
     setJadwalAll: async ({ search }) => {
       try {
-        const response = await api_edom({
+        const response = await api_siakad({
           method: "get",
           url: `/jadwal/all`,
           params: {
@@ -114,7 +114,7 @@ const useJadwalApiEdom = create(
     },
     setJadwalByDosenFull: async ({ tahun, semester, dosen_id }) => {
       try {
-        const response = await api_edom({
+        const response = await api_siakad({
           method: "get",
           url: `/jadwal/byDosenFull`,
           params: {
@@ -137,7 +137,7 @@ const useJadwalApiEdom = create(
     },
     setByTahunSemester: async ({ search, tahun, semester, prodi_id }) => {
       try {
-        const response = await api_edom({
+        const response = await api_siakad({
           method: "get",
           url: `/jadwal/byTahunSemester`,
           params: {
@@ -161,7 +161,7 @@ const useJadwalApiEdom = create(
     },
     setJadwalByRps: async ({ tahun, semester, dosen_id }) => {
       try {
-        const response = await api_edom({
+        const response = await api_siakad({
           method: "get",
           url: `/jadwal/by-rps`,
           params: {
@@ -182,7 +182,7 @@ const useJadwalApiEdom = create(
     },
     setShowJadwal: async (id) => {
       try {
-        const response = await api_edom({
+        const response = await api_siakad({
           method: "get",
           url: `/jadwal/${id}`,
         });
@@ -201,4 +201,4 @@ const useJadwalApiEdom = create(
   }))
 );
 
-export default useJadwalApiEdom;
+export default useJadwalApiSiakad;

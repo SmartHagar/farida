@@ -2,12 +2,12 @@
 "use client";
 import { useState } from "react";
 
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import Form from "./form/Form";
 import { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import Searching from "./Searching";
 import ShowData from "./ShowData";
+import BtnDefault from "@/components/button/BtnDefault";
 
 // type setDelete
 type Delete = {
@@ -51,10 +51,10 @@ const Rps = () => {
           showModal={showModal}
           setShowModal={setShowModal}
         />
-        <div className="flex justify-between">
+        <div className="flex justify-between ml-8 lg:ml-0">
           <p>Silahkan Mengolah data RPS</p>
           <div>
-            <ButtonPrimary text="Tambah RPS" onClick={handleTambah} />
+            <BtnDefault onClick={handleTambah}>Tambah Data</BtnDefault>
           </div>
         </div>
         <div>

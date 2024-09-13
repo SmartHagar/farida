@@ -5,7 +5,7 @@ import PaginationDefault from "@/components/pagination/PaginationDefault";
 import TablesDefault from "@/components/tables/TablesDefault";
 import useJadwalApiEdom from "@/stores/api/Jadwal";
 import { useSearchParams } from "next/navigation";
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
 type DeleteProps = {

@@ -1,6 +1,5 @@
 /** @format */
 "use client";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import InputTextDefault from "@/components/input/InputTextDefault";
 import ModalDefault from "@/components/modal/ModalDefault";
 import toastShow from "@/utils/toast-show";
@@ -10,6 +9,7 @@ import BodyForm from "./BodyForm";
 import { useSearchParams } from "next/navigation";
 import useDetBeritaAcara from "@/stores/crud/DetBeritaAcara";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
+import BtnDefault from "@/components/button/BtnDefault";
 
 type Props = {
   showModal: boolean;
@@ -36,8 +36,6 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
   // get berita_acara_id
   const berita_acara_id = params.get("berita_acara_id") || "";
   // state
-  const [tgl, setTgl] = useState<string | Date>(new Date("01-01-1980"));
-  const [myFile, setMyFile] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // store
   const { addData, updateData } = useDetBeritaAcara();
@@ -61,8 +59,6 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
     setValue("paraf_dosen", "");
     setValue("paraf_mhs", "");
     setValue("paraf_pemeriksa", "");
-    setTgl("");
-    setMyFile(null);
   };
 
   // data edit
@@ -72,7 +68,6 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
       setValue("materi", dtEdit.materi);
       setValue("jmlh_mhs", dtEdit.jmlh_mhs);
       setValue("tgl", dtEdit.tgl);
-      setTgl(new Date(dtEdit.tgl));
       setValue("foto", dtEdit.foto);
       setValue("sistem", dtEdit.sistem);
     } else {
@@ -113,7 +108,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputTextDefault name="id" register={register} type="hidden" />
 
-        <div className="grid grid-cols-8 gap-2 mb-4">
+        <div className="grid grid-cols-4 gap-2 mb-4">
           <BodyForm
             register={register}
             errors={errors}
@@ -122,17 +117,13 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
             watch={watch}
             setValue={setValue}
             showModal={showModal}
-            myFile={myFile}
-            setMyFile={setMyFile}
-            tgl={tgl}
-            setTgl={setTgl}
           />
         </div>
         <div>
           {isLoading ? (
             <LoadingSpiner />
           ) : (
-            <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+            <BtnDefault onClick={handleSubmit(onSubmit)}>Simpan</BtnDefault>
           )}
         </div>
       </form>

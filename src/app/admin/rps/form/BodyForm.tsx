@@ -1,18 +1,9 @@
 /** @format */
 "use client";
-
-import Cookies from "js-cookie";
-import InputDate from "@/components/input/InputDate";
-import InputFile from "@/components/input/InputFile";
-import InputRadio from "@/components/input/InputRadio";
-import InputTextDefault from "@/components/input/InputTextDefault";
-import { SelectDefault } from "@/components/select/SelectDefault";
-import SelectFromDb from "@/components/select/SelectFromDB";
-import useJadwalApi from "@/stores/api/Jadwal";
-import React, { FC, useEffect } from "react";
+import { FC } from "react";
 
 import "react-datepicker/dist/react-datepicker.css";
-import useJadwalApiEdom from "@/stores/api/Jadwal";
+import SelectDef from "@/components/select/SelectDef";
 
 type Props = {
   register: any;
@@ -39,10 +30,10 @@ const BodyForm: FC<Props> = ({
 }) => {
   return (
     <>
-      <SelectDefault
+      <SelectDef
         label="Status"
-        defaultOption="Pilih Status"
-        register={register}
+        placeholder="Pilih Status"
+        control={control}
         errors={errors}
         name="status"
         options={[
@@ -50,7 +41,8 @@ const BodyForm: FC<Props> = ({
           { value: "ditolak", label: "Ditolak" },
           { value: "diterima", label: "Diterima" },
         ]}
-        addClass="col-span-4"
+        addClass="col-span-4 relative"
+        // menuPosition="absolute"
       />
     </>
   );

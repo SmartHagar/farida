@@ -5,7 +5,6 @@ import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import TablesDefault from "@/components/tables/TablesDefault";
 import useNilai from "@/stores/crud/upload/Nilai";
-import useJadwalApiEdom from "@/stores/api/Jadwal";
 import { useSearchParams } from "next/navigation";
 
 type DeleteProps = {
@@ -25,83 +24,31 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
   const searchParams = useSearchParams();
   const search = useSearchParams().get("cari") || "";
   const semester = searchParams.get("semester") || "";
-  const year = searchParams.get("year") || "";
+  const tahun = searchParams.get("year") || "";
   // store
-  const { setShowNilai, showNilai } = useNilai();
-  const { setJadwalByDosenFull, dtJadwal } = useJadwalApiEdom();
+  const { setNilai, dtNilai } = useNilai();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [dtShow, setDtShow] = useState<any>();
-
-  const fetchDataJadwal = useCallback(async () => {
+  // memanggil data nilai
+  const fetchNILAI = useCallback(async () => {
     setIsLoading(true);
-    const res = await setJadwalByDosenFull({
-      dosen_id,
+    await setNilai({
       search,
-      tahun: year,
-      semester: semester,
+      semester,
+      tahun,
+      dosen_id,
     });
     setIsLoading(false);
-  }, [dosen_id, search, semester, setJadwalByDosenFull, year]);
-  // ketika year dan semester berubah
-  useEffect(() => {
-    year && semester && fetchDataJadwal();
-  }, [year, semester, fetchDataJadwal]);
-
-  // memanggil data rps
-  const fetchNilai = async () => {
-    const jadwal_id: any[] = [];
-    dtJadwal?.data?.map((item: any) => {
-      jadwal_id.push(item.id);
-    });
-    // convert jadwal_id to string
-    const jadwal_id_string = jadwal_id.join(",");
-    if (jadwal_id.length > 0) {
-      await setShowNilai({
-        id: dosen_id,
-        jadwal_id: jadwal_id_string,
-      });
-    }
-  };
+  }, [dosen_id, search, semester, setNilai, tahun]);
 
   // ketika data jadwal berubah
   useEffect(() => {
-    if (dtJadwal.data) {
-      setIsLoading(true);
+    if (semester && tahun) {
+      fetchNILAI();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(dtJadwal.data)]);
-
-  //  mengisi dtShow
-  const getDataShow = (dtJadwal: any, showNilai: any) => {
-    console.log({ dtJadwal, showNilai });
-    const dt = showNilai
-      ?.map((item: any) => {
-        const matchedData = dtJadwal?.find(
-          (data: any) => data.id === parseInt(item.jadwal_id)
-        );
-        return matchedData ? { ...item, jadwal: matchedData } : null;
-      })
-      .filter((item: any) => item !== null);
-
-    const getData = {
-      data: dt,
-    };
-
-    setDtShow(getData);
-
-    setIsLoading(false);
-  };
-
-  // ketika dtRPS beruba
-  useEffect(() => {
-    if (dtJadwal.data && showNilai) {
-      getDataShow(dtJadwal?.data, showNilai);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(showNilai), JSON.stringify(dtJadwal.data)]);
+  }, [fetchNILAI, semester, tahun]);
 
   // table
   const headTable = [
@@ -115,8 +62,8 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
   ];
   const tableBodies = [
     "jadwal.hari",
-    "jadwal.matkul.nama",
-    "jadwal.matkul.kode",
+    "jadwal.matkul.nm_matkul",
+    "jadwal.matkul.kd_matkul",
     "jadwal.matkul.sks",
     "file",
   ];
@@ -131,7 +78,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
             <TablesDefault
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={dtShow?.data}
+              dataTable={dtNilai?.data}
               page={page}
               limit={limit}
               setEdit={setEdit}

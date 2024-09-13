@@ -53,10 +53,10 @@ const useLogin = create(
       try {
         const response = await auth({
           method: "post",
-          url: `/cek-token`,
+          url: `/cek_token`,
           headers: { Authorization: `Bearer ${token}` },
         });
-        set((state) => ({ ...state, dtLogin: response.data.data }));
+        set((state) => ({ ...state, dtLogin: response.data }));
         return {
           status: "success",
           data: response.data,

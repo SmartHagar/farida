@@ -1,12 +1,12 @@
 /** @format */
 "use client";
 import { FC, useCallback, useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import useRps from "@/stores/crud/upload/Rps";
-import TableRps from "@/components/tables/TableRps";
-import useJadwalApiEdom from "@/stores/api/Jadwal";
 import { useSearchParams } from "next/navigation";
+import PaginationDefault from "@/components/pagination/PaginationDefault";
+import TableRps from "@/components/tables/TableRps";
+import Cookies from "js-cookie";
 
 type DeleteProps = {
   id?: number | string;
@@ -19,92 +19,39 @@ type Props = {
 };
 
 const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
-  // dosen_id
-  const dosen_id = Cookies.get("dosen_id") || "";
   // store
-  const { setShowRps, showRps } = useRps();
-  const { setJadwalByDosenFull, dtJadwal } = useJadwalApiEdom();
+  const { setRps, dtRps } = useRps();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [dtShow, setDtShow] = useState<any>();
+  // dosen_id
+  const dosen_id = Cookies.get("dosen_id") || "";
   // search params
   const searchParams = useSearchParams();
   const search = useSearchParams().get("cari") || "";
   const semester = searchParams.get("semester") || "";
-  const year = searchParams.get("year") || "";
+  const tahun = searchParams.get("year") || "";
 
-  // memanggil data Jadwal
-  const fetchDataJadwal = useCallback(async () => {
+  // memanggil data rps
+  const fetchRPS = useCallback(async () => {
     setIsLoading(true);
-    await setJadwalByDosenFull({
-      tahun: year,
-      semester: semester,
+    await setRps({
+      search,
+      semester,
+      tahun,
       dosen_id,
     });
     setIsLoading(false);
-  }, [dosen_id, semester, setJadwalByDosenFull, year]);
-  // ketika page dan limit berubah
-  useEffect(() => {
-    year && semester && fetchDataJadwal();
-    return () => {};
-  }, [year, semester, fetchDataJadwal]);
-  // ketika search berubah
-
-  // memanggil data rps
-  const fetchRPS = async () => {
-    const jadwal_id: any[] = [];
-    dtJadwal?.data?.map((item: any) => {
-      jadwal_id.push(item.id);
-    });
-    // convert jadwal_id to string
-    const jadwal_id_string = jadwal_id.join(",");
-    if (jadwal_id.length > 0) {
-      await setShowRps({
-        id: dosen_id,
-        jadwal_id: jadwal_id_string,
-      });
-    }
-  };
+  }, [dosen_id, search, semester, setRps, tahun]);
 
   // ketika data jadwal berubah
   useEffect(() => {
-    if (dtJadwal?.data) {
+    if (semester && tahun) {
       fetchRPS();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(dtJadwal.data)]);
-
-  //  mengisi dtShow
-  const getDataShow = (dtJadwal: any, showRps: any) => {
-    setIsLoading(true);
-    console.log({ dtJadwal, showRps });
-    const dt = showRps
-      ?.map((item: any) => {
-        const matchedData = dtJadwal?.find(
-          (data: any) => data.id === parseInt(item.jadwal_id)
-        );
-        return matchedData ? { ...item, jadwal: matchedData } : null;
-      })
-      .filter((item: any) => item !== null);
-
-    const getData = {
-      data: dt,
-    };
-
-    setDtShow(getData);
-
-    setIsLoading(false);
-  };
-
-  // ketika dtRPS beruba
-  useEffect(() => {
-    if (dtJadwal?.data && showRps) {
-      getDataShow(dtJadwal?.data, showRps);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(showRps), JSON.stringify(dtJadwal.data)]);
+  }, [fetchRPS, semester, tahun]);
 
   // table
   const headTable = [
@@ -112,6 +59,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
     "Hari",
     "Mata Kuliah",
     "Kode MK",
+    "Prodi",
     "JML. SKS",
     "RPS",
     "Status",
@@ -119,12 +67,14 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
   ];
   const tableBodies = [
     "jadwal.hari",
-    "jadwal.matkul.nama",
-    "jadwal.matkul.kode",
+    "jadwal.matkul.nm_matkul",
+    "jadwal.matkul.kd_matkul",
+    "jadwal.prodi.singkat",
     "jadwal.matkul.sks",
     "file",
     "status",
   ];
+
   return (
     <div className="flex-1 flex-col max-w-full h-full overflow-auto">
       {isLoading ? (
@@ -135,13 +85,22 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
             <TableRps
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={dtShow?.data}
+              dataTable={dtRps?.data}
               page={page}
               limit={limit}
               setEdit={setEdit}
               setDelete={setDelete}
             />
           </div>
+          {dtRps?.last_page > 1 && (
+            <div className="mt-4">
+              <PaginationDefault
+                currentPage={dtRps?.current_page}
+                totalPages={dtRps?.last_page}
+                setPage={setPage}
+              />
+            </div>
+          )}
         </>
       )}
     </div>

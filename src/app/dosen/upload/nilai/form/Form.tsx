@@ -1,6 +1,5 @@
 /** @format */
 "use client";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import InputTextDefault from "@/components/input/InputTextDefault";
 import ModalDefault from "@/components/modal/ModalDefault";
 import toastShow from "@/utils/toast-show";
@@ -9,6 +8,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import BodyForm from "./BodyForm";
 import useNilai from "@/stores/crud/upload/Nilai";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
+import BtnDefault from "@/components/button/BtnDefault";
+import { useSearchParams } from "next/navigation";
+import Cookies from "js-cookie";
 
 type Props = {
   showModal: boolean;
@@ -24,11 +26,15 @@ type Inputs = {
 };
 
 const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
+  const dosen_id = Cookies.get("dosen_id");
+  // search params
+  const searchParams = useSearchParams();
+  const semester = searchParams.get("semester") || "";
+  const tahun = searchParams.get("year") || "";
   // state
-  const [myFile, setMyFile] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // store
-  const { addData, updateData } = useNilai();
+  const { addData, updateData, setNilai } = useNilai();
   // hook form
   const {
     register,
@@ -44,7 +50,6 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
     setValue("id", "");
     setValue("jadwal_id", "");
     setValue("file", "");
-    setMyFile(null);
   };
 
   // data edit
@@ -61,7 +66,6 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
   // simpan data
   const onSubmit: SubmitHandler<Inputs> = async (row) => {
     setIsLoading(true);
-    console.log({ row });
     // jika dtEdit tidak kosong maka update
     if (dtEdit) {
       const { data } = await updateData(dtEdit.id, row);
@@ -77,6 +81,11 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
       });
       data?.type !== "success" ? null : resetForm();
     }
+    await setNilai({
+      semester,
+      tahun,
+      dosen_id,
+    });
     setIsLoading(false);
   };
 
@@ -98,15 +107,13 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
             watch={watch}
             setValue={setValue}
             showModal={showModal}
-            myFile={myFile}
-            setMyFile={setMyFile}
           />
         </div>
         <div>
           {isLoading ? (
             <LoadingSpiner />
           ) : (
-            <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+            <BtnDefault onClick={handleSubmit(onSubmit)}>Simpan</BtnDefault>
           )}
         </div>
       </form>

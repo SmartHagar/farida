@@ -2,7 +2,7 @@
 
 import { momentId } from "@/utils/momentIndonesia";
 import { useRouter } from "next/navigation";
-import { FC, useCallback, useEffect } from "react";
+import { FC, useEffect } from "react";
 
 type Props = {
   semesterWatch: number | string;
@@ -20,26 +20,22 @@ const SemesterBar: FC<Props> = ({ semesterWatch, setValue, time }) => {
     const semesterParams = params.get("semester");
     return { url, params, semesterParams };
   };
-  const barSemester = useCallback(
-    (semester: string) => {
-      const { url, params } = getUrl();
-      // Hapus parameter sort sebelum menambahkan yang baru
-      params.delete("semester");
-      // Tambahkan parameter sort baru
-      params.append("semester", semester);
-      // Memperbarui query string dengan sortby baru
-      url.search = params.toString();
-      router.push(url.toString());
-    },
-    [router]
-  );
+  const barSemester = (semester: string) => {
+    const { url, params } = getUrl();
+    // Hapus parameter sort sebelum menambahkan yang baru
+    params.delete("semester");
+    // Tambahkan parameter sort baru
+    params.append("semester", semester);
+    // Memperbarui query string dengan sortby baru
+    url.search = params.toString();
+    router.push(url.toString());
+  };
   // jika semesterParams ada
   useEffect(() => {
     setTimeout(() => {
       const { semesterParams } = getUrl();
       if (!semesterParams) {
         const month = momentId().month() + 1;
-        console.log({ month });
         const semester = month > 6 ? "Ganjil" : "Genap";
         setValue("semester", semester);
       } else {
@@ -47,11 +43,14 @@ const SemesterBar: FC<Props> = ({ semesterWatch, setValue, time }) => {
       }
     }, time);
     return () => {};
-  }, [barSemester, setValue, time]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (semesterWatch) {
       barSemester(semesterWatch.toString());
+    } else {
+      barSemester("");
     }
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -19,11 +19,11 @@ const ModalDefault: FC<Props> = ({
   width = "",
 }) => {
   return (
-    <div className="">
+    <div className="text-black">
       {showModal && (
         <div className="fixed inset-0 z-50 mx-auto flex justify-center bg-black/[0.2]">
           <div
-            className="bg-white p-5 rounded-xl w-[500px] h-min mt-[10%] max-h-[70%] overflow-hidden flex flex-col lg:w-[700px]"
+            className="bg-white p-5 rounded-xl w-[500px] h-min mt-[10%] max-h-[70%] overflow-hidden flex flex-col lg:w-[700px] "
             style={{ width: width }}
           >
             {/* header */}

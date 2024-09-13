@@ -1,12 +1,13 @@
 /** @format */
 "use client";
-import React, { useEffect } from "react";
-import { FaAlignJustify, FaXmark } from "react-icons/fa6";
+import { useEffect } from "react";
+import { FaXmark } from "react-icons/fa6";
 import AdminSide from "./AdminSide";
 import menus from "./Menus";
 import { useMenuContext } from "@/context/MenuContext";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 type Props = {};
 
@@ -37,7 +38,7 @@ const ContainerAdmin = (props: Props) => {
         {isOpen ? (
           <FaXmark className="cursor-pointer text-3xl absolute left-[15rem] bg-side-bar text-dark rounded-tr-lg rounded-br-lg" />
         ) : (
-          <FaAlignJustify className="text-2xl cursor-pointer" />
+          <GiHamburgerMenu className="text-2xl cursor-pointer" />
         )}
       </div>
       <AnimatePresence>

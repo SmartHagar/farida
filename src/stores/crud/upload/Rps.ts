@@ -11,19 +11,30 @@ type Props = {
   id?: number | string;
   page?: number;
   limit?: number;
-  jadwal_id?: number | string;
-  status?: string;
+  semester?: string;
+  tahun?: number | string;
+  prodi_id?: number | string;
+  search?: number | string;
+  dosen_id?: number | string;
 };
 
 type Store = {
   dtRps: any;
   showRps: any;
-  setRps: ({ page, limit }: Props) => Promise<{
+  setRps: ({
+    page,
+    limit,
+    semester,
+    tahun,
+    prodi_id,
+    dosen_id,
+    search,
+  }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
   }>;
-  setShowRps: ({ id, status, jadwal_id }: Props) => Promise<{
+  setShowRps: ({ id, semester, tahun, prodi_id }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -50,7 +61,15 @@ const useRps = create(
     },
     dtRps: [],
     showRps: [],
-    setRps: async ({ page = 1, limit = 10 }) => {
+    setRps: async ({
+      page = 1,
+      limit = 10,
+      semester,
+      tahun,
+      prodi_id,
+      dosen_id,
+      search,
+    }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
@@ -60,9 +79,14 @@ const useRps = create(
           params: {
             limit,
             page,
+            semester,
+            tahun,
+            prodi_id,
+            dosen_id,
+            search,
           },
         });
-        set((state) => ({ ...state, dtRps: response.data.data }));
+        set((state) => ({ ...state, dtRps: response.data }));
         return {
           status: "berhasil",
           data: response.data,
@@ -74,7 +98,7 @@ const useRps = create(
         };
       }
     },
-    setShowRps: async ({ id, jadwal_id, status }) => {
+    setShowRps: async ({ id, semester, tahun, prodi_id }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
@@ -82,8 +106,9 @@ const useRps = create(
           url: `/upload/rps/${id}`,
           headers: { Authorization: `Bearer ${token}` },
           params: {
-            jadwal_id,
-            status,
+            semester,
+            tahun,
+            prodi_id,
           },
         });
         set((state) => ({ ...state, showRps: response.data.data }));

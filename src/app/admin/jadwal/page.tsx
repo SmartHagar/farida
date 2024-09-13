@@ -1,17 +1,15 @@
 /** @format */
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import ShowData from "./ShowData";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
-import ModalDelete from "@/components/modal/ModalDelete";
 import { Toaster } from "react-hot-toast";
-import toastShow from "@/utils/toast-show";
-import InputTextSearch from "@/components/input/InputTextSerch";
-import { SelectDefault } from "@/components/select/SelectDefault";
 import SelectTahun from "@/components/select/SelectTahun";
 import { useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
+import InputTextSearch from "@/components/input/InputTextSearch";
+import SelectDef from "@/components/select/SelectDef";
+import { momentId } from "@/utils/momentIndonesia";
 
 // type setDelete
 type Delete = {
@@ -20,6 +18,7 @@ type Delete = {
 };
 
 const Jadwal = () => {
+  const halaman = "Jadwal";
   // router
   const router = useRouter();
   const params = useSearchParams();
@@ -55,7 +54,8 @@ const Jadwal = () => {
   useEffect(() => {
     if (!tahunParams && !semesterParams) {
       const tahun = new Date().getFullYear();
-      const semester = "Genap";
+      const month = momentId().month() + 1;
+      const semester = month > 6 ? "Ganjil" : "Genap";
       setValue("tahun", tahun);
       setValue("semester", semester);
       // add parameter to url
@@ -89,10 +89,10 @@ const Jadwal = () => {
         </div>
         {/* pilih tahun dan semester */}
         <div className="mb-4 flex justify-between gap-4">
-          <SelectDefault
+          <SelectDef
             label="Semester"
-            defaultOption="Pilih Semester"
-            register={register}
+            placeholder="Pilih Semester"
+            control={control}
             errors={errors}
             name="semester"
             options={[
@@ -100,6 +100,7 @@ const Jadwal = () => {
               { value: "Genap", label: "Genap" },
             ]}
             addClass="w-full"
+            menuPosition="absolute"
           />
           <SelectTahun
             label="Tahun"
@@ -112,11 +113,15 @@ const Jadwal = () => {
             required
             errors={errors}
             addClass="w-full"
+            menuPosition="absolute"
           />
         </div>
         <InputTextSearch
-          placeholder="Cari Hari"
-          onChange={(e) => setSearch(e)}
+          placeholder={`Cari ${halaman}`}
+          name="cari"
+          register={register}
+          setValue={setValue}
+          watch={watch}
         />
       </div>
 

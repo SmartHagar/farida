@@ -1,6 +1,5 @@
 /** @format */
 "use client";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import InputTextDefault from "@/components/input/InputTextDefault";
 import ModalDefault from "@/components/modal/ModalDefault";
 import toastShow from "@/utils/toast-show";
@@ -10,6 +9,7 @@ import BodyForm from "./BodyForm";
 import { useSearchParams } from "next/navigation";
 import useDetBeritaAcara from "@/stores/crud/DetBeritaAcara";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
+import BtnDefault from "@/components/button/BtnDefault";
 
 type Props = {
   showModal: boolean;
@@ -113,7 +113,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputTextDefault name="id" register={register} type="hidden" />
 
-        <div className="grid grid-cols-8 gap-2 mb-4">
+        <div className="grid grid-cols-4 gap-2 mb-4">
           <BodyForm
             register={register}
             errors={errors}
@@ -132,7 +132,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
           {isLoading ? (
             <LoadingSpiner />
           ) : (
-            <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+            <BtnDefault onClick={handleSubmit(onSubmit)}>Simpan</BtnDefault>
           )}
         </div>
       </form>

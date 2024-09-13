@@ -2,8 +2,8 @@
 
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { api_edom } from "@/services/baseURL";
-// api_edom dosen
+import { api_siakad } from "@/services/baseURL";
+// api_siakad dosen
 type Props = {
   page?: number;
   limit?: number;
@@ -24,15 +24,20 @@ type Store = {
     data?: {};
     error?: {};
   }>;
+  setShowDosen: ({ page, limit, search }: Props) => Promise<{
+    status: string;
+    data?: {};
+    error?: {};
+  }>;
 };
 
-const useDosenApiEdom = create(
+const useDosenApiSiakad = create(
   devtools<Store>((set, get) => ({
     dtDosen: [],
     dtDosenAll: [],
     setDosen: async ({ page = 1, limit = 10, search }) => {
       try {
-        const response = await api_edom({
+        const response = await api_siakad({
           method: "get",
           url: `/dosen`,
           params: {
@@ -55,7 +60,7 @@ const useDosenApiEdom = create(
     },
     setDosenAll: async ({ search, prodi_id }) => {
       try {
-        const response = await api_edom({
+        const response = await api_siakad({
           method: "get",
           url: `/dosen/all`,
           params: {
@@ -75,7 +80,25 @@ const useDosenApiEdom = create(
         };
       }
     },
+    setShowDosen: async (id) => {
+      try {
+        const response = await api_siakad({
+          method: "get",
+          url: `/dosen/${id}`,
+        });
+        set((state) => ({ ...state, showDosen: response.data.data }));
+        return {
+          status: "berhasil",
+          data: response.data,
+        };
+      } catch (error: any) {
+        return {
+          status: "error",
+          error: error.response?.data,
+        };
+      }
+    },
   }))
 );
 
-export default useDosenApiEdom;
+export default useDosenApiSiakad;

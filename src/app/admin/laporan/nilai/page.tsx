@@ -1,16 +1,14 @@
 /** @format */
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import ShowData from "./ShowData";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import toastShow from "@/utils/toast-show";
-import InputTextSearch from "@/components/input/InputTextSerch";
 import { useForm } from "react-hook-form";
 import useNilai from "@/stores/crud/upload/Nilai";
 import { useRouter, useSearchParams } from "next/navigation";
-import { SelectDefault } from "@/components/select/SelectDefault";
 import SelectTahun from "@/components/select/SelectTahun";
+import SelectDef from "@/components/select/SelectDef";
 
 // type setDelete
 type Delete = {
@@ -106,10 +104,10 @@ const Nilai = () => {
         </div>
         {/* pilih tahun dan semester */}
         <div className="mb-4 flex justify-between gap-4">
-          <SelectDefault
+          <SelectDef
             label="Semester"
-            defaultOption="Pilih Semester"
-            register={register}
+            placeholder="Pilih Semester"
+            control={control}
             errors={errors}
             name="semester"
             options={[
@@ -131,10 +129,6 @@ const Nilai = () => {
             addClass="w-full"
           />
         </div>
-        <InputTextSearch
-          placeholder="Cari Nilai"
-          onChange={(e) => setSearch(e)}
-        />
       </div>
 
       <ShowData

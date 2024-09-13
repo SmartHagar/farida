@@ -1,13 +1,14 @@
 /** @format */
 "use client";
-import React, { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import TablesDefault from "@/components/tables/TablesDefault";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import Link from "next/link";
-import useJadwalApiEdom from "@/stores/api/Jadwal";
 import useBeritaAcaraApi from "@/stores/api/BeritaAcara";
+import { useSearchParams } from "next/navigation";
+import PaginationDefault from "@/components/pagination/PaginationDefault";
 type DeleteProps = {
   id?: number | string;
   isDelete: boolean;
@@ -16,121 +17,35 @@ type DeleteProps = {
 type Props = {
   setDelete?: ({ id, isDelete }: DeleteProps) => void;
   setEdit: (row: any) => void;
-  search: string;
-  tahunWatch: string | number;
-  semesterWatch: string;
 };
 
-const ShowData: FC<Props> = ({
-  setDelete,
-  setEdit,
-  search,
-  tahunWatch,
-  semesterWatch,
-}) => {
-  const { setByTahunSemester, dtJadwal } = useJadwalApiEdom();
-  const { setBeritaAcaraByJadwal, dtBeritaAcara } = useBeritaAcaraApi();
+const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
+  const { setBeritaAcara, dtBeritaAcara } = useBeritaAcaraApi();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [dtShow, setDtShow] = useState<any>();
-
+  // search params
+  const searchParams = useSearchParams();
+  const search = searchParams.get("cari") || "";
+  const semester = searchParams.get("semester") || "";
+  const tahun = searchParams.get("tahun") || "";
   const prodi_id = Cookies.get("prodi_id");
-  const fetchDataJadwal = async () => {
+  const fetchBeritaAcara = useCallback(async () => {
     setIsLoading(true);
-    const res = await setByTahunSemester({
+    const res = await setBeritaAcara({
       search,
-      tahun: tahunWatch,
-      semester: semesterWatch,
+      tahun,
+      semester,
       prodi_id,
     });
     setIsLoading(false);
-  };
-  // memo fetch data jadwal
-  useMemo(
-    () => tahunWatch && semesterWatch && fetchDataJadwal(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [tahunWatch, semesterWatch, prodi_id]
-  );
-  // memanggil data berita acara
-  const fetchBeritaAcara = async () => {
-    const jadwal_id: any[] = [];
-    dtJadwal?.map((item: any) => {
-      jadwal_id.push(item.id);
-    });
+  }, [prodi_id, search, semester, setBeritaAcara, tahun]);
 
-    // convert jadwal_id to string
-    const jadwal_id_string = jadwal_id.join(",");
-    if (jadwal_id.length > 0) {
-      await setBeritaAcaraByJadwal({
-        jadwal_id: jadwal_id_string,
-      });
-    }
-  };
   // ketika data jadwal berubah
   useEffect(() => {
     fetchBeritaAcara();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(dtJadwal)]);
-  //  mengisi dtShow
-  const getDataShow = (dtJadwal: any, dtBeritaAcara: any) => {
-    console.log({ dtJadwal, dtBeritaAcara });
-    const dt = dtBeritaAcara
-      ?.map((item: any) => {
-        const matchedData = dtJadwal?.find(
-          (data: any) => data.id === parseInt(item.jadwal_id)
-        );
-        return matchedData ? { ...item, jadwal: matchedData } : null;
-      })
-      .filter((item: any) => item !== null);
-
-    const getData = {
-      data: dt,
-    };
-
-    setDtShow(getData);
-
-    setIsLoading(false);
-  };
-
-  // ketika search berubah
-  useEffect(() => {
-    const originalData = dtShow?.originalData || dtShow?.data;
-    let filteredData = originalData;
-
-    if (search.trim() !== "") {
-      filteredData = originalData?.filter((item: any) => {
-        return (
-          item.jadwal.hari.toLowerCase().includes(search.toLowerCase()) ||
-          item.jadwal.matkul.nama
-            .toLowerCase()
-            .includes(search.toLowerCase()) ||
-          item.jadwal.matkul.kode
-            .toLowerCase()
-            .includes(search.toLowerCase()) ||
-          item.jadwal.prodi.nama.toLowerCase().includes(search.toLowerCase())
-        );
-      });
-    }
-
-    const getData = {
-      data: filteredData,
-      originalData: originalData,
-    };
-
-    setDtShow(getData);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
-
-  // ketika dtBeritaAcara beruba
-  useEffect(() => {
-    if (dtJadwal.length > 0) {
-      getDataShow(dtJadwal, dtBeritaAcara?.data);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(dtBeritaAcara), JSON.stringify(dtJadwal)]);
+  }, [fetchBeritaAcara]);
 
   // table
   const headTable = [
@@ -147,13 +62,13 @@ const ShowData: FC<Props> = ({
     "jadwal.matkul.nama",
     "jadwal.matkul.kode",
     "jadwal.matkul.sks",
-    "jadwal.prodi.nama",
+    "jadwal.prodi.singkat",
   ];
-
+  console.log(dtBeritaAcara?.data);
   const costume = (row: any) => {
     return (
       <Link
-        href={`/admin/beritaAcara/detail?berita_acara_id=${row?.id}&jadwal_id=${row?.jadwal_id}`}
+        href={`/admin/beritaAcara/detail?berita_acara_id=${row?.id}&jadwal_id=${row?.id}`}
         target="_blank"
         title="Lihat Detail"
       >
@@ -172,7 +87,7 @@ const ShowData: FC<Props> = ({
             <TablesDefault
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={dtShow?.data}
+              dataTable={dtBeritaAcara?.data}
               page={page}
               limit={limit}
               setEdit={setEdit}
@@ -182,6 +97,15 @@ const ShowData: FC<Props> = ({
               costume={costume}
             />
           </div>
+          {dtBeritaAcara?.last_page > 1 && (
+            <div className="mt-4">
+              <PaginationDefault
+                currentPage={dtBeritaAcara?.current_page}
+                totalPages={dtBeritaAcara?.last_page}
+                setPage={setPage}
+              />
+            </div>
+          )}
         </>
       )}
     </div>

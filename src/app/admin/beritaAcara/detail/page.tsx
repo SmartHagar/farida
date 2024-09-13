@@ -3,15 +3,16 @@
 import { useEffect, useState } from "react";
 
 import ShowData from "./ShowData";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import { Toaster } from "react-hot-toast";
-import InputTextSearch from "@/components/input/InputTextSerch";
 import useDetBeritaAcara from "@/stores/crud/DetBeritaAcara";
 import { useSearchParams } from "next/navigation";
 import { BASE_URL } from "@/services/baseURL";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import useJadwalApiEdom from "@/stores/api/Jadwal";
 import Form from "./form/Form";
+import InputTextSearch from "@/components/input/InputTextSearch";
+import { useForm } from "react-hook-form";
+import BtnDefault from "@/components/button/BtnDefault";
 
 // type setDelete
 type Delete = {
@@ -19,7 +20,8 @@ type Delete = {
   isDelete: boolean;
 };
 
-const Dosen = () => {
+const DetBeritaAcara = () => {
+  const halaman = "Detail Berita Acara";
   // store
   const { removeData, showDetBeritaAcara } = useDetBeritaAcara();
   const { setShowJadwal, dtJadwal } = useJadwalApiEdom();
@@ -55,6 +57,15 @@ const Dosen = () => {
     window.open(`${BASE_URL}/pdf/berita-acara/${berita_acara_id}`);
     setLoadPdf(false);
   };
+
+  // hooks
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm();
 
   return (
     <div className="flex flex-col h-full">
@@ -94,17 +105,19 @@ const Dosen = () => {
             {loadPdf ? (
               <LoadingSpiner />
             ) : (
-              <ButtonPrimary
-                text="Cetak"
+              <BtnDefault
                 addClass="self-end bg-secondary"
                 onClick={cetak}
-              />
+              >{`Cetak ${halaman}`}</BtnDefault>
             )}
           </div>
         </div>
         <InputTextSearch
-          placeholder="Cari Data"
-          onChange={(e) => setSearch(e)}
+          placeholder={`Cari ${halaman}`}
+          name="cari"
+          register={register}
+          setValue={setValue}
+          watch={watch}
         />
       </div>
 
@@ -113,4 +126,4 @@ const Dosen = () => {
   );
 };
 
-export default Dosen;
+export default DetBeritaAcara;

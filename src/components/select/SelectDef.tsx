@@ -61,6 +61,8 @@ const SelectDef: FC<Props> = ({
               onChange={(option: any) =>
                 onChange(option ? option.value : option)
               }
+              menuPlacement="auto"
+              menuPortalTarget={document.body} // Mengarahkan menu ke body
             />
           )}
         />

@@ -1,11 +1,8 @@
 /** @format */
 "use client";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
-import PaginationDefault from "@/components/pagination/PaginationDefault";
-import TablesDefault from "@/components/tables/TablesDefault";
-import useKelengkapanApi from "@/stores/api/Kelengkapan";
 import { useSearchParams } from "next/navigation";
-import React, { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import TableCostume from "./TableCostume";
 import useAbsen from "@/stores/crud/upload/Absen";
 import useJadwalApiEdom from "@/stores/api/Jadwal";
@@ -28,20 +25,15 @@ type DeleteProps = {
 type Props = {
   setDelete?: ({ id, isDelete }: DeleteProps) => void;
   setEdit: (row: any) => void;
-  search: string;
-  tahunWatch: string | number;
-  semesterWatch: string;
 };
 
-const ShowData: FC<Props> = ({
-  setDelete,
-  setEdit,
-  search,
-  tahunWatch,
-  semesterWatch,
-}) => {
+const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
   // params
   const params = useSearchParams();
+  // get params semester dan tahun
+  const semester = params.get("semester") || "";
+  const tahun = params.get("tahun") || "";
+  const search = Cookies.get("cari") || "";
   // store
   const { setShowAbsen, showAbsen } = useAbsen();
   const { setShowNilai, showNilai } = useNilai();
@@ -61,18 +53,12 @@ const ShowData: FC<Props> = ({
     setIsLoading(true);
     const res = await setByTahunSemester({
       search,
-      tahun: tahunWatch,
-      semester: semesterWatch,
+      tahun,
+      semester,
       prodi_id,
     });
     setIsLoading(false);
   };
-  // memo fetch data jadwal
-  useMemo(
-    () => tahunWatch && semesterWatch && fetchDataJadwal(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [tahunWatch, semesterWatch, prodi_id]
-  );
 
   // ketika data jadwal berubah
   useEffect(() => {

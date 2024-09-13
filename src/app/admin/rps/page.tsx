@@ -1,19 +1,19 @@
 /** @format */
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import ShowData from "./ShowData";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import Form from "./form/Form";
 import ModalDelete from "@/components/modal/ModalDelete";
 import useDosen from "@/stores/crud/Dosen";
 import { Toaster } from "react-hot-toast";
 import toastShow from "@/utils/toast-show";
-import InputTextSearch from "@/components/input/InputTextSerch";
 import { useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
-import { SelectDefault } from "@/components/select/SelectDefault";
 import SelectTahun from "@/components/select/SelectTahun";
+import SelectDef from "@/components/select/SelectDef";
+import InputTextSearch from "@/components/input/InputTextSearch";
+import { momentId } from "@/utils/momentIndonesia";
 
 // type setDelete
 type Delete = {
@@ -22,6 +22,7 @@ type Delete = {
 };
 
 const Rps = () => {
+  const halaman = "RPS";
   // router
   const router = useRouter();
   const params = useSearchParams();
@@ -66,7 +67,8 @@ const Rps = () => {
   useEffect(() => {
     if (!tahunParams && !semesterParams) {
       const tahun = new Date().getFullYear();
-      const semester = "Genap";
+      const month = momentId().month() + 1;
+      const semester = month > 6 ? "Ganjil" : "Genap";
       setValue("tahun", tahun);
       setValue("semester", semester);
       // add parameter to url
@@ -95,6 +97,9 @@ const Rps = () => {
     <div className="flex flex-col h-full">
       <div>
         <Toaster />
+        <div className="mb-4 flex justify-between">
+          <p>Berikut adalah rps perkuliahan</p>
+        </div>
         <Form
           dtEdit={dtEdit}
           showModal={showModal}
@@ -109,10 +114,10 @@ const Rps = () => {
         />
         {/* pilih tahun dan semester */}
         <div className="mb-4 flex justify-between gap-4">
-          <SelectDefault
+          <SelectDef
             label="Semester"
-            defaultOption="Pilih Semester"
-            register={register}
+            placeholder="Pilih Semester"
+            control={control}
             errors={errors}
             name="semester"
             options={[
@@ -120,6 +125,7 @@ const Rps = () => {
               { value: "Genap", label: "Genap" },
             ]}
             addClass="w-full"
+            menuPosition="absolute"
           />
           <SelectTahun
             label="Tahun"
@@ -132,15 +138,19 @@ const Rps = () => {
             required
             errors={errors}
             addClass="w-full"
+            menuPosition="absolute"
           />
         </div>
         <InputTextSearch
-          placeholder="Cari RPS"
-          onChange={(e) => setSearch(e)}
+          placeholder={`Cari ${halaman}`}
+          name="cari"
+          register={register}
+          setValue={setValue}
+          watch={watch}
         />
       </div>
 
-      <ShowData setDelete={setDelete} setEdit={setEdit} search={search} />
+      <ShowData setDelete={setDelete} setEdit={setEdit} />
     </div>
   );
 };

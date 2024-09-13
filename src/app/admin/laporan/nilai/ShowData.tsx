@@ -1,11 +1,10 @@
 /** @format */
 "use client";
-import React, { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import TablesDefault from "@/components/tables/TablesDefault";
 import useNilai from "@/stores/crud/upload/Nilai";
-import useAbsen from "@/stores/crud/upload/Absen";
 import useJadwalApiEdom from "@/stores/api/Jadwal";
 
 type DeleteProps = {
@@ -65,9 +64,7 @@ const ShowData: FC<Props> = ({
     // convert jadwal_id to string
     const jadwal_id_string = jadwal_id.join(",");
     if (jadwal_id.length > 0) {
-      await setShowNilai({
-        jadwal_id: jadwal_id_string,
-      });
+      await setShowNilai({});
     }
   };
   // ketika data jadwal berubah

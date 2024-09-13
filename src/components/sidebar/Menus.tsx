@@ -1,13 +1,13 @@
 /** @format */
 import MenuTypes from "@/types/MenuTypes";
 import {
-  BsFillPersonLinesFill,
   BsHouseDoorFill,
   BsMotherboard,
   BsNewspaper,
   BsPaperclip,
   BsPenFill,
   BsPeopleFill,
+  BsPerson,
   BsReception4,
   BsReverseLayoutTextWindowReverse,
   BsUpload,
@@ -21,7 +21,7 @@ const menus: MenuTypes[] = [
   {
     name: "Dosen",
     href: "/admin/dosen",
-    icon: <BsFillPersonLinesFill />,
+    icon: <BsPerson />,
   },
   {
     name: "Paraf Pimpinan",

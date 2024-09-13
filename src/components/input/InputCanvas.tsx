@@ -3,7 +3,7 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 import SignatureCanvas from "react-signature-canvas";
-import ButtonSecondary from "../button/ButtonSecondary";
+import BtnSecondary from "../button/BtnSecondary";
 
 type Props = {
   control: any;
@@ -56,7 +56,7 @@ const InputCanvas: FC<Props> = ({
   }, [watchParaf]); // Memantau perubahan pada setValue
 
   return (
-    <div className={`flex flex-col ${addClass}`}>
+    <div className={`flex flex-col w-full px-4 ${addClass}`}>
       <label className="text-sm font-medium text-gray-700 tracking-wide block">
         {label}
         {required && <span className="ml-1 text-red-600 ">*</span>}
@@ -109,12 +109,9 @@ const InputCanvas: FC<Props> = ({
       />
 
       {clear && (
-        <ButtonSecondary
-          type="button"
-          text={`Hapus ${label}`}
-          onClick={clearSignature}
-          addClass="mt-2"
-        />
+        <BtnSecondary onClick={clearSignature} addClass="mt-2">
+          Hapus {label}
+        </BtnSecondary>
       )}
       {errors?.type === "required" && (
         <p className="text-red-500 font-inter italic text-sm">

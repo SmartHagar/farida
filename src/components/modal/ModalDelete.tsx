@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FC } from "react";
+import { FC } from "react";
 import { BsXLg } from "react-icons/bs";
 
 type Props = {
@@ -13,12 +13,13 @@ type Props = {
     id?: number | string;
     isDelete: boolean;
   }) => void;
+  pesan?: string;
 };
 
-const ModalDelete: FC<Props> = ({ showDel, setShowDel, setDelete }) => {
+const ModalDelete: FC<Props> = ({ showDel, setShowDel, setDelete, pesan }) => {
   return (
     showDel && (
-      <div>
+      <div className="text-black">
         <div className="fixed inset-0 z-50 mx-auto flex justify-center bg-black/[0.2]">
           <div className="bg-white p-5 rounded-xl lg:ml-64 md:min-w-[500px] h-min mt-[20%] max-h-[70%] overflow-auto">
             {/* header */}
@@ -31,7 +32,11 @@ const ModalDelete: FC<Props> = ({ showDel, setShowDel, setDelete }) => {
             </div>
             {/* body */}
             <div>
-              <p>Apaka Anda Yakin Menghapus Data Ini?</p>
+              {!pesan ? (
+                <p>Apakah Anda Yakin Menghapus Data Ini?</p>
+              ) : (
+                <p>{pesan}</p>
+              )}
               <div className="flex justify-center gap-4 mt-4">
                 <button
                   className="hover:border hover:border-red-600 bg-red-600 w-20 py-2 rounded-xl text-white "

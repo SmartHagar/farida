@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 
 import "react-datepicker/dist/react-datepicker.css";
 import InputCanvas from "@/components/input/InputCanvas";
-import { SelectDefault } from "@/components/select/SelectDefault";
+import SelectDef from "@/components/select/SelectDef";
 
 type Props = {
   register: any;
@@ -53,27 +53,29 @@ const BodyForm: FC<Props> = ({
           placeholder="Pilih Dosen"
           name="dosen_id"
           dataDb={dtDosenAll?.data}
-          body={["id", "NIDN", "nama"]}
+          body={["id", "NIDN", "nm_dosen"]}
           control={control}
           required
           errors={errors.dosen_id}
           addClass="col-span-8"
+          menuPosition={"absolute"}
         />
       )}
-      <SelectDefault
+      <SelectDef
         label="Jabatan"
-        defaultOption="Pilih Jabatan"
-        register={register}
+        placeholder="Pilih Jabatan"
+        control={control}
         name="jabatan"
         options={[
           { value: "WAKIL DEKAN I", label: "WAKIL DEKAN I" },
-          { value: "KAPRODI SI", label: "KAPRODI SI" },
-          { value: "KAPRODI BI", label: "KAPRODI BI" },
-          { value: "KAPRODI TG", label: "KAPRODI TG" },
+          { value: "KAPRODI MN", label: "KAPRODI MN" },
+          { value: "KAPRODI EKBANG", label: "KAPRODI EKBANG" },
+          { value: "KAPRODI AK", label: "KAPRODI AK" },
         ]}
         required
         errors={errors.jabatan}
-        addClass="col-span-8"
+        addClass="col-span-8 lg:col-span-4"
+        menuPosition="absolute"
       />
       <InputCanvas
         control={control}
@@ -84,7 +86,7 @@ const BodyForm: FC<Props> = ({
         setValue={setValue}
         watch={watch}
         clear
-        addClass="col-span-3"
+        addClass="col-span-4 lg:col-span-3"
       />
     </>
   );

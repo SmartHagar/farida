@@ -5,7 +5,6 @@ import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import TablesDefault from "@/components/tables/TablesDefault";
 import useAbsen from "@/stores/crud/upload/Absen";
-import useJadwalApiEdom from "@/stores/api/Jadwal";
 import { useSearchParams } from "next/navigation";
 
 type DeleteProps = {
@@ -21,89 +20,36 @@ type Props = {
 const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
   // dosen_id
   const dosen_id = Cookies.get("dosen_id") || "";
-  // search params
-  const searchParams = useSearchParams();
-  const search = useSearchParams().get("cari") || "";
-  const semester = searchParams.get("semester") || "";
-  const year = searchParams.get("year") || "";
   // store
-  const { setShowAbsen, showAbsen } = useAbsen();
-  const { setJadwalByDosenFull, dtJadwal } = useJadwalApiEdom();
+  const { setAbsen, dtAbsen } = useAbsen();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [dtShow, setDtShow] = useState<any>();
+  // search params
+  const searchParams = useSearchParams();
+  const search = useSearchParams().get("cari") || "";
+  const semester = searchParams.get("semester") || "";
+  const tahun = searchParams.get("year") || "";
 
-  // memanggil data Jadwal
-  const fetchDataJadwal = useCallback(async () => {
+  // memanggil data absen
+  const fetchABSEN = useCallback(async () => {
     setIsLoading(true);
-    await setJadwalByDosenFull({
-      tahun: year,
-      semester: semester,
+    await setAbsen({
+      search,
+      semester,
+      tahun,
       dosen_id,
     });
     setIsLoading(false);
-  }, [dosen_id, semester, setJadwalByDosenFull, year]);
-
-  // ketika year dan semester berubah
-  useEffect(() => {
-    if (year && semester) {
-      fetchDataJadwal();
-    }
-  }, [year, semester, fetchDataJadwal]);
-
-  // memanggil data rps
-  const fetchAbsen = async () => {
-    const jadwal_id: any[] = [];
-    dtJadwal?.data?.map((item: any) => {
-      jadwal_id.push(item.id);
-    });
-    // convert jadwal_id to string
-    const jadwal_id_string = jadwal_id.join(",");
-    if (jadwal_id.length > 0) {
-      await setShowAbsen({
-        id: dosen_id,
-        jadwal_id: jadwal_id_string,
-      });
-    }
-  };
+  }, [dosen_id, search, semester, setAbsen, tahun]);
 
   // ketika data jadwal berubah
   useEffect(() => {
-    dtJadwal?.data && fetchAbsen();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(dtJadwal.data)]);
-
-  //  mengisi dtShow
-  const getDataShow = (dtJadwal: any, showAbsen: any) => {
-    console.log({ dtJadwal, showAbsen });
-    const dt = showAbsen
-      ?.map((item: any) => {
-        const matchedData = dtJadwal?.find(
-          (data: any) => data.id === parseInt(item.jadwal_id)
-        );
-        return matchedData ? { ...item, jadwal: matchedData } : null;
-      })
-      .filter((item: any) => item !== null);
-
-    const getData = {
-      data: dt,
-    };
-
-    setDtShow(getData);
-
-    setIsLoading(false);
-  };
-
-  // ketika dtRPS beruba
-  useEffect(() => {
-    if (dtJadwal?.data && showAbsen) {
-      getDataShow(dtJadwal?.data, showAbsen);
+    if (semester && tahun) {
+      fetchABSEN();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(showAbsen), JSON.stringify(dtJadwal.data)]);
-
+  }, [fetchABSEN, semester, tahun]);
   // table
   const headTable = [
     "No",
@@ -116,8 +62,8 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
   ];
   const tableBodies = [
     "jadwal.hari",
-    "jadwal.matkul.nama",
-    "jadwal.matkul.kode",
+    "jadwal.matkul.nm_matkul",
+    "jadwal.matkul.kd_matkul",
     "jadwal.matkul.sks",
     "file",
   ];
@@ -132,7 +78,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
             <TablesDefault
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={dtShow?.data}
+              dataTable={dtAbsen?.data}
               page={page}
               limit={limit}
               setEdit={setEdit}

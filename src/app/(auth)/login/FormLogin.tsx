@@ -2,7 +2,7 @@
 "use client";
 import InputTextDefault from "@/components/input/InputTextDefault";
 import InputTextPassword from "@/components/input/InputTextPassword";
-import React, { FC } from "react";
+import { FC } from "react";
 
 type Props = {
   register: any;
@@ -30,7 +30,7 @@ const FormLogin: FC<Props> = ({
         errors={errors.email}
         addClass="col-span-4"
         type="email"
-        labelCss="text-font-1"
+        labelCss="text-font-1 text-white"
       />
       <InputTextPassword
         label="Password"
@@ -41,7 +41,7 @@ const FormLogin: FC<Props> = ({
         errors={errors.password}
         addClass="w-[100%] mt-2"
         type="password"
-        labelCss="text-font-1"
+        labelCss="text-font-1 text-white"
       />
     </>
   );

@@ -1,7 +1,7 @@
 /** @format */
 "use client";
 
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { BsEyeSlash, BsEye } from "react-icons/bs";
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
   autoComplete?: string;
   addClass?: string;
   value?: string | number;
-  labelCss?: "text-font-1" | "text-gray-700";
+  labelCss?: string;
 };
 
 const InputTextPassword: FC<Props> = ({
@@ -31,13 +31,13 @@ const InputTextPassword: FC<Props> = ({
   maxLength,
   errors,
   valueAsNumber,
-  type = "text",
+  type = "password",
   readOnly,
   placeholder,
   autoComplete = "on",
   addClass,
   value,
-  labelCss = "text-gray-700",
+  labelCss,
 }) => {
   const [isTypePassword, setIsTypePassword] = useState(false);
   const tooglePassword = () => {
@@ -45,13 +45,16 @@ const InputTextPassword: FC<Props> = ({
   };
   return (
     <div className={addClass}>
-      <label htmlFor={name} className={`text-sm tracking-wide ${labelCss}`}>
+      <label
+        htmlFor={name}
+        className={`text-sm font-medium text-gray-700 tracking-wide ${labelCss}`}
+      >
         {label}
       </label>
       {required && <span className="ml-1 text-red-600">*</span>}
       <div className="relative">
         <input
-          className="w-full text-base text-gray-700 px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-secondary"
+          className="w-full text-base text-gray-700  px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-secondary"
           type={
             type === "password" ? (isTypePassword ? "text" : "password") : type
           }

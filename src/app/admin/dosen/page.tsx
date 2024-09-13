@@ -1,15 +1,16 @@
 /** @format */
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import ShowData from "./ShowData";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import Form from "./form/Form";
 import ModalDelete from "@/components/modal/ModalDelete";
 import { Toaster } from "react-hot-toast";
 import toastShow from "@/utils/toast-show";
-import InputTextSearch from "@/components/input/InputTextSerch";
 import useDosenLogin from "@/stores/crud/DosenLogin";
+import BtnDefault from "@/components/button/BtnDefault";
+import InputTextSearch from "@/components/input/InputTextSearch";
+import { useForm } from "react-hook-form";
 
 // type setDelete
 type Delete = {
@@ -18,6 +19,7 @@ type Delete = {
 };
 
 const Dosen = () => {
+  const halaman = "Dosen";
   // store
   const { removeData } = useDosenLogin();
   // state
@@ -26,6 +28,15 @@ const Dosen = () => {
   const [idDel, setIdDel] = useState<number | string>();
   const [dtEdit, setDtEdit] = useState<any>();
   const [search, setSearch] = useState("");
+
+  // hook form
+  const {
+    register,
+    control,
+    formState: { errors },
+    watch,
+    setValue,
+  } = useForm();
 
   const handleTambah = () => {
     setShowModal(true);
@@ -65,12 +76,15 @@ const Dosen = () => {
         <div className="mb-4 flex justify-between">
           <p>Silahkan Mengolah data Dosen</p>
           <div>
-            <ButtonPrimary text="Tambah Dosen" onClick={handleTambah} />
+            <BtnDefault onClick={handleTambah}>Tambah Dosen</BtnDefault>
           </div>
         </div>
         <InputTextSearch
-          placeholder="Cari Dosen"
-          onChange={(e) => setSearch(e)}
+          placeholder={`Cari ${halaman}`}
+          name="cari"
+          register={register}
+          setValue={setValue}
+          watch={watch}
         />
       </div>
 

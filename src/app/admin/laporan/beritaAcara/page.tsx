@@ -1,13 +1,9 @@
 /** @format */
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import ShowData from "./ShowData";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
-import ModalDelete from "@/components/modal/ModalDelete";
-import { Toaster } from "react-hot-toast";
 import toastShow from "@/utils/toast-show";
-import InputTextSearch from "@/components/input/InputTextSerch";
 import { useForm } from "react-hook-form";
 import useBeritaAcara from "@/stores/crud/upload/BeritaAcara";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -105,10 +101,6 @@ const BeritaAcara = () => {
         <div className="mb-4 flex justify-between">
           <p>Laporan berita acara</p>
         </div>
-        <InputTextSearch
-          placeholder="Cari BeritaAcara"
-          onChange={(e) => setSearch(e)}
-        />
       </div>
 
       <ShowData

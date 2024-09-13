@@ -1,12 +1,12 @@
 /** @format */
 
-import React, { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { StylesConfig } from "react-select";
 import AsyncSelect from "react-select/async";
 import { Controller } from "react-hook-form";
 
 type Props = {
-  dataDb: string[];
+  dataDb: any;
   body: string[];
   control: any;
   required?: boolean;
@@ -15,7 +15,7 @@ type Props = {
   placeholder?: string;
   addClass: any;
   label?: string;
-  menuPosition?: any;
+  menuPosition?: "fixed" | "absolute";
   defaultOptions?: boolean;
 };
 
@@ -35,6 +35,7 @@ const SelectFromDb: FC<Props> = ({
   addClass,
   label,
   defaultOptions = true,
+  menuPosition = "fixed" as any,
 }) => {
   // style
   const styles: StylesConfig<any, true> = {
@@ -51,12 +52,22 @@ const SelectFromDb: FC<Props> = ({
     },
   };
 
-  const getProperty = (obj: string, prop: any): any => {
+  const getProperty = (obj: any, prop: any): any => {
     const value = obj[prop];
     if (prop === "id") {
       return {
         value: value,
         label: "",
+      };
+    } else if (prop === "NPM_FULL") {
+      const angkatan = obj?.thn_angkatan?.substring(2);
+      const prodi = obj["prodi"];
+      const NPM = obj["NPM"];
+      //  return `${obj["prodi"]["kode"]}${angkatan}${obj["NPM"]}`;
+      const NPMFULL = `${prodi["kode"]}${angkatan.substring(2)}${NPM}`;
+      return {
+        value: obj["NPM"],
+        label: NPMFULL,
       };
     } else if (prop.includes(".")) {
       // melakukan pengecekan jika prop memiliki "." (titik)
@@ -74,7 +85,7 @@ const SelectFromDb: FC<Props> = ({
   const myOptions = () => {
     const result =
       dataDb &&
-      dataDb.map((row, index) => {
+      dataDb.map((row: any, index: number) => {
         const rowResult = body.map((column) => {
           return getProperty(row, column);
         });
@@ -126,12 +137,12 @@ const SelectFromDb: FC<Props> = ({
             loadOptions={loadOptions}
             placeholder={placeholder}
             menuPlacement="auto"
-            menuPosition="fixed"
-            menuPortalTarget={document && document.body}
+            menuPosition={menuPosition}
             styles={styles}
             ref={ref}
-            value={myOptions()?.find((x) => x.value === value) || null}
+            value={myOptions()?.find((x: any) => x.value === value) || null}
             onChange={(option: any) => onChange(option ? option.value : option)}
+            menuPortalTarget={document.body} // Mengarahkan menu ke body
           />
         )}
       />

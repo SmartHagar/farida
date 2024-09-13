@@ -1,8 +1,7 @@
 /** @format */
 "use client";
 
-import React, { FC, useState } from "react";
-import { BsEyeSlash, BsEye } from "react-icons/bs";
+import { FC } from "react";
 
 type Props = {
   label?: string;
@@ -13,13 +12,17 @@ type Props = {
   maxLength?: number;
   errors?: any;
   valueAsNumber?: boolean;
-  type?: string;
+  type?: "text" | "password" | "number" | "email" | "date" | "time" | "hidden";
   readOnly?: boolean;
   placeholder?: string;
   autoComplete?: string;
   addClass?: string;
   value?: string | number;
-  labelCss?: "text-font-1" | "text-gray-700";
+  defaultValue?: string | number;
+  max?: number;
+  min?: number;
+  step?: number;
+  labelCss?: string;
 };
 
 const InputTextDefault: FC<Props> = ({
@@ -37,19 +40,24 @@ const InputTextDefault: FC<Props> = ({
   autoComplete = "on",
   addClass,
   value,
-  labelCss = "text-gray-700",
+  defaultValue,
+  max,
+  min,
+  step,
+  labelCss,
 }) => {
   return (
     <div className={addClass}>
-      <label htmlFor={name} className={`text-sm tracking-wide ${labelCss}`}>
+      <label
+        htmlFor={name}
+        className={`text-sm font-medium text-gray-700 tracking-wide ${labelCss}`}
+      >
         {label}
       </label>
       {required && <span className="ml-1 text-red-600">*</span>}
       <div className="relative">
         <input
-          className={`${
-            readOnly && "cursor-not-allowed bg-gray-100"
-          } w-full text-base px-4 py-2 border text-gray-700 border-gray-300 rounded-lg focus:outline-none focus:border-secondary`}
+          className="w-full text-gray-700 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-secondary"
           type={type}
           id={name}
           readOnly={readOnly}
@@ -60,7 +68,11 @@ const InputTextDefault: FC<Props> = ({
             minLength,
             maxLength,
             valueAsNumber,
+            max,
+            min,
+            step,
           })}
+          defaultValue={defaultValue}
           value={value}
         />
       </div>
@@ -83,6 +95,16 @@ const InputTextDefault: FC<Props> = ({
       {errors?.type === "pattern" && (
         <p className="text-red-500 font-inter italic text-sm">
           {label} hanya boleh angka.
+        </p>
+      )}
+      {errors?.type === "max" && (
+        <p className="text-red-500 font-inter italic text-sm">
+          {label} tidak boleh lebih dari {max}.
+        </p>
+      )}
+      {errors?.type === "min" && (
+        <p className="text-red-500 font-inter italic text-sm">
+          {label} tidak boleh kurang dari {min}.
         </p>
       )}
     </div>

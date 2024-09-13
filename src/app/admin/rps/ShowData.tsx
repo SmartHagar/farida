@@ -3,10 +3,9 @@
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import PaginationDefault from "@/components/pagination/PaginationDefault";
 import TablesDefault from "@/components/tables/TablesDefault";
-import React, { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import useRps from "@/stores/crud/upload/Rps";
 import { useSearchParams } from "next/navigation";
-import useJadwalApiEdom from "@/stores/api/Jadwal";
 import Cookies from "js-cookie";
 
 type DeleteProps = {
@@ -17,90 +16,49 @@ type DeleteProps = {
 type Props = {
   setDelete: ({ id, isDelete }: DeleteProps) => void;
   setEdit: (row: any) => void;
-  search: string;
 };
 
-const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
+const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
   // params
   const params = useSearchParams();
   const { setRps, dtRps } = useRps();
-  const { setByTahunSemester, dtJadwal } = useJadwalApiEdom();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [dtShow, setDtShow] = useState<any>();
 
   // get params semester dan tahun
   const semester = params.get("semester") || "";
   const tahun = params.get("tahun") || "";
-  const prodi_id = Cookies.get("prodi_id");
+  const search = params.get("cari") || "";
+  const prodi_id = Cookies.get("prodi_id") || "";
+  console.log({ search });
   // memanggil data Jadwal
-  const fetchDataJadwal = async () => {
+  const fetchRps = useCallback(async () => {
     setIsLoading(true);
-    if (semester && tahun) {
-      await setByTahunSemester({
-        tahun,
-        semester,
-        search,
-        prodi_id,
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (semester && tahun) {
-      fetchDataJadwal();
-    }
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [semester, tahun, search, prodi_id]);
-  const fetchRps = async () => {
     await setRps({
+      semester,
+      tahun,
+      prodi_id,
+      search,
       page,
       limit,
     });
-  };
+    setIsLoading(false);
+  }, [limit, page, prodi_id, search, semester, setRps, tahun]);
+
+  useEffect(() => {
+    if (semester && tahun) {
+      fetchRps();
+    }
+    return () => {};
+  }, [fetchRps, semester, tahun, page, limit]);
+
   // call rps api
   useEffect(() => {
-    fetchRps();
+    setPage(1);
     return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit]);
-
-  //  mengisi dtShow
-  const getDataShow = () => {
-    const dt = dtRps?.data
-      ?.map((item: any) => {
-        const matchedData = dtJadwal?.find(
-          (data: any) => data.id === parseInt(item.jadwal_id)
-        );
-        return matchedData ? { ...item, jadwal: matchedData } : null;
-      })
-      .filter((item: any) => item !== null);
-
-    const getData = {
-      current_page: dtRps?.current_page,
-      last_page: dtRps?.last_page,
-      total: dtRps?.total,
-      per_page: dtRps?.per_page,
-      from: dtRps?.from,
-      to: dtRps?.to,
-      data: dt,
-    };
-    setDtShow(getData);
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    if (dtRps?.data && dtJadwal.length > 0) {
-      getDataShow();
-    }
-
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dtJadwal, dtRps]);
+  }, [search]);
 
   // table
   const headTable = [
@@ -134,7 +92,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
             <TablesDefault
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={dtShow.data}
+              dataTable={dtRps.data}
               page={page}
               limit={limit}
               setEdit={setEdit}
@@ -143,7 +101,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit, search }) => {
               hapus={false}
             />
           </div>
-          {dtShow?.last_page > 1 && (
+          {dtRps?.last_page > 1 && (
             <div className="mt-4">
               <PaginationDefault
                 currentPage={dtRps?.current_page}

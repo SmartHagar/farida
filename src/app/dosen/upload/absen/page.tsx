@@ -2,7 +2,6 @@
 "use client";
 import { useState } from "react";
 
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import Form from "./form/Form";
 import ModalDelete from "@/components/modal/ModalDelete";
 import { Toaster } from "react-hot-toast";
@@ -10,6 +9,7 @@ import toastShow from "@/utils/toast-show";
 import useAbsen from "@/stores/crud/upload/Absen";
 import ShowData from "./ShowData";
 import Searching from "./Searching";
+import BtnDefault from "@/components/button/BtnDefault";
 
 // type setDelete
 type Delete = {
@@ -61,10 +61,10 @@ const Absen = () => {
           setShowDel={setShowDelete}
           setDelete={setDelete}
         />
-        <div className="mb-4 flex justify-between">
+        <div className="mb-4 flex justify-between ml-8 lg:ml-0">
           <p>Silahkan mengolah data absen</p>
           <div>
-            <ButtonPrimary text="Tambah absen" onClick={handleTambah} />
+            <BtnDefault onClick={handleTambah}>Tambah Absen</BtnDefault>
           </div>
         </div>
         <div>

@@ -1,6 +1,5 @@
 /** @format */
 "use client";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import InputTextDefault from "@/components/input/InputTextDefault";
 import ModalDefault from "@/components/modal/ModalDefault";
 import toastShow from "@/utils/toast-show";
@@ -10,6 +9,7 @@ import BodyForm from "./BodyForm";
 import useParafPimpinan from "@/stores/crud/ParafPimpinan";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import parafPimpinanTypes from "@/types/ParafPimpinanTypes";
+import BtnDefault from "@/components/button/BtnDefault";
 
 type Props = {
   showModal: boolean;
@@ -99,7 +99,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
           {isLoading ? (
             <LoadingSpiner />
           ) : (
-            <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+            <BtnDefault onClick={handleSubmit(onSubmit)}>Simpan</BtnDefault>
           )}
         </div>
       </form>

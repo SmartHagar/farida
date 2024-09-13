@@ -18,8 +18,6 @@ type Props = {
   watch: any;
   setValue: any;
   showModal: boolean;
-  myFile: any;
-  setMyFile: any;
 };
 
 const BodyForm: FC<Props> = ({
@@ -30,8 +28,6 @@ const BodyForm: FC<Props> = ({
   watch,
   setValue,
   showModal,
-  myFile,
-  setMyFile,
 }) => {
   const dosen_id = Cookies.get("dosen_id");
   // search params
@@ -62,7 +58,14 @@ const BodyForm: FC<Props> = ({
           placeholder="Pilih Jadwal"
           name="jadwal_id"
           dataDb={dtJadwal?.data}
-          body={["id", "matkul.kode", "hari", "matkul.nama", "mulai", "seles"]}
+          body={[
+            "id",
+            "prodi.singkat",
+            "hari",
+            "matkul.nm_matkul",
+            "mulai",
+            "seles",
+          ]}
           control={control}
           required
           errors={errors.jadwal_id}
@@ -80,8 +83,7 @@ const BodyForm: FC<Props> = ({
         addClass="col-span-4"
         setValue={setValue}
         fileEdit={dtEdit?.file}
-        myFile={myFile}
-        setMyFile={setMyFile}
+        watch={watch}
       />
     </>
   );

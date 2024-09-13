@@ -3,13 +3,14 @@
 import { useState } from "react";
 
 import ShowData from "./ShowData";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import Form from "./form/Form";
 import ModalDelete from "@/components/modal/ModalDelete";
 import { Toaster } from "react-hot-toast";
 import toastShow from "@/utils/toast-show";
-import InputTextSearch from "@/components/input/InputTextSerch";
 import useParafPimpinan from "@/stores/crud/ParafPimpinan";
+import InputTextSearch from "@/components/input/InputTextSearch";
+import { useForm } from "react-hook-form";
+import BtnDefault from "@/components/button/BtnDefault";
 
 // type setDelete
 type Delete = {
@@ -18,6 +19,7 @@ type Delete = {
 };
 
 const Dosen = () => {
+  const halaman = "Paraf Pimpinan";
   // store
   const { removeData } = useParafPimpinan();
   // state
@@ -48,6 +50,17 @@ const Dosen = () => {
     } else setShowDelete(true);
   };
 
+  // hook form
+  // hook form
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    control,
+    formState: { errors },
+    watch,
+  } = useForm();
+
   return (
     <div className="flex flex-col h-full">
       <div>
@@ -63,14 +76,19 @@ const Dosen = () => {
           setDelete={setDelete}
         />
         <div className="mb-4 flex justify-between">
-          <p>Silahkan Mengolah data Dosen</p>
+          <p>Silahkan Mengolah data {halaman}</p>
           <div>
-            <ButtonPrimary text="Tambah Dosen" onClick={handleTambah} />
+            <BtnDefault onClick={handleTambah} type="button">
+              Tambah {halaman}
+            </BtnDefault>
           </div>
         </div>
         <InputTextSearch
-          placeholder="Cari Dosen"
-          onChange={(e) => setSearch(e)}
+          placeholder={`Cari ${halaman}`}
+          name="cari"
+          register={register}
+          setValue={setValue}
+          watch={watch}
         />
       </div>
 

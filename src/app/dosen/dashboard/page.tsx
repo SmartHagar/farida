@@ -1,7 +1,7 @@
 /** @format */
 "use client";
 import useMatkulApi from "@/stores/api/Matkul";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { config } from "@react-spring/web";
 import {
   BsFillBookFill,
@@ -9,12 +9,12 @@ import {
   BsLampFill,
 } from "react-icons/bs";
 import AnimatedNumber from "@/components/animated/AnimatedNumber";
-import Kelengkapan from "./kelengkapan/Kelengkapan";
 import useRuanganApiEdom from "@/stores/api/Ruangan";
 import useDosenApiEdom from "@/stores/api/Dosen";
-import { useForm } from "react-hook-form";
 
 import Cookies from "js-cookie";
+import Searching from "./Searching";
+import Kelengkapan from "./kelengkapan/Kelengkapan";
 
 type Props = {};
 
@@ -22,9 +22,6 @@ const Dashboard = (props: Props) => {
   const { setRuanganAll, dtRuangan } = useRuanganApiEdom();
   const { setMatkulAll, dtMatkul } = useMatkulApi();
   const { setDosenAll, dtDosenAll } = useDosenApiEdom();
-  // state
-  const [tahunWatch, setTahunWatch] = useState<number | string>("");
-  const [semesterWatch, setSemesterWatch] = useState<string>("");
   const [dtDosen, setDtDosen] = useState<any>([]);
   //
   const dosen_id = Cookies.get("dosen_id") || "";
@@ -39,27 +36,7 @@ const Dashboard = (props: Props) => {
     setDosenAll({
       search: "",
     });
-  }, []);
-
-  // hook form
-  const {
-    register,
-    control,
-    formState: { errors },
-    watch,
-    setValue,
-  } = useForm();
-
-  useEffect(() => {
-    const tahun = new Date().getFullYear();
-    // get month
-    const month = new Date().getMonth();
-    const semester = month > 6 ? "Ganjil" : "Genap";
-    setTahunWatch(tahun);
-    setSemesterWatch(semester);
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setDosenAll, setMatkulAll, setRuanganAll]);
 
   useEffect(() => {
     const dtDosen = dtDosenAll?.data?.find(
@@ -69,8 +46,6 @@ const Dashboard = (props: Props) => {
     return () => {};
   }, [dosen_id, dtDosenAll]);
 
-  console.log({ dtDosenAll });
-
   return (
     <div className="h-full w-full overflow-auto">
       <div className="mb-4">
@@ -78,12 +53,16 @@ const Dashboard = (props: Props) => {
           SILAKU
         </p>
         <p className="text-center text-sm md:text-base text-font-1">
-          (Sistem Informasi Perkuliahan Fakultas Sains & Teknologi)
+          (Sistem Informasi Laporan Perkuliahan)
         </p>
-        <h5 className="text-center my-4">Prodi {dtDosen?.prodi?.nama}</h5>
+        <p className="text-center text-sm md:text-lg font-bold text-font-1">
+          FAKULTAS EKONOMI
+        </p>
+        <h5 className="text-center my-4">{dtDosen?.nm_dosen}</h5>
       </div>
       <>
-        <Kelengkapan tahun={tahunWatch} semester={semesterWatch} />
+        <Searching halaman="Dashboard" />
+        <Kelengkapan dosen_id={dosen_id} />
       </>
       <div className="flex gap-4 flex-wrap">
         <div className="flex flex-col bg-primary/10 p-4 px-8 rounded-md gap-1">

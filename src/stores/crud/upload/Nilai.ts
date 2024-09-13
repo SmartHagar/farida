@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
 import useLogin from "@/stores/auth/login";
+import UploadNilaiTypes from "@/types/UploadNilaiTypes";
 
 // crud nilai
 
@@ -11,18 +12,34 @@ type Props = {
   id?: number | string;
   page?: number;
   limit?: number;
-  jadwal_id?: number | string;
+  semester?: string;
+  tahun?: number | string;
+  prodi_id?: number | string;
+  search?: number | string;
+  dosen_id?: number | string;
 };
 
 type Store = {
-  dtNilai: any;
+  dtNilai: {
+    last_page: number;
+    current_page: number;
+    data: UploadNilaiTypes[];
+  };
   showNilai: any;
-  setNilai: ({ page, limit }: Props) => Promise<{
+  setNilai: ({
+    page,
+    limit,
+    semester,
+    tahun,
+    prodi_id,
+    dosen_id,
+    search,
+  }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
   }>;
-  setShowNilai: ({ id, jadwal_id }: Props) => Promise<{
+  setShowNilai: ({ id }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -46,9 +63,21 @@ const useNilai = create(
       formData.append("file", row.file);
       return formData;
     },
-    dtNilai: [],
+    dtNilai: {
+      last_page: 0,
+      current_page: 0,
+      data: [],
+    },
     showNilai: [],
-    setNilai: async ({ page = 1, limit = 10 }) => {
+    setNilai: async ({
+      page = 1,
+      limit = 10,
+      semester,
+      tahun,
+      prodi_id,
+      dosen_id,
+      search,
+    }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
@@ -58,9 +87,14 @@ const useNilai = create(
           params: {
             limit,
             page,
+            semester,
+            tahun,
+            prodi_id,
+            dosen_id,
+            search,
           },
         });
-        set((state) => ({ ...state, dtNilai: response.data.data }));
+        set((state) => ({ ...state, dtNilai: response.data }));
         return {
           status: "berhasil",
           data: response.data,
@@ -72,16 +106,14 @@ const useNilai = create(
         };
       }
     },
-    setShowNilai: async ({ id, jadwal_id }) => {
+    setShowNilai: async ({ id }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
           method: "get",
           url: `/upload/nilai/${id}`,
           headers: { Authorization: `Bearer ${token}` },
-          params: {
-            jadwal_id,
-          },
+          params: {},
         });
         set((state) => ({ ...state, showNilai: response.data.data }));
         return {
@@ -108,8 +140,12 @@ const useNilai = create(
           },
           data: formData,
         });
-        set((prevState: any) => ({
-          showNilai: [res.data.data, ...prevState.showNilai],
+        set((prevState) => ({
+          dtNilai: {
+            last_page: prevState.dtNilai.last_page,
+            current_page: prevState.dtNilai.current_page,
+            data: [res.data.data, ...prevState.dtNilai.data],
+          },
         }));
         return {
           status: "berhasil tambah",
@@ -130,8 +166,12 @@ const useNilai = create(
           url: `/upload/nilai/${id}`,
           headers: { Authorization: `Bearer ${token}` },
         });
-        set((prevState: any) => ({
-          showNilai: prevState.showNilai.filter((item: any) => item.id !== id),
+        set((prevState) => ({
+          dtNilai: {
+            last_page: prevState.dtNilai.last_page,
+            current_page: prevState.dtNilai.current_page,
+            data: prevState.dtNilai.data.filter((item: any) => item.id !== id),
+          },
         }));
         return {
           status: "berhasil hapus",
@@ -166,17 +206,21 @@ const useNilai = create(
             _method: "PUT",
           },
         });
-        set((prevState: any) => ({
-          showNilai: prevState.showNilai.map((item: any) => {
-            if (item.id === id) {
-              return {
-                ...item,
-                ...response.data.data,
-              };
-            } else {
-              return item;
-            }
-          }),
+        set((prevState) => ({
+          dtNilai: {
+            last_page: prevState.dtNilai.last_page,
+            current_page: prevState.dtNilai.current_page,
+            data: prevState.dtNilai.data.map((item: any) => {
+              if (item.id === id) {
+                return {
+                  ...item,
+                  ...response.data.data,
+                };
+              } else {
+                return item;
+              }
+            }),
+          },
         }));
         return {
           status: "berhasil update",

@@ -1,9 +1,10 @@
 /** @format */
 
-import React, { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import moment from "moment";
+import "react-datepicker/dist/react-datepicker.css";
 
 type Props = {
   control: any;
@@ -12,8 +13,7 @@ type Props = {
   errors?: any;
   addClass?: any;
   label: string;
-  startDate: any;
-  setStartDate: any;
+  initialValue?: string | Date;
   includeDateIntervals: any;
 };
 
@@ -24,19 +24,21 @@ const InputDateIncludeIntervals: FC<Props> = ({
   errors,
   addClass,
   label,
-  startDate,
-  setStartDate,
+  initialValue,
   includeDateIntervals,
 }) => {
-  function subDays(date: Date, days: number) {
-    return new Date(date.getTime() - days * 24 * 60 * 60 * 1000);
-  }
+  const [menuPortalTarget, setMenuPortalTarget] = useState<any>(null);
+  const [startDate, setStartDate] = useState<string | Date>(initialValue || "");
 
-  function addDays(date: Date, days: number) {
-    return new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
-  }
+  useEffect(() => {
+    // Pastikan kode ini hanya dijalankan di lingkungan browser
+    if (typeof document !== "undefined") {
+      setMenuPortalTarget(document.body);
+    }
+  }, []);
+
   return (
-    <div className={addClass}>
+    <div className={`flex flex-col ${addClass}`}>
       <label className="text-sm font-medium text-gray-700 tracking-wide block">
         {label}
         {required && <span className="ml-1 text-red-600">*</span>}
@@ -47,26 +49,26 @@ const InputDateIncludeIntervals: FC<Props> = ({
         rules={{ required }}
         render={({ field }) => (
           <DatePicker
-            selected={startDate}
+            selected={startDate as Date}
             onChange={(date) => {
               if (date) {
                 setStartDate(date);
                 const mtDate = moment(date).format("YYYY-MM-DD");
                 field.onChange(mtDate);
               } else {
-                setStartDate(null); // or set to an empty value that works for your use case
-                field.onChange(""); // Set the value in react-hook-form
+                setStartDate(""); // Atur ke nilai kosong jika tanggal dihapus
+                field.onChange(""); // Set nilai dalam react-hook-form
               }
             }}
             dateFormat={"dd/MM/yyyy"}
-            value={startDate || ""}
             peekNextMonth
             showMonthDropdown
             showYearDropdown
             dropdownMode="select"
-            className="w-full border rounded-lg py-2 px-4"
+            className="w-full border rounded-lg py-2 px-4 bg-white"
             includeDateIntervals={includeDateIntervals}
             placeholderText="dd/mm/yyyy"
+            portalId={menuPortalTarget}
           />
         )}
       />

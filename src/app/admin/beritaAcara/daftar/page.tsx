@@ -1,14 +1,15 @@
 /** @format */
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Toaster } from "react-hot-toast";
-import InputTextSearch from "@/components/input/InputTextSerch";
 import { useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
-import { SelectDefault } from "@/components/select/SelectDefault";
 import SelectTahun from "@/components/select/SelectTahun";
 import ShowData from "./ShowData";
+import SelectDef from "@/components/select/SelectDef";
+import InputTextSearch from "@/components/input/InputTextSearch";
+import { momentId } from "@/utils/momentIndonesia";
 
 // type setDelete
 type Delete = {
@@ -17,12 +18,12 @@ type Delete = {
 };
 
 const BeritaAcara = () => {
+  const halaman = "Berita Acara";
   // router
   const router = useRouter();
   const params = useSearchParams();
   // state
   const [dtEdit, setDtEdit] = useState<any>();
-  const [search, setSearch] = useState("");
 
   const setEdit = (row: any) => {
     setDtEdit(row);
@@ -44,7 +45,8 @@ const BeritaAcara = () => {
   useEffect(() => {
     if (!tahunParams && !semesterParams) {
       const tahun = new Date().getFullYear();
-      const semester = "Genap";
+      const month = momentId().month() + 1;
+      const semester = month > 6 ? "Ganjil" : "Genap";
       setValue("tahun", tahun);
       setValue("semester", semester);
       // add parameter to url
@@ -83,10 +85,10 @@ const BeritaAcara = () => {
         </div>
         {/* pilih tahun dan semester */}
         <div className="mb-4 flex justify-between gap-4">
-          <SelectDefault
+          <SelectDef
             label="Semester"
-            defaultOption="Pilih Semester"
-            register={register}
+            placeholder="Pilih Semester"
+            control={control}
             errors={errors}
             name="semester"
             options={[
@@ -94,6 +96,7 @@ const BeritaAcara = () => {
               { value: "Genap", label: "Genap" },
             ]}
             addClass="w-full"
+            menuPosition="absolute"
           />
           <SelectTahun
             label="Tahun"
@@ -106,20 +109,19 @@ const BeritaAcara = () => {
             required
             errors={errors}
             addClass="w-full"
+            menuPosition="absolute"
           />
         </div>
         <InputTextSearch
-          placeholder="Cari Berita Acara"
-          onChange={(e) => setSearch(e)}
+          placeholder={`Cari ${halaman}`}
+          name="cari"
+          register={register}
+          setValue={setValue}
+          watch={watch}
         />
       </div>
 
-      <ShowData
-        tahunWatch={tahunWatch}
-        semesterWatch={semesterWatch}
-        setEdit={setEdit}
-        search={search}
-      />
+      <ShowData setEdit={setEdit} />
     </div>
   );
 };

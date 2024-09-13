@@ -1,6 +1,5 @@
 /** @format */
 "use client";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import InputTextDefault from "@/components/input/InputTextDefault";
 import ModalDefault from "@/components/modal/ModalDefault";
 import toastShow from "@/utils/toast-show";
@@ -9,6 +8,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import BodyForm from "./BodyForm";
 import useAbsen from "@/stores/crud/upload/Absen";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
+import BtnDefault from "@/components/button/BtnDefault";
+import { useSearchParams } from "next/navigation";
+import Cookies from "js-cookie";
+import UploadAbsenTypes from "@/types/UploadAbsenTypes";
 
 type Props = {
   showModal: boolean;
@@ -16,18 +19,14 @@ type Props = {
   dtEdit: any;
 };
 
-type Inputs = {
-  id: number | string;
-  jadwal_id: number | string;
-  status: string;
-  file: string;
-};
-
 const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
-  // state
-  const [myFile, setMyFile] = useState<any>();
+  const dosen_id = Cookies.get("dosen_id");
+  // search params
+  const searchParams = useSearchParams();
+  const semester = searchParams.get("semester") || "";
+  const tahun = searchParams.get("year") || "";
   // store
-  const { addData, updateData } = useAbsen();
+  const { addData, updateData, setAbsen } = useAbsen();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // hook form
   const {
@@ -37,14 +36,13 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
     control,
     formState: { errors },
     watch,
-  } = useForm<Inputs>();
+  } = useForm<UploadAbsenTypes>();
 
   // reset form
   const resetForm = () => {
     setValue("id", "");
     setValue("jadwal_id", "");
     setValue("file", "");
-    setMyFile(null);
   };
 
   // data edit
@@ -59,9 +57,8 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showModal, dtEdit]);
   // simpan data
-  const onSubmit: SubmitHandler<Inputs> = async (row) => {
+  const onSubmit: SubmitHandler<UploadAbsenTypes> = async (row) => {
     setIsLoading(true);
-    console.log({ row });
     // jika dtEdit tidak kosong maka update
     if (dtEdit) {
       const { data } = await updateData(dtEdit.id, row);
@@ -77,6 +74,11 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
       });
       data?.type !== "success" ? null : resetForm();
     }
+    await setAbsen({
+      semester,
+      tahun,
+      dosen_id,
+    });
     setIsLoading(false);
   };
 
@@ -98,15 +100,13 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
             watch={watch}
             setValue={setValue}
             showModal={showModal}
-            myFile={myFile}
-            setMyFile={setMyFile}
           />
         </div>
         <div>
           {isLoading ? (
             <LoadingSpiner />
           ) : (
-            <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+            <BtnDefault onClick={handleSubmit(onSubmit)}>Simpan</BtnDefault>
           )}
         </div>
       </form>

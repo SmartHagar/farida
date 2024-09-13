@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormLogin from "./FormLogin";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
+import BtnDefault from "@/components/button/BtnDefault";
 
 type Props = {};
 
@@ -115,7 +115,7 @@ const Login = (props: Props) => {
               {isLoading ? (
                 <LoadingSpiner />
               ) : (
-                <ButtonPrimary text="Login" onClick={handleSubmit(onSubmit)} />
+                <BtnDefault onClick={handleSubmit(onSubmit)}>Login</BtnDefault>
               )}
             </div>
           </form>

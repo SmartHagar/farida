@@ -1,12 +1,11 @@
 /** @format */
 "use client";
 import AnimatedNumber from "@/components/animated/AnimatedNumber";
-import useDosenApiEdom from "@/stores/api/Dosen";
-import useDosenApi from "@/stores/api/Dosen";
+import useDosenApiSiakad from "@/stores/api/Dosen";
 import useMatkulApi from "@/stores/api/Matkul";
-import useRuanganApiEdom from "@/stores/api/Ruangan";
+import useRuanganApiSiakad from "@/stores/api/Ruangan";
 import { config } from "@react-spring/web";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import {
   BsFillBookFill,
   BsFillPersonLinesFill,
@@ -16,27 +15,21 @@ import {
 type Props = {};
 
 const Home = (props: Props) => {
-  const { setRuanganAll, dtRuangan } = useRuanganApiEdom();
+  const { setRuanganAll, dtRuangan } = useRuanganApiSiakad();
   const { setMatkulAll, dtMatkul } = useMatkulApi();
-  const { setDosenAll, dtDosenAll } = useDosenApiEdom();
+  const { setDosenAll, dtDosenAll } = useDosenApiSiakad();
 
   useEffect(() => {
-    setRuanganAll({
-      search: "",
-    });
-    setMatkulAll({
-      search: "",
-    });
-    setDosenAll({
-      search: "",
-    });
+    setRuanganAll({});
+    setMatkulAll({});
+    setDosenAll({});
   }, []);
 
   return (
     <div>
       <div className="mb-4">
         <p className="text-center text-sm md:text-lg text-font-1">
-          (Sistem Informasi Perkuliahan Fakultas Sains & Teknologi)
+          (Sistem Informasi Laporan Perkuliahan Fakultas Ekonomi)
         </p>
       </div>
       <div className="flex gap-4 flex-wrap">

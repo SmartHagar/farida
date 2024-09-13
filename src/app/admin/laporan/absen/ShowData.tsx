@@ -1,6 +1,6 @@
 /** @format */
 "use client";
-import React, { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import TablesDefault from "@/components/tables/TablesDefault";
@@ -63,9 +63,7 @@ const ShowData: FC<Props> = ({
     // convert jadwal_id to string
     const jadwal_id_string = jadwal_id.join(",");
     if (jadwal_id.length > 0) {
-      await setShowAbsen({
-        jadwal_id: jadwal_id_string,
-      });
+      await setShowAbsen({});
     }
   };
   // ketika data jadwal berubah

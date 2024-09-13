@@ -1,16 +1,15 @@
 /** @format */
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import ShowData from "./ShowData";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import Form from "./form/Form";
 import ModalDelete from "@/components/modal/ModalDelete";
 import { Toaster } from "react-hot-toast";
 import toastShow from "@/utils/toast-show";
-import InputTextSearch from "@/components/input/InputTextSerch";
 import { useForm } from "react-hook-form";
 import useBeritaAcara from "@/stores/crud/upload/BeritaAcara";
+import BtnDefault from "@/components/button/BtnDefault";
 
 // type setDelete
 type Delete = {
@@ -90,13 +89,9 @@ const BeritaAcara = () => {
         <div className="mb-4 flex justify-between">
           <p>Silahkan mengolah data berita acara</p>
           <div>
-            <ButtonPrimary text="Tambah berita acara" onClick={handleTambah} />
+            <BtnDefault onClick={handleTambah}>Tambah berita acara</BtnDefault>
           </div>
         </div>
-        <InputTextSearch
-          placeholder="Cari BeritaAcara"
-          onChange={(e) => setSearch(e)}
-        />
       </div>
 
       <ShowData

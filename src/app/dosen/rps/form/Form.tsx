@@ -1,14 +1,15 @@
 /** @format */
 "use client";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import InputTextDefault from "@/components/input/InputTextDefault";
 import ModalDefault from "@/components/modal/ModalDefault";
 import toastShow from "@/utils/toast-show";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import BodyForm from "./BodyForm";
 import useRps from "@/stores/crud/upload/Rps";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
+import BtnDefault from "@/components/button/BtnDefault";
+import { useSearchParams } from "next/navigation";
 
 type Props = {
   showModal: boolean;
@@ -26,10 +27,25 @@ type Inputs = {
 
 const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
   // state
-  const [myFile, setMyFile] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // store
-  const { addData, updateData } = useRps();
+  const { addData, updateData, setRps } = useRps();
+  // search params
+  const searchParams = useSearchParams();
+  const search = searchParams.get("cari") || "";
+  const semester = searchParams.get("semester") || "";
+  const tahun = searchParams.get("year") || "";
+
+  // memanggil data rps
+  const fetchRPS = useCallback(async () => {
+    setIsLoading(true);
+    await setRps({
+      search,
+      semester,
+      tahun,
+    });
+    setIsLoading(false);
+  }, [search, semester, setRps, tahun]);
   // hook form
   const {
     register,
@@ -45,7 +61,6 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
     setValue("id", "");
     setValue("jadwal_id", "");
     setValue("file", "");
-    setMyFile(null);
   };
 
   // data edit
@@ -80,6 +95,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
       });
       data?.type !== "success" ? null : resetForm();
     }
+    await fetchRPS();
     setIsLoading(false);
   };
 
@@ -101,8 +117,6 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
             watch={watch}
             setValue={setValue}
             showModal={showModal}
-            myFile={myFile}
-            setMyFile={setMyFile}
           />
         </div>
         <div>
@@ -110,7 +124,7 @@ const Form = ({ showModal, setShowModal, dtEdit }: Props) => {
             {isLoading ? (
               <LoadingSpiner />
             ) : (
-              <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+              <BtnDefault onClick={handleSubmit(onSubmit)}>Simpan</BtnDefault>
             )}
           </div>
         </div>

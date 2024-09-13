@@ -14,7 +14,7 @@ type Props = {
   name: string;
   errors?: any;
   addClass: any;
-  menuPosition?: "fixed" | "absolute";
+  menuPosition?: string;
   placeholder?: string;
   fromMax?: boolean;
 };

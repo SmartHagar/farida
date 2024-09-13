@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
 import useLogin from "@/stores/auth/login";
+import UploadAbsenTypes from "@/types/UploadAbsenTypes";
 
 // crud absen
 
@@ -11,18 +12,34 @@ type Props = {
   id?: number | string;
   page?: number;
   limit?: number;
-  jadwal_id?: number | string;
+  semester?: string;
+  tahun?: number | string;
+  prodi_id?: number | string;
+  search?: number | string;
+  dosen_id?: number | string;
 };
 
 type Store = {
-  dtAbsen: any;
+  dtAbsen: {
+    last_page: number;
+    current_page: number;
+    data: UploadAbsenTypes[];
+  };
   showAbsen: any;
-  setAbsen: ({ page, limit }: Props) => Promise<{
+  setAbsen: ({
+    page,
+    limit,
+    semester,
+    tahun,
+    prodi_id,
+    dosen_id,
+    search,
+  }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
   }>;
-  setShowAbsen: ({ id, jadwal_id }: Props) => Promise<{
+  setShowAbsen: ({ id }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -46,9 +63,21 @@ const useAbsen = create(
       formData.append("file", row.file);
       return formData;
     },
-    dtAbsen: [],
+    dtAbsen: {
+      last_page: 0,
+      current_page: 0,
+      data: [],
+    },
     showAbsen: [],
-    setAbsen: async ({ page = 1, limit = 10 }) => {
+    setAbsen: async ({
+      page = 1,
+      limit = 10,
+      semester,
+      tahun,
+      prodi_id,
+      dosen_id,
+      search,
+    }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
@@ -58,9 +87,14 @@ const useAbsen = create(
           params: {
             limit,
             page,
+            semester,
+            tahun,
+            prodi_id,
+            dosen_id,
+            search,
           },
         });
-        set((state) => ({ ...state, dtAbsen: response.data.data }));
+        set((state) => ({ ...state, dtAbsen: response.data }));
         return {
           status: "berhasil",
           data: response.data,
@@ -72,16 +106,14 @@ const useAbsen = create(
         };
       }
     },
-    setShowAbsen: async ({ id, jadwal_id }) => {
+    setShowAbsen: async ({ id }) => {
       try {
         const token = await useLogin.getState().setToken();
         const response = await crud({
           method: "get",
           url: `/upload/absen/${id}`,
           headers: { Authorization: `Bearer ${token}` },
-          params: {
-            jadwal_id,
-          },
+          params: {},
         });
         set((state) => ({ ...state, showAbsen: response.data.data }));
         return {
@@ -108,8 +140,12 @@ const useAbsen = create(
           },
           data: formData,
         });
-        set((prevState: any) => ({
-          showAbsen: [res.data.data, ...prevState.showAbsen],
+        set((prevState) => ({
+          dtAbsen: {
+            last_page: prevState.dtAbsen.last_page,
+            current_page: prevState.dtAbsen.current_page,
+            data: [res.data.data, ...prevState.dtAbsen.data],
+          },
         }));
         return {
           status: "berhasil tambah",
@@ -130,7 +166,7 @@ const useAbsen = create(
           url: `/upload/absen/${id}`,
           headers: { Authorization: `Bearer ${token}` },
         });
-        set((prevState: any) => ({
+        set((prevState) => ({
           dtAbsen: {
             last_page: prevState.dtAbsen.last_page,
             current_page: prevState.dtAbsen.current_page,
@@ -170,17 +206,21 @@ const useAbsen = create(
             _method: "PUT",
           },
         });
-        set((prevState: any) => ({
-          showAbsen: prevState.showAbsen.map((item: any) => {
-            if (item.id === id) {
-              return {
-                ...item,
-                ...response.data.data,
-              };
-            } else {
-              return item;
-            }
-          }),
+        set((prevState) => ({
+          dtAbsen: {
+            last_page: prevState.dtAbsen.last_page,
+            current_page: prevState.dtAbsen.current_page,
+            data: prevState.dtAbsen.data.map((item: any) => {
+              if (item.id === id) {
+                return {
+                  ...item,
+                  ...response.data.data,
+                };
+              } else {
+                return item;
+              }
+            }),
+          },
         }));
         return {
           status: "berhasil update",

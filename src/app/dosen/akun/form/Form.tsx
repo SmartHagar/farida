@@ -1,6 +1,5 @@
 /** @format */
 "use client";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import InputTextDefault from "@/components/input/InputTextDefault";
 import toastShow from "@/utils/toast-show";
 import { useEffect, useState } from "react";
@@ -11,6 +10,7 @@ import useLogin from "@/stores/auth/login";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import BtnDefault from "@/components/button/BtnDefault";
 
 type Props = {};
 
@@ -28,6 +28,8 @@ const Form = ({}: Props) => {
 
     return () => {};
   }, [cekToken]);
+
+  console.log({ dtLogin });
 
   // load
   const [saveLoad, setSaveLoad] = useState(false);
@@ -98,7 +100,7 @@ const Form = ({}: Props) => {
         {saveLoad ? (
           <LoadingSpiner />
         ) : (
-          <ButtonPrimary text="Simpan" onClick={handleSubmit(onSubmit)} />
+          <BtnDefault onClick={handleSubmit(onSubmit)}>Simpan</BtnDefault>
         )}
       </div>
     </form>

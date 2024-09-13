@@ -3,7 +3,6 @@
 import { useState } from "react";
 
 import ShowData from "./ShowData";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import Form from "./form/Form";
 import ModalDelete from "@/components/modal/ModalDelete";
 import { Toaster } from "react-hot-toast";
@@ -11,6 +10,7 @@ import toastShow from "@/utils/toast-show";
 import { useForm } from "react-hook-form";
 import useNilai from "@/stores/crud/upload/Nilai";
 import Searching from "./Searching";
+import BtnDefault from "@/components/button/BtnDefault";
 
 // type setDelete
 type Delete = {
@@ -72,10 +72,10 @@ const Nilai = () => {
           setShowDel={setShowDelete}
           setDelete={setDelete}
         />
-        <div className="mb-4 flex justify-between">
+        <div className="mb-4 flex justify-between ml-8 lg:ml-0">
           <p>Silahkan mengolah data nilai</p>
           <div>
-            <ButtonPrimary text="Tambah nilai" onClick={handleTambah} />
+            <BtnDefault onClick={handleTambah}>Tambah</BtnDefault>
           </div>
         </div>
         <div>

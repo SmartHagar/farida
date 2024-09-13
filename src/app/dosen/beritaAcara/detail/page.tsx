@@ -3,17 +3,19 @@
 import { useEffect, useState } from "react";
 
 import ShowData from "./ShowData";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import Form from "./form/Form";
 import ModalDelete from "@/components/modal/ModalDelete";
 import { Toaster } from "react-hot-toast";
 import toastShow from "@/utils/toast-show";
-import InputTextSearch from "@/components/input/InputTextSerch";
 import useDetBeritaAcara from "@/stores/crud/DetBeritaAcara";
 import { useSearchParams } from "next/navigation";
 import { BASE_URL } from "@/services/baseURL";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
-import useJadwalApiEdom from "@/stores/api/Jadwal";
+import BtnDefault from "@/components/button/BtnDefault";
+import BtnSecondary from "@/components/button/BtnSecondary";
+import InputTextSearch from "@/components/input/InputTextSearch";
+import { useForm } from "react-hook-form";
+import useJadwalApiSiakad from "@/stores/api/Jadwal";
 
 // type setDelete
 type Delete = {
@@ -22,9 +24,10 @@ type Delete = {
 };
 
 const Dosen = () => {
+  const halaman = "Detail Berita Acara";
   // store
   const { removeData, showDetBeritaAcara } = useDetBeritaAcara();
-  const { setShowJadwal, dtJadwal } = useJadwalApiEdom();
+  const { setShowJadwal, dtJadwal } = useJadwalApiSiakad();
   // get search params
   const params = useSearchParams();
   // get berita_acara_id
@@ -37,6 +40,7 @@ const Dosen = () => {
   const [dtEdit, setDtEdit] = useState<any>();
   const [search, setSearch] = useState("");
   const [loadPdf, setLoadPdf] = useState(false);
+  const [thn_ajaran, setTahunAjaran] = useState("");
 
   const handleTambah = () => {
     setShowModal(true);
@@ -66,14 +70,34 @@ const Dosen = () => {
     return () => {};
   }, [jadwal_id, setShowJadwal]);
 
-  const jadwal = dtJadwal;
-
   const cetak = () => {
     setLoadPdf(true);
     // download pdf from {baseUrl}/api/berita_acara/cetak
     window.open(`${BASE_URL}/pdf/berita-acara/${berita_acara_id}`);
     setLoadPdf(false);
   };
+
+  // hook form
+  const {
+    register,
+    control,
+    formState: { errors },
+    watch,
+    setValue,
+  } = useForm();
+
+  const thnAkademik = (semester: string) => {
+    const year = new Date().getFullYear();
+    if (semester === "Ganjil") {
+      setTahunAjaran(`${year}-${year + 1}`);
+    } else if (semester === "Genap") {
+      setTahunAjaran(`${year - 1}-${year}`);
+    }
+  };
+
+  useEffect(() => {
+    thnAkademik(dtJadwal?.semester);
+  }, [dtJadwal?.semester]);
 
   return (
     <div className="flex flex-col h-full">
@@ -93,25 +117,26 @@ const Dosen = () => {
           <div className="flex flex-col w-full">
             <div>
               <span className="w-32 inline-block uppercase">Dosen</span>
-              <span>: {jadwal?.dosen?.nama}</span>
+              <span>: {dtJadwal?.dosen?.nm_dosen}</span>
             </div>
             <div>
               <span className="w-32 inline-block uppercase">KODE MK</span>
-              <span>: {jadwal?.matkul?.kode}</span>
+              <span>: {dtJadwal?.matkul?.kd_matkul}</span>
             </div>
             <div>
               <span className="w-32 inline-block uppercase">Mata Kuliah</span>
-              <span>: {jadwal?.matkul?.nama}</span>
+              <span>: {dtJadwal?.matkul?.nm_matkul}</span>
             </div>
             <div>
               <span className="w-32 inline-block uppercase">SKS/SMT/KLS</span>
               <span>
-                : {jadwal?.matkul?.sks} / {jadwal?.semester} T.A 2023/2024
+                : {dtJadwal?.matkul?.sks} / {dtJadwal?.semester} T.A{" "}
+                {thn_ajaran}
               </span>
             </div>
             <div>
               <span className="w-32 inline-block uppercase">Ruangan</span>
-              <span>: {jadwal?.ruangan?.kode}</span>
+              <span>: {dtJadwal?.ruangan?.singkat}</span>
             </div>
           </div>
           <div className="flex lg:justify-normal flex-col gap-4">
@@ -119,17 +144,9 @@ const Dosen = () => {
               {loadPdf ? (
                 <LoadingSpiner />
               ) : (
-                <ButtonPrimary
-                  text="Cetak"
-                  addClass=" bg-secondary"
-                  onClick={cetak}
-                />
+                <BtnSecondary onClick={cetak}>Cetak</BtnSecondary>
               )}
-              <ButtonPrimary
-                text="Tambah Data"
-                addClass=""
-                onClick={handleTambah}
-              />
+              <BtnDefault onClick={handleTambah}>Tambah</BtnDefault>
             </div>
             {/* <div className="flex gap-2 self-start md:w-64">
               <ParafDosenMhs />
@@ -137,8 +154,11 @@ const Dosen = () => {
           </div>
         </div>
         <InputTextSearch
-          placeholder="Cari Data"
-          onChange={(e) => setSearch(e)}
+          placeholder={`Cari ${halaman}`}
+          name="cari"
+          register={register}
+          setValue={setValue}
+          watch={watch}
         />
       </div>
 

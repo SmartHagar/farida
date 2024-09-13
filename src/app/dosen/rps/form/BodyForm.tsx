@@ -1,13 +1,13 @@
 /** @format */
 "use client";
 import Cookies from "js-cookie";
-import InputFile from "@/components/input/InputFile";
 import SelectFromDb from "@/components/select/SelectFromDB";
 import { FC, useEffect } from "react";
 
 import "react-datepicker/dist/react-datepicker.css";
 import useJadwalApiEdom from "@/stores/api/Jadwal";
 import { useSearchParams } from "next/navigation";
+import InputFile from "@/components/input/InputFile";
 
 type Props = {
   register: any;
@@ -17,8 +17,6 @@ type Props = {
   watch: any;
   setValue: any;
   showModal: boolean;
-  myFile: any;
-  setMyFile: any;
 };
 
 const BodyForm: FC<Props> = ({
@@ -29,8 +27,6 @@ const BodyForm: FC<Props> = ({
   watch,
   setValue,
   showModal,
-  myFile,
-  setMyFile,
 }) => {
   const dosen_id = Cookies.get("dosen_id");
   // search params
@@ -51,6 +47,7 @@ const BodyForm: FC<Props> = ({
     fetchDataJadwal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showModal]);
+
   return (
     <>
       {dtJadwal?.data && (
@@ -59,7 +56,14 @@ const BodyForm: FC<Props> = ({
           placeholder="Pilih Jadwal"
           name="jadwal_id"
           dataDb={dtJadwal?.data}
-          body={["id", "matkul.kode", "hari", "matkul.nama", "mulai", "seles"]}
+          body={[
+            "id",
+            "prodi.singkat",
+            "hari",
+            "matkul.nm_matkul",
+            "mulai",
+            "seles",
+          ]}
           control={control}
           required
           errors={errors.jadwal_id}
@@ -77,8 +81,7 @@ const BodyForm: FC<Props> = ({
         addClass="col-span-4"
         setValue={setValue}
         fileEdit={dtEdit?.file}
-        myFile={myFile}
-        setMyFile={setMyFile}
+        watch={watch}
       />
     </>
   );

@@ -22,7 +22,7 @@ const AnimatedNumber: FC<Props> = ({ endValue, animationConfig, addClass }) => {
 
   return (
     <animated.span ref={refNumber} className={addClass}>
-      {animNumber.number.to((value) => Math.floor(value))}
+      {animNumber.number.to((value: number) => Math.floor(value))}
     </animated.span>
   );
 };
