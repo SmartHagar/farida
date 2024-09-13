@@ -38,14 +38,20 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
       tahun,
       semester,
       prodi_id,
+      page,
     });
     setIsLoading(false);
-  }, [prodi_id, search, semester, setBeritaAcara, tahun]);
+  }, [page, prodi_id, search, semester, setBeritaAcara, tahun]);
 
   // ketika data jadwal berubah
   useEffect(() => {
     fetchBeritaAcara();
   }, [fetchBeritaAcara]);
+
+  // ketika search berubah
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
 
   // table
   const headTable = [

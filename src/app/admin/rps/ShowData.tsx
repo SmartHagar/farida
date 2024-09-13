@@ -32,7 +32,6 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
   const tahun = params.get("tahun") || "";
   const search = params.get("cari") || "";
   const prodi_id = Cookies.get("prodi_id") || "";
-  console.log({ search });
   // memanggil data Jadwal
   const fetchRps = useCallback(async () => {
     setIsLoading(true);

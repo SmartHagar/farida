@@ -32,12 +32,10 @@ const TableCostume: FC<Props> = ({ headTable, dataTable, limit, page }) => {
         {dataTable &&
           dataTable.map((row: any, index) => {
             // mencari data kosong
-            const hasEmptyValue =
-              !row.rps || !row.berita_acara || !row.absen || !row.nilai;
+            const hasEmptyValue = !row.rps || !row.absen || !row.nilai;
             // menampilkan label
             const labels = [
               row.rps && "RPS",
-              row.berita_acara && "BERITA ACARA",
               row.absen && "ABSEN",
               row.nilai && "NILAI",
             ].filter(Boolean); // Menghapus elemen-elemen yang falsy dari array
@@ -50,6 +48,9 @@ const TableCostume: FC<Props> = ({ headTable, dataTable, limit, page }) => {
                   {labels.join(", ")}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap capitalize">
+                  {row.matkul.nama}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap capitalize">
                   {row.dosen.nama}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap capitalize">
@@ -58,9 +59,6 @@ const TableCostume: FC<Props> = ({ headTable, dataTable, limit, page }) => {
                 <td className="px-6 py-4 whitespace-nowrap capitalize">
                   {moment(row.mulai, "HH:mm:ss").format("HH:mm")} -
                   {moment(row.seles, "HH:mm:ss").format("HH:mm")}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap capitalize">
-                  {row.matkul.nama}
                 </td>
               </tr>
             );

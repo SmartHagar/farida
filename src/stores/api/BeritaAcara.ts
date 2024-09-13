@@ -10,6 +10,8 @@ type Props = {
   prodi_id?: number | string;
   search?: number | string;
   dosen_id?: number | string;
+  page?: number;
+  limit?: number;
 };
 
 type Store = {
@@ -20,6 +22,8 @@ type Store = {
     prodi_id,
     dosen_id,
     search,
+    page,
+    limit,
   }: Props) => Promise<{
     status: string;
     data?: {};
@@ -30,7 +34,15 @@ type Store = {
 const useBeritaAcaraApi = create(
   devtools<Store>((set, get) => ({
     dtBeritaAcara: [],
-    setBeritaAcara: async ({ semester, tahun, prodi_id, dosen_id, search }) => {
+    setBeritaAcara: async ({
+      semester,
+      tahun,
+      prodi_id,
+      dosen_id,
+      search,
+      page,
+      limit,
+    }) => {
       try {
         const response = await api({
           method: "get",
@@ -41,6 +53,8 @@ const useBeritaAcaraApi = create(
             prodi_id,
             search,
             dosen_id,
+            page,
+            limit,
           },
         });
         set((state) => ({ ...state, dtBeritaAcara: response?.data }));

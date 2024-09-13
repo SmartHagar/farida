@@ -11,11 +11,18 @@ type Props = {
   dosen_id?: string | number;
   tahun?: string | number;
   semester?: string;
+  prodi_id?: string | number;
 };
 
 type Store = {
   dtKelengkapan: any;
-  setKelengkapan: ({ search, dosen_id, tahun, semester }: Props) => Promise<{
+  setKelengkapan: ({
+    search,
+    dosen_id,
+    tahun,
+    semester,
+    prodi_id,
+  }: Props) => Promise<{
     status: string;
     data?: {};
     error?: {};
@@ -25,7 +32,7 @@ type Store = {
 const useKelengkapanApi = create(
   devtools<Store>((set, get) => ({
     dtKelengkapan: [],
-    setKelengkapan: async ({ search, dosen_id, tahun, semester }) => {
+    setKelengkapan: async ({ search, dosen_id, tahun, semester, prodi_id }) => {
       try {
         const response = await api({
           method: "get",
@@ -35,6 +42,7 @@ const useKelengkapanApi = create(
             dosen_id,
             tahun,
             semester,
+            prodi_id,
           },
         });
         set((state) => ({ ...state, dtKelengkapan: response.data }));
