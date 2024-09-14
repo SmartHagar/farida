@@ -54,7 +54,7 @@ const Form = ({}: Props) => {
   } = useForm<Inputs>({ resolver: yupResolver(formSchema) as any });
 
   const resetForm = () => {
-    setValue("email", dtLogin?.user?.email);
+    setValue("email", dtLogin?.data?.user?.email);
     setValue("password", "");
     setValue("confirmPwd", "");
   };

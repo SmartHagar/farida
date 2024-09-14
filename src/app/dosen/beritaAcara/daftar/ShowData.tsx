@@ -66,7 +66,6 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
     "jadwal.matkul.sks",
     "jadwal.prodi.singkat",
   ];
-  console.log(dtBeritaAcara);
   const costume = (row: any) => {
     return (
       <Link
