@@ -2,10 +2,10 @@
 
 import axios from "axios";
 
-// const BASE_URL = "https://back.silaku.fstuogp.com";
-const BASE_URL = "http://127.0.0.1:8000";
-// const URL_SIAKAD = "https://back.edom.fstuogp.com";
-const URL_SIAKAD = "http://127.0.0.1:8010";
+const BASE_URL = "https://back.silaku.fstuogp.com";
+// const BASE_URL = "http://127.0.0.1:8000";
+const URL_SIAKAD = "https://back.edom.fstuogp.com";
+// const URL_SIAKAD = "http://127.0.0.1:8010";
 const url_auth = `${BASE_URL}/auth`;
 const url_api = `${BASE_URL}/api`;
 const url_crud = `${BASE_URL}/crud`;
