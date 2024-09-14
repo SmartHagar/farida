@@ -9,6 +9,7 @@ import useAbsen from "@/stores/crud/upload/Absen";
 import { useRouter, useSearchParams } from "next/navigation";
 import SelectTahun from "@/components/select/SelectTahun";
 import SelectDef from "@/components/select/SelectDef";
+import { momentId } from "@/utils/momentIndonesia";
 
 // type setDelete
 type Delete = {
@@ -66,7 +67,8 @@ const Absen = () => {
   useEffect(() => {
     if (!tahunParams && !semesterParams) {
       const tahun = new Date().getFullYear();
-      const semester = "Genap";
+      const month = momentId().month() + 1;
+      const semester = month > 6 ? "Ganjil" : "Genap";
       setValue("tahun", tahun);
       setValue("semester", semester);
       // add parameter to url

@@ -1,11 +1,10 @@
 /** @format */
 "use client";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import TablesDefault from "@/components/tables/TablesDefault";
 import useNilai from "@/stores/crud/upload/Nilai";
-import useJadwalApiEdom from "@/stores/api/Jadwal";
 
 type DeleteProps = {
   id?: number | string;
@@ -28,105 +27,34 @@ const ShowData: FC<Props> = ({
   semesterWatch,
 }) => {
   // store
-  const { setShowNilai, showNilai } = useNilai();
-  const { setByTahunSemester, dtJadwal } = useJadwalApiEdom();
+  const { setNilai, dtNilai } = useNilai();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [dtShow, setDtShow] = useState<any>();
 
   const prodi_id = Cookies.get("prodi_id");
-  // fetch data jadwal
-  const fetchDataJadwal = async () => {
+
+  const fetchNilai = useCallback(async () => {
     setIsLoading(true);
-    const res = await setByTahunSemester({
+    const res = await setNilai({
       search,
-      tahun: tahunWatch,
-      semester: semesterWatch,
       prodi_id,
+      page,
+      limit,
+      semester: semesterWatch,
+      tahun: tahunWatch,
     });
     setIsLoading(false);
-  };
-  // memo fetch data jadwal
-  useMemo(
-    () => tahunWatch && semesterWatch && fetchDataJadwal(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [tahunWatch, semesterWatch, prodi_id]
-  );
-  // memanggil data berita acara
-  const fetchNilai = async () => {
-    const jadwal_id: any[] = [];
-    dtJadwal?.map((item: any) => {
-      jadwal_id.push(item.id);
-    });
+  }, [limit, page, prodi_id, search, semesterWatch, setNilai, tahunWatch]);
 
-    // convert jadwal_id to string
-    const jadwal_id_string = jadwal_id.join(",");
-    if (jadwal_id.length > 0) {
-      await setShowNilai({});
-    }
-  };
-  // ketika data jadwal berubah
   useEffect(() => {
     fetchNilai();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(dtJadwal)]);
-  //  mengisi dtShow
-  const getDataShow = (dtJadwal: any, showNilai: any) => {
-    console.log({ dtJadwal, showNilai });
-    const dt = showNilai
-      ?.map((item: any) => {
-        const matchedData = dtJadwal?.find(
-          (data: any) => data.id === parseInt(item.jadwal_id)
-        );
-        return matchedData ? { ...item, jadwal: matchedData } : null;
-      })
-      .filter((item: any) => item !== null);
-
-    const getData = {
-      data: dt,
-    };
-
-    setDtShow(getData);
-
-    setIsLoading(false);
-  };
-
+  }, [fetchNilai]);
   // ketika search berubah
   useEffect(() => {
-    const originalData = dtShow?.originalData || dtShow?.data;
-    let filteredData = originalData;
-
-    if (search.trim() !== "") {
-      filteredData = originalData?.filter((item: any) => {
-        return (
-          item.jadwal.hari.toLowerCase().includes(search.toLowerCase()) ||
-          item.jadwal.matkul.nama
-            .toLowerCase()
-            .includes(search.toLowerCase()) ||
-          item.jadwal.matkul.kode.toLowerCase().includes(search.toLowerCase())
-        );
-      });
-    }
-
-    const getData = {
-      data: filteredData,
-      originalData: originalData,
-    };
-
-    setDtShow(getData);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setPage(1);
   }, [search]);
-
-  // ketika showNilai beruba
-  useEffect(() => {
-    if (dtJadwal.length > 0) {
-      getDataShow(dtJadwal, showNilai);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(showNilai), JSON.stringify(dtJadwal)]);
 
   // table
   const headTable = [
@@ -155,7 +83,7 @@ const ShowData: FC<Props> = ({
             <TablesDefault
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={dtShow?.data}
+              dataTable={dtNilai?.data}
               page={page}
               limit={limit}
               setEdit={setEdit}

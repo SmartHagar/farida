@@ -32,12 +32,14 @@ const TableCostume: FC<Props> = ({ headTable, dataTable, limit, page }) => {
         {dataTable &&
           dataTable.map((row: any, index) => {
             // mencari data kosong
-            const hasEmptyValue = !row.rps || !row.absen || !row.nilai;
+            const hasEmptyValue =
+              !row.rps || !row.beritaAcara || !row.absen || !row.nilai;
             // menampilkan label
             const labels = [
               row.rps && "RPS",
               row.absen && "ABSEN",
               row.nilai && "NILAI",
+              row.beritaAcara && "BERITA ACARA",
             ].filter(Boolean); // Menghapus elemen-elemen yang falsy dari array
             return (
               <tr key={index} className={hasEmptyValue ? "bg-red-100" : ""}>

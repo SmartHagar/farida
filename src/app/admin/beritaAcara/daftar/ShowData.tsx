@@ -70,11 +70,10 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
     "jadwal.matkul.sks",
     "jadwal.prodi.singkat",
   ];
-  console.log(dtBeritaAcara?.data);
   const costume = (row: any) => {
     return (
       <Link
-        href={`/admin/beritaAcara/detail?berita_acara_id=${row?.id}&jadwal_id=${row?.id}`}
+        href={`/admin/beritaAcara/detail?berita_acara_id=${row?.id}&jadwal_id=${row?.jadwal_id}`}
         target="_blank"
         title="Lihat Detail"
       >

@@ -1,11 +1,11 @@
 /** @format */
 "use client";
-import React, { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import TablesDefault from "@/components/tables/TablesDefault";
 import useBeritaAcara from "@/stores/crud/upload/BeritaAcara";
-import useJadwalApiEdom from "@/stores/api/Jadwal";
+import { useSearchParams } from "next/navigation";
 
 type DeleteProps = {
   id?: number | string;
@@ -15,121 +15,44 @@ type DeleteProps = {
 type Props = {
   setDelete?: ({ id, isDelete }: DeleteProps) => void;
   setEdit: (row: any) => void;
-  search: string;
-  tahunWatch: string | number;
-  semesterWatch: string;
 };
 
-const ShowData: FC<Props> = ({
-  setDelete,
-  setEdit,
-  search,
-  tahunWatch,
-  semesterWatch,
-}) => {
+const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
   // store
-  const { setShowBeritaAcara, showBeritaAcara } = useBeritaAcara();
-  const { setByTahunSemester, dtJadwal } = useJadwalApiEdom();
+  const { setBeritaAcara, dtBeritaAcara } = useBeritaAcara();
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [dtShow, setDtShow] = useState<any>();
-
+  // search params
+  const searchParams = useSearchParams();
+  const search = searchParams.get("cari") || "";
+  const tahun = searchParams.get("tahun") || "";
+  const semester = searchParams.get("semester") || "";
+  // get prodi id
   const prodi_id = Cookies.get("prodi_id");
-  // fetch data jadwal
-  const fetchDataJadwal = async () => {
+
+  const fetchBeritaAcara = useCallback(async () => {
     setIsLoading(true);
-    const res = await setByTahunSemester({
+    const res = await setBeritaAcara({
       search,
-      tahun: tahunWatch,
-      semester: semesterWatch,
+      tahun,
+      semester,
       prodi_id,
+      page,
     });
     setIsLoading(false);
-  };
-  // memo fetch data jadwal
-  useMemo(
-    () => tahunWatch && semesterWatch && fetchDataJadwal(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [tahunWatch, semesterWatch, prodi_id]
-  );
-  // memanggil data berita acara
-  const fetchBeritaAcara = async () => {
-    const jadwal_id: any[] = [];
-    dtJadwal?.map((item: any) => {
-      jadwal_id.push(item.id);
-    });
+  }, [page, prodi_id, search, semester, setBeritaAcara, tahun]);
 
-    // convert jadwal_id to string
-    const jadwal_id_string = jadwal_id.join(",");
-    if (jadwal_id.length > 0) {
-      await setShowBeritaAcara({
-        jadwal_id: jadwal_id_string,
-      });
-    }
-  };
-  // ketika data jadwal berubah
+  // call fetch
   useEffect(() => {
     fetchBeritaAcara();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(dtJadwal)]);
-  //  mengisi dtShow
-  const getDataShow = (dtJadwal: any, showBeritaAcara: any) => {
-    console.log({ dtJadwal, showBeritaAcara });
-    const dt = showBeritaAcara
-      ?.map((item: any) => {
-        const matchedData = dtJadwal?.find(
-          (data: any) => data.id === parseInt(item.berita_acara.jadwal_id)
-        );
-        return matchedData ? { ...item, jadwal: matchedData } : null;
-      })
-      .filter((item: any) => item !== null);
-
-    const getData = {
-      data: dt,
-    };
-
-    setDtShow(getData);
-
-    setIsLoading(false);
-  };
+  }, [fetchBeritaAcara]);
 
   // ketika search berubah
   useEffect(() => {
-    const originalData = dtShow?.originalData || dtShow?.data;
-    let filteredData = originalData;
-
-    if (search.trim() !== "") {
-      filteredData = originalData?.filter((item: any) => {
-        return (
-          item.jadwal.hari.toLowerCase().includes(search.toLowerCase()) ||
-          item.jadwal.matkul.nama
-            .toLowerCase()
-            .includes(search.toLowerCase()) ||
-          item.jadwal.matkul.kode.toLowerCase().includes(search.toLowerCase())
-        );
-      });
-    }
-
-    const getData = {
-      data: filteredData,
-      originalData: originalData,
-    };
-
-    setDtShow(getData);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setPage(1);
   }, [search]);
-
-  // ketika showBeritaAcara beruba
-  useEffect(() => {
-    if (dtJadwal.length > 0) {
-      getDataShow(dtJadwal, showBeritaAcara);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(showBeritaAcara), JSON.stringify(dtJadwal)]);
-
   // table
   const headTable = [
     "No",
@@ -140,10 +63,10 @@ const ShowData: FC<Props> = ({
     "BERITA ACARA",
   ];
   const tableBodies = [
-    "jadwal.hari",
-    "jadwal.matkul.nama",
-    "jadwal.matkul.kode",
-    "jadwal.matkul.sks",
+    "berita_acara.jadwal.hari",
+    "berita_acara.jadwal.matkul.nama",
+    "berita_acara.jadwal.matkul.kode",
+    "berita_acara.jadwal.matkul.sks",
     "file",
   ];
 
@@ -157,7 +80,7 @@ const ShowData: FC<Props> = ({
             <TablesDefault
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={dtShow?.data}
+              dataTable={dtBeritaAcara?.data}
               page={page}
               limit={limit}
               setEdit={setEdit}

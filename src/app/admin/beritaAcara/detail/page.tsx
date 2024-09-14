@@ -51,6 +51,8 @@ const DetBeritaAcara = () => {
 
   const jadwal = dtJadwal;
 
+  console.log({ jadwal });
+
   const cetak = () => {
     setLoadPdf(true);
     // download pdf from {baseUrl}/api/berita_acara/cetak
@@ -106,7 +108,7 @@ const DetBeritaAcara = () => {
               <LoadingSpiner />
             ) : (
               <BtnDefault
-                addClass="self-end bg-secondary"
+                addClass="self-end bg-secondary text-white"
                 onClick={cetak}
               >{`Cetak ${halaman}`}</BtnDefault>
             )}

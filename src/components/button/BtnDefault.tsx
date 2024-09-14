@@ -18,7 +18,7 @@ const BtnDefault: FC<Props> = ({
   return (
     <button
       type={type}
-      className={`${addClass} rounded-lg text-sm px-5 py-2.5 me-2 mb-2`}
+      className={`rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ${addClass} `}
       onClick={onClick}
     >
       {children}
