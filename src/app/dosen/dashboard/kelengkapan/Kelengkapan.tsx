@@ -36,10 +36,10 @@ const Kelengkapan: FC<Props> = ({ dosen_id }) => {
 
   // get data
   useEffect(() => {
-    if (tahun && semester) {
+    if (tahun && semester && dosen_id) {
       fetchKelengkapan();
     }
-  }, [fetchKelengkapan, semester, tahun]);
+  }, [dosen_id, fetchKelengkapan, semester, tahun]);
 
   // table
   const headTable = ["Tidak Ada", "Hari", "Jam", "Mata Kuliah"];
@@ -53,7 +53,6 @@ const Kelengkapan: FC<Props> = ({ dosen_id }) => {
         item.absen !== null &&
         item.nilai !== null
     );
-    console.log({ checkLengkap });
     setLengkap(checkLengkap);
   }, [dtKelengkapan?.data]);
 

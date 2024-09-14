@@ -52,7 +52,7 @@ const TableCostume: FC<Props> = ({ headTable, dataTable }) => {
                     {moment(row.seles, "HH:mm:ss").format("HH:mm")}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap capitalize">
-                    {row.matkul.nm_matkul}
+                    {row.matkul.nama}
                   </td>
                 </tr>
               )

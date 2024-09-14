@@ -67,8 +67,8 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
   ];
   const tableBodies = [
     "jadwal.hari",
-    "jadwal.matkul.nm_matkul",
-    "jadwal.matkul.kd_matkul",
+    "jadwal.matkul.nama",
+    "jadwal.matkul.kode",
     "jadwal.prodi.singkat",
     "jadwal.matkul.sks",
     "file",

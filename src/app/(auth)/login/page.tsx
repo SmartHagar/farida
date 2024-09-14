@@ -65,7 +65,7 @@ const Login = (props: Props) => {
       setError(res?.error?.pesan);
     } else {
       const { data } = res;
-      const { role, name } = data;
+      const { role, name, dosen_id } = data;
       Cookies.set("token", data.token);
       Cookies.set("role", role);
       Cookies.set("email", data.email);
@@ -86,6 +86,7 @@ const Login = (props: Props) => {
       if (role !== "dosen") {
         return router.push("/admin/dashboard");
       }
+      Cookies.set("dosen_id", dosen_id);
       return router.push("/dosen/dashboard");
     }
     setTimeout(() => {

@@ -61,8 +61,8 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
   ];
   const tableBodies = [
     "jadwal.hari",
-    "jadwal.matkul.nm_matkul",
-    "jadwal.matkul.kd_matkul",
+    "jadwal.matkul.nama",
+    "jadwal.matkul.kode",
     "jadwal.matkul.sks",
     "jadwal.prodi.singkat",
   ];
@@ -70,7 +70,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
   const costume = (row: any) => {
     return (
       <Link
-        href={`/dosen/beritaAcara/detail?berita_acara_id=${row?.id}&jadwal_id=${row?.id}`}
+        href={`/dosen/beritaAcara/detail?berita_acara_id=${row?.id}&jadwal_id=${row?.jadwal_id}`}
         target="_blank"
         title="Lihat Detail"
       >

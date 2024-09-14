@@ -117,15 +117,15 @@ const Dosen = () => {
           <div className="flex flex-col w-full">
             <div>
               <span className="w-32 inline-block uppercase">Dosen</span>
-              <span>: {dtJadwal?.dosen?.nm_dosen}</span>
+              <span>: {dtJadwal?.dosen?.nama}</span>
             </div>
             <div>
               <span className="w-32 inline-block uppercase">KODE MK</span>
-              <span>: {dtJadwal?.matkul?.kd_matkul}</span>
+              <span>: {dtJadwal?.matkul?.kode}</span>
             </div>
             <div>
               <span className="w-32 inline-block uppercase">Mata Kuliah</span>
-              <span>: {dtJadwal?.matkul?.nm_matkul}</span>
+              <span>: {dtJadwal?.matkul?.nama}</span>
             </div>
             <div>
               <span className="w-32 inline-block uppercase">SKS/SMT/KLS</span>
@@ -136,7 +136,7 @@ const Dosen = () => {
             </div>
             <div>
               <span className="w-32 inline-block uppercase">Ruangan</span>
-              <span>: {dtJadwal?.ruangan?.singkat}</span>
+              <span>: {dtJadwal?.ruangan?.kode}</span>
             </div>
           </div>
           <div className="flex lg:justify-normal flex-col gap-4">

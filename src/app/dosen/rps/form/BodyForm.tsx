@@ -60,7 +60,7 @@ const BodyForm: FC<Props> = ({
             "id",
             "prodi.singkat",
             "hari",
-            "matkul.nm_matkul",
+            "matkul.nama",
             "mulai",
             "seles",
           ]}

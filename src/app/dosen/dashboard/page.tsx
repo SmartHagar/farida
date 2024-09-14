@@ -24,7 +24,7 @@ const Dashboard = (props: Props) => {
   const { setDosenAll, dtDosenAll } = useDosenApiEdom();
   const [dtDosen, setDtDosen] = useState<any>([]);
   //
-  const dosen_id = Cookies.get("dosen_id") || "";
+  const dosen_id = parseInt(Cookies.get("dosen_id") as string) || "";
 
   useEffect(() => {
     setRuanganAll({
@@ -39,9 +39,7 @@ const Dashboard = (props: Props) => {
   }, [setDosenAll, setMatkulAll, setRuanganAll]);
 
   useEffect(() => {
-    const dtDosen = dtDosenAll?.data?.find(
-      (d: any) => d.id === parseInt(dosen_id)
-    );
+    const dtDosen = dtDosenAll?.data?.find((d: any) => d.id === dosen_id);
     setDtDosen(dtDosen);
     return () => {};
   }, [dosen_id, dtDosenAll]);
@@ -56,7 +54,7 @@ const Dashboard = (props: Props) => {
           (Sistem Informasi Laporan Perkuliahan)
         </p>
         <p className="text-center text-sm md:text-lg font-bold text-font-1">
-          FAKULTAS EKONOMI
+          Fakultas Sains & Teknologi
         </p>
         <h5 className="text-center my-4">{dtDosen?.nm_dosen}</h5>
       </div>
