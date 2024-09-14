@@ -20,7 +20,7 @@ const Akun = (props: Props) => {
       </div>
       <Toaster />
       <div className="lg:mx-10">
-        <Form dtLogin={dtLogin} cekToken={cekToken} />
+        <Form dtLogin={dtLogin?.data} cekToken={cekToken} />
       </div>
     </div>
   );

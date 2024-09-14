@@ -65,10 +65,25 @@ const Login = (props: Props) => {
       setError(res?.error?.pesan);
     } else {
       const { data } = res;
+      const { role, name } = data;
       Cookies.set("token", data.token);
-      Cookies.set("role", data.role);
+      Cookies.set("role", role);
       Cookies.set("email", data.email);
-      if (data.role !== "dosen") {
+
+      if (role === "prodi") {
+        console.log("prodi");
+        if (name === "Sistem Informasi") {
+          console.log("si");
+          Cookies.set("prodi_id", "1");
+        }
+        if (name === "Biologi") {
+          Cookies.set("prodi_id", "2");
+        }
+        if (name === "Teknik Geologi") {
+          Cookies.set("prodi_id", "3");
+        }
+      }
+      if (role !== "dosen") {
         return router.push("/admin/dashboard");
       }
       return router.push("/dosen/dashboard");
