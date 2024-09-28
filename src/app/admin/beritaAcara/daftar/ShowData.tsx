@@ -61,6 +61,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
     "Kode MK",
     "JML. SKS",
     "Prodi",
+    "Jml. Pertemuan",
     "Aksi",
   ];
   const tableBodies = [
@@ -69,6 +70,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
     "jadwal.matkul.kode",
     "jadwal.matkul.sks",
     "jadwal.prodi.singkat",
+    "jml_pertemuan",
   ];
   const costume = (row: any) => {
     return (

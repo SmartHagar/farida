@@ -28,6 +28,11 @@ const getProperty = (
     if (last.includes("NPM_FULL")) {
       return `${obj["prodi"]["kode"]}${angkatan}${obj["NPM"]}`;
     }
+    if (last.includes("jml_pertemuan")) {
+      const det_berita_acara = obj["det_berita_acara"];
+      const jml = det_berita_acara.length;
+      return jml;
+    }
     // memisahkan properti dalam bentuk array
     let l = parts.length,
       i = 1,
