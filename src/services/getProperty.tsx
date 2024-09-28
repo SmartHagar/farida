@@ -30,7 +30,7 @@ const getProperty = (
     }
     if (last.includes("jml_pertemuan")) {
       const det_berita_acara = obj["det_berita_acara"];
-      const jml = det_berita_acara.length;
+      const jml = det_berita_acara?.length;
       return jml;
     }
     // memisahkan properti dalam bentuk array
