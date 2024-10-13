@@ -1,11 +1,11 @@
 /** @format */
 "use client";
-import React, { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import TablesDefault from "@/components/tables/TablesDefault";
 import useBeritaAcara from "@/stores/crud/upload/BeritaAcara";
-import useJadwalApiEdom from "@/stores/api/Jadwal";
+import { useSearchParams } from "next/navigation";
 
 type DeleteProps = {
   id?: number | string;
@@ -15,95 +15,36 @@ type DeleteProps = {
 type Props = {
   setDelete?: ({ id, isDelete }: DeleteProps) => void;
   setEdit: (row: any) => void;
-  search: string;
-  tahunWatch: string | number;
-  semesterWatch: string;
 };
 
-const ShowData: FC<Props> = ({
-  setDelete,
-  setEdit,
-  search,
-  tahunWatch,
-  semesterWatch,
-}) => {
+const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
+  const { setBeritaAcara, dtBeritaAcara } = useBeritaAcara();
   // dosen_id
   const dosen_id = Cookies.get("dosen_id") || "";
-  const { setShowBeritaAcara, showBeritaAcara } = useBeritaAcara();
-  const { setJadwalByDosenFull, dtJadwal } = useJadwalApiEdom();
+  // search params
+  const searchParams = useSearchParams();
+  const search = searchParams.get("cari") || "";
+  const semester = searchParams.get("semester") || "";
+  const tahun = searchParams.get("year") || "";
   // state
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [dtShow, setDtShow] = useState<any>();
 
-  const fetchDataJadwal = async () => {
+  const fetchBeritaAcara = useCallback(async () => {
     setIsLoading(true);
-    const res = await setJadwalByDosenFull({
-      dosen_id,
+    const res = await setBeritaAcara({
       search,
-      tahun: tahunWatch,
-      semester: semesterWatch,
+      tahun,
+      semester,
+      dosen_id,
     });
     setIsLoading(false);
-  };
-  // memo fetch data jadwal
-  useMemo(
-    () => tahunWatch && semesterWatch && fetchDataJadwal(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [dosen_id, tahunWatch, semesterWatch]
-  );
+  }, [setBeritaAcara, search, tahun, semester, dosen_id]);
 
-  // memanggil data rps
-  const fetchNilai = async () => {
-    const jadwal_id: any[] = [];
-    dtJadwal?.data?.map((item: any) => {
-      jadwal_id.push(item.id);
-    });
-    // convert jadwal_id to string
-    const jadwal_id_string = jadwal_id.join(",");
-    if (jadwal_id.length > 0) {
-      await setShowBeritaAcara({
-        id: dosen_id,
-        jadwal_id: jadwal_id_string,
-      });
-    }
-  };
-
-  // ketika data jadwal berubah
   useEffect(() => {
-    fetchNilai();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(dtJadwal)]);
-
-  //  mengisi dtShow
-  const getDataShow = (dtJadwal: any, showBeritaAcara: any) => {
-    console.log({ dtJadwal, showBeritaAcara });
-    const dt = showBeritaAcara
-      ?.map((item: any) => {
-        const matchedData = dtJadwal?.find(
-          (data: any) => data.id === parseInt(item.berita_acara.jadwal_id)
-        );
-        return matchedData ? { ...item, jadwal: matchedData } : null;
-      })
-      .filter((item: any) => item !== null);
-
-    const getData = {
-      data: dt,
-    };
-
-    setDtShow(getData);
-
-    setIsLoading(false);
-  };
-
-  // ketika dtRPS beruba
-  useEffect(() => {
-    if (dtJadwal?.data?.length > 0) {
-      getDataShow(dtJadwal?.data, showBeritaAcara);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(showBeritaAcara), JSON.stringify(dtJadwal)]);
+    fetchBeritaAcara();
+  }, [fetchBeritaAcara]);
 
   // table
   const headTable = [
@@ -116,10 +57,10 @@ const ShowData: FC<Props> = ({
     "Aksi",
   ];
   const tableBodies = [
-    "jadwal.hari",
-    "jadwal.matkul.nama",
-    "jadwal.matkul.kode",
-    "jadwal.matkul.sks",
+    "berita_acara.jadwal.hari",
+    "berita_acara.jadwal.matkul.nama",
+    "berita_acara.jadwal.matkul.kode",
+    "berita_acara.jadwal.matkul.sks",
     "file",
   ];
 
@@ -133,7 +74,7 @@ const ShowData: FC<Props> = ({
             <TablesDefault
               headTable={headTable}
               tableBodies={tableBodies}
-              dataTable={dtShow?.data}
+              dataTable={dtBeritaAcara?.data}
               page={page}
               limit={limit}
               setEdit={setEdit}

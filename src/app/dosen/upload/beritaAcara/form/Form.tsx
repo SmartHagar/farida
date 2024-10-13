@@ -90,7 +90,7 @@ const Form = ({
 
   return (
     <ModalDefault
-      title="Form Dosen"
+      title="Form Berita Acara"
       showModal={showModal}
       setShowModal={setShowModal}
     >

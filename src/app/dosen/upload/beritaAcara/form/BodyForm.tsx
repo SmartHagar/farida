@@ -2,11 +2,11 @@
 "use client";
 import Cookies from "js-cookie";
 import InputFile from "@/components/input/InputFile";
-import SelectFromDb from "@/components/select/SelectFromDB";
-import { FC, useState } from "react";
+import { FC, useCallback, useEffect } from "react";
 
 import "react-datepicker/dist/react-datepicker.css";
-import useJadwalApiEdom from "@/stores/api/Jadwal";
+import useBeritaAcaraApi from "@/stores/api/BeritaAcara";
+import SelectFromDb from "@/components/select/SelectFromDB";
 
 type Props = {
   register: any;
@@ -36,25 +36,32 @@ const BodyForm: FC<Props> = ({
   semesterWatch,
 }) => {
   const dosen_id = Cookies.get("dosen_id");
-  const { setJadwalByDosenFull, dtJadwal } = useJadwalApiEdom();
+  const { setBeritaAcara, dtBeritaAcara } = useBeritaAcaraApi();
   // state
-  const [dtShow, setDtShow] = useState<any>();
-  const fetchDataJadwal = async () => {
-    const res = await setJadwalByDosenFull({
+  const fetchDataJadwal = useCallback(async () => {
+    const res = await setBeritaAcara({
       dosen_id,
       tahun: tahunWatch,
       semester: semesterWatch,
+      limit: 100,
     });
-  };
+  }, [dosen_id, semesterWatch, setBeritaAcara, tahunWatch]);
+
+  // get data jadwal
+  useEffect(() => {
+    if (showModal) {
+      fetchDataJadwal();
+    }
+  }, [showModal, fetchDataJadwal]);
 
   return (
     <>
-      {dtShow?.data && (
+      {dtBeritaAcara?.data && (
         <SelectFromDb
           label="Jadwal"
           placeholder="Pilih Jadwal"
           name="berita_acara_id"
-          dataDb={dtShow?.data}
+          dataDb={dtBeritaAcara?.data}
           body={[
             "id",
             "jadwal.matkul.kode",

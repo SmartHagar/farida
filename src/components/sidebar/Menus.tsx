@@ -105,11 +105,11 @@ const DosenMenus: MenuTypes[] = [
         href: "/dosen/upload/absen",
         icon: <BsPeopleFill />,
       },
-      // {
-      //   name: "Berita Acara",
-      //   href: "/dosen/upload/beritaAcara",
-      //   icon: <BsPeopleFill />,
-      // },
+      {
+        name: "Berita Acara",
+        href: "/dosen/upload/beritaAcara",
+        icon: <BsPeopleFill />,
+      },
       {
         name: "Nilai",
         href: "/dosen/upload/nilai",

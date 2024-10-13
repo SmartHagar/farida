@@ -10,6 +10,7 @@ import toastShow from "@/utils/toast-show";
 import { useForm } from "react-hook-form";
 import useBeritaAcara from "@/stores/crud/upload/BeritaAcara";
 import BtnDefault from "@/components/button/BtnDefault";
+import Searching from "./Searching";
 
 // type setDelete
 type Delete = {
@@ -92,15 +93,12 @@ const BeritaAcara = () => {
             <BtnDefault onClick={handleTambah}>Tambah berita acara</BtnDefault>
           </div>
         </div>
+        <div>
+          <Searching halaman="Berita Acara" />
+        </div>
       </div>
 
-      <ShowData
-        setDelete={setDelete}
-        setEdit={setEdit}
-        search={search}
-        tahunWatch={tahunWatch}
-        semesterWatch={semesterWatch}
-      />
+      <ShowData setDelete={setDelete} setEdit={setEdit} />
     </div>
   );
 };
